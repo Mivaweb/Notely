@@ -252,6 +252,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\DataType.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Persistence\Repositories\CommentsRepository.cs" />
+    <Compile Include="Persistence\Repositories\Interfaces\ICommentsRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -260,8 +265,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Events\" />
-    <Folder Include="Models\" />
-    <Folder Include="Persistence\Repositories\Interfaces\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
