@@ -1,12 +1,28 @@
-﻿angular.module('notely').controller('Notely.PropertyEditors.DataTypePickerController', [
+﻿// Notely - DataTypePickerController
+angular.module('notely').controller('Notely.PropertyEditors.DataTypePickerController', [
 
     '$scope',
-    'Notely.notelyResources',
+    'notelyResources',
+    'dataTypeBuilder',
 
-    function ($scope, notelyResources) {
-        $scope.model.dataTypes = [];
+    function ($scope, notelyResources, dataTypeBuilder) {
 
-        notelyResources.getDataTypes().then(function (data) { $scope.model.dataTypes = data });
+        $scope.loaded = false;
+
+        var dataTypePromise = notelyResources.getDataTypes();
+        dataTypePromise.then(function (data) {
+            $scope.model.dataTypes = dataTypeBuilder.convert(data);
+            $scope.loaded = true;
+        });
+        
     }
+
+]);
+
+
+// Notely - MainController
+angular.module('notely').controller('Notely.PropertyEditors.MainController', [
+
+    
 
 ]);

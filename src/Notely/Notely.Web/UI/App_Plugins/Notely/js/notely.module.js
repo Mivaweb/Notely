@@ -9,6 +9,7 @@
         'notely.resources',
         'notely.services'
     ]);
+
     angular.module('notely.models', []);
     angular.module('notely.filters', []);
     angular.module('notely.directives', []);

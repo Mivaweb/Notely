@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Http;
 using System.Net;
 using Newtonsoft.Json;
@@ -15,12 +14,13 @@ using Notely.Core.Models;
 using Notely.Web.Models;
 using Notely.Web.Extensions;
 using Notely.Core.Persistence.Repositories;
+using Umbraco.Web.Editors;
 
 namespace Notely.Web.Controllers
 {
     [IsBackOffice]
     [PluginController("Notely")]
-    public class NotelyApiController : UmbracoAuthorizedApiController
+    public class NotelyApiController : UmbracoAuthorizedJsonController
     {
         /// <summary>
         /// Get all the DataTypes from the Umbraco backend without the ones of 'Notely'

@@ -31,11 +31,11 @@
 	"javascript": [
 		"~/App_Plugins/Notely/js/notely.module.js",
 		"~/App_Plugins/Notely/js/notely.models.js",
-		"~/App_Plugins/Notely/js/notely.controllers.js",
-		"~/App_Plugins/Notely/js/notely.directives.js",
-		"~/App_Plugins/Notely/js/notely.resources.js",
 		"~/App_Plugins/Notely/js/notely.filters.js",
-		"~/App_Plugins/Notely/js/notely.services.js"
+		"~/App_Plugins/Notely/js/notely.resources.js",
+		"~/App_Plugins/Notely/js/notely.services.js",
+		"~/App_Plugins/Notely/js/notely.directives.js",
+		"~/App_Plugins/Notely/js/notely.controllers.js"
 	],
 	"css": [
 		"~/App_Plugins/Notely/css/notely.css"

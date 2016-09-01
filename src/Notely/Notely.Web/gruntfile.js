@@ -27,6 +27,13 @@ module.exports = function (grunt) {
                 dest: '../Notely.Web.UI.Client/App_Plugins/Notely',
                 expand: true
             }
+        },
+        
+        watch: {
+            notely: {
+                files: ['UI/App_Plugins/Notely/**/*'],
+                tasks: ['copy']
+            }
         }
 
     });
@@ -34,4 +41,5 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-mkdir');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 };
