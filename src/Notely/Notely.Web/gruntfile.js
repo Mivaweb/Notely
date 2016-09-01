@@ -6,7 +6,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
 
         clean: {
-            folder: ['../../Notely.Umbraco/Notely.Umbraco/App_Plugins/Notely'],
+            folder: ['../Notely.Web.UI.Client/App_Plugins/Notely'],
             options: {
                 force: true
             }
@@ -15,7 +15,7 @@ module.exports = function (grunt) {
         mkdir: {
             all: {
                 options: {
-                    create: ['../../Notely.Umbraco/Notely.Umbraco/App_Plugins/Notely']
+                    create: ['../Notely.Web.UI.Client/App_Plugins/Notely']
                 }
             }
         },
@@ -24,7 +24,7 @@ module.exports = function (grunt) {
             files: {
                 cwd: 'UI/App_Plugins/Notely',
                 src: '**/*',
-                dest: '../../Notely.Umbraco/Notely.Umbraco/App_Plugins/Notely',
+                dest: '../Notely.Web.UI.Client/App_Plugins/Notely',
                 expand: true
             }
         }

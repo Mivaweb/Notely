@@ -156,3 +156,5 @@ $RECYCLE.BIN/
 /src/Notely.Umbraco/Notely.Umbraco/App_Data/TEMP
 /src/Notely.Umbraco/Notely.Umbraco/Media
 /src/Notely/Notely.Web/node_modules
+/src/Notely/Notely.Web.UI.Client/App_Data/NuGetBackup/20160901-135644
+/src/Notely/Notely.Web.UI.Client/Media

@@ -169,6 +169,12 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Notely.Core">
+      <HintPath>..\..\Notely\Notely.Core\bin\Debug\Notely.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Notely.Web">
+      <HintPath>..\..\Notely\Notely.Web\bin\Notely.Web.dll</HintPath>
+    </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
@@ -298,8 +304,10 @@
     <Content Include="App_Plugins\ModelsBuilder\modelsbuilder.controller.js" />
     <Content Include="App_Plugins\ModelsBuilder\modelsbuilder.htm" />
     <Content Include="App_Plugins\ModelsBuilder\modelsbuilder.resource.js" />
+    <Content Include="bin\Notely.Core.dll" />
     <Content Include="bin\Notely.Umbraco.dll" />
     <Content Include="bin\Notely.Umbraco.pdb" />
+    <Content Include="bin\Notely.Web.dll" />
     <Content Include="Config\grid.editors.config.js" />
     <Content Include="Config\Lang\cs-CZ.user.xml" />
     <Content Include="Config\Lang\da-DK.user.xml" />
