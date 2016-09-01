@@ -279,7 +279,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="gruntfile.js" />
     <Content Include="packages.config" />
+    <Content Include="UI\App_Plugins\Notely\css\notely.css" />
+    <Content Include="UI\App_Plugins\Notely\js\notely.controllers.js" />
+    <Content Include="UI\App_Plugins\Notely\js\notely.directives.js" />
+    <Content Include="UI\App_Plugins\Notely\js\notely.filters.js" />
+    <Content Include="UI\App_Plugins\Notely\js\notely.models.js" />
+    <Content Include="UI\App_Plugins\Notely\js\notely.module.js" />
+    <Content Include="UI\App_Plugins\Notely\js\notely.resources.js" />
+    <Content Include="UI\App_Plugins\Notely\js\notely.services.js" />
+    <Content Include="UI\App_Plugins\Notely\package.manifest" />
+    <Content Include="package.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -288,6 +299,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="UI\App_Plugins\Notely\views\notely.html" />
+    <Content Include="UI\App_Plugins\Notely\views\propertyeditors\notely.datatypepicker.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -301,7 +314,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Trees\" />
-    <Folder Include="UI\App_Plugins\Notely\" />
+    <Folder Include="UI\App_Plugins\Notely\views\dialogs\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Notely.Core\Notely.Core.csproj">

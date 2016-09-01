@@ -1,0 +1,43 @@
+﻿{
+	"propertyEditors": [
+		{
+			alias: "Notely",
+			name: "Notely",
+			editor: {
+				view: "~/App_Plugins/Notely/views/notely.html",
+				hideLabel: false
+			},
+			prevalues: {
+				fields: [
+					{
+						label: "Data Type",
+						description: "Choose Data Type to wrap into Notely",
+						key: "dataType",
+						view: "~/App_Plugins/Notely/views/propertyeditors/notely.datatypepicker.html"
+					},
+					{
+						label: "Maximum comments",
+						description: "Set a limit of comments for this property editor.",
+						key: "limit",
+						view: "number"
+					}
+				]
+			},
+			defaultConfig: {
+				limit: 5
+			}
+		}
+	],
+	"javascript": [
+		"~/App_Plugins/Notely/js/notely.module.js",
+		"~/App_Plugins/Notely/js/notely.models.js",
+		"~/App_Plugins/Notely/js/notely.controllers.js",
+		"~/App_Plugins/Notely/js/notely.directives.js",
+		"~/App_Plugins/Notely/js/notely.resources.js",
+		"~/App_Plugins/Notely/js/notely.filters.js",
+		"~/App_Plugins/Notely/js/notely.services.js"
+	],
+	"css": [
+		"~/App_Plugins/Notely/css/notely.css"
+	]
+}

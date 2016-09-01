@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "grunt": "1.0.1",
+    "grunt-mkdir": "1.0.0",
+    "grunt-contrib-clean": "1.0.0",
+    "grunt-contrib-copy": "1.0.0"
+  },
+  "name": "Notely",
+  "private": true,
+  "version": "1.0.0"
+}
