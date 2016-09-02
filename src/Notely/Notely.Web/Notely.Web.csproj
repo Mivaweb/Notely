@@ -281,6 +281,9 @@
   <ItemGroup>
     <Content Include="gruntfile.js" />
     <Content Include="packages.config" />
+    <Content Include="UI\App_Plugins\Notely\backoffice\notely\allcomments.html" />
+    <Content Include="UI\App_Plugins\Notely\backoffice\notely\cleanup.html" />
+    <Content Include="UI\App_Plugins\Notely\backoffice\notely\mycomments.html" />
     <Content Include="UI\App_Plugins\Notely\css\notely.css" />
     <Content Include="UI\App_Plugins\Notely\js\notely.controllers.js" />
     <Content Include="UI\App_Plugins\Notely\js\notely.directives.js" />
