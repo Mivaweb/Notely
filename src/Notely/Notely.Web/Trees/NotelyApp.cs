@@ -7,7 +7,7 @@ namespace Notely.Web.Trees
     /// <summary>
     /// Defines a new application ( section ) for Notely
     /// </summary>
-    [Application("Notely", "Notely", "icon-notepad", 10)]
+    [Application("notely", "Notely", "icon-notepad", 10)]
     [PluginController("Notely")]
     public class NotelyApp : IApplication
     {
