@@ -134,6 +134,21 @@ namespace Notely.Web.Controllers
         }
 
         /// <summary>
+        /// Get a list of <see cref="CommentViewModel"/>
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IEnumerable<CommentViewModel> GetAllComments()
+        {
+            var commenVm = new CommentViewModel();
+
+            using (CommentsRepository repo = new CommentsRepository())
+            {
+                return repo.GetAll().Select(c => commenVm.Convert(c));
+            }
+        }
+
+        /// <summary>
         /// Add a new comment
         /// </summary>
         /// <param name="comment">A <see cref="CommentViewModel"/> object</param>

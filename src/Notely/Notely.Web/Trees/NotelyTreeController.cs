@@ -15,14 +15,21 @@ namespace Notely.Web.Trees
     {
         protected override TreeNodeCollection GetTreeNodes(string id, FormDataCollection queryStrings)
         {
-            var nodes = new TreeNodeCollection();
+            // Check if its the root node
+            if(id == "-1")
+            {
+                var nodes = new TreeNodeCollection();
 
-            // ===> Routepath has to be: /appsection/treealias/htmlview/ID 
-            nodes.Add(this.CreateTreeNode("comments", id, queryStrings, "All comments", "icon-notepad", false, "/notely/notely/allcomments/manage"));
-            nodes.Add(this.CreateTreeNode("myComments", id, queryStrings, "My comments", "icon-operator", false, "/notely/notely/mycomments/manage"));
-            nodes.Add(this.CreateTreeNode("cleanup", id, queryStrings, "Cleanup", "icon-trash-alt-2", false, "/notely/notely/cleanup/manage"));
+                // ===> Routepath has to be: /appsection/treealias/htmlview/ID 
+                nodes.Add(this.CreateTreeNode("comments", id, queryStrings, "All comments", "icon-notepad", false, "/notely/notely/allcomments/manage"));
+                nodes.Add(this.CreateTreeNode("myComments", id, queryStrings, "My comments", "icon-operator", false, "/notely/notely/mycomments/manage"));
+                nodes.Add(this.CreateTreeNode("cleanup", id, queryStrings, "Cleanup", "icon-trash-alt-2", false, "/notely/notely/cleanup/manage"));
 
-            return nodes;
+                return nodes;
+            }
+
+            // No more then one level of nodes is accepted
+            throw new NotSupportedException();
         }
 
         protected override MenuItemCollection GetMenuForNode(string id, FormDataCollection queryStrings)

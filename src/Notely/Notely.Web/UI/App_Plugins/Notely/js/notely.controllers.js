@@ -328,3 +328,70 @@ angular.module('notely').controller('Notely.PropertyEditors.DeleteController', [
     }
 
 ]);
+
+/*
+ * @ngdoc Controller
+ * @name Notely.Backoffice.AllCommentsController
+ * 
+ */
+angular.module('notely').controller('Notely.Backoffice.AllCommentsController', [
+
+    '$scope',
+    'notelyResources',
+    'commentsBuilder',
+
+    function ($scope, notelyResources, commentsBuilder) {
+
+        $scope.loaded = false;
+        $scope.comments = [];
+
+        // Init function
+        $scope.init = function () {
+
+            var commentsPromise = notelyResources.getAllComments();
+            commentsPromise.then(function (data) {
+                $scope.comments = commentsBuilder.convert(data);
+            });
+
+            $scope.loaded = true;
+
+        }
+
+    }
+
+]);
+
+/*
+ * @ngdoc Controller
+ * @name Notely.Backoffice.MyCommentsController
+ * 
+ */
+angular.module('notely').controller('Notely.Backoffice.MyCommentsController', [
+
+    '$scope',
+   
+    function ($scope) {
+
+        $scope.loaded = false;
+        $scope.comments = [];
+
+    }
+
+]);
+
+/*
+ * @ngdoc Controller
+ * @name Notely.Backoffice.CleanupController
+ * 
+ */
+angular.module('notely').controller('Notely.Backoffice.CleanupController', [
+
+    '$scope',
+
+    function ($scope) {
+
+        $scope.loaded = false;
+
+    }
+
+]);
