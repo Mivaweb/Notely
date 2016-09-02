@@ -314,10 +314,9 @@
     <Compile Include="Models\ContentPropertyViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Trees\NotelyApp.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Trees\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Notely.Core\Notely.Core.csproj">
       <Project>{ee1db31d-7890-4b0e-9725-790e61244d53}</Project>
