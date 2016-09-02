@@ -299,6 +299,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="UI\App_Plugins\Notely\views\dialogs\notely.comments.add.html" />
+    <Content Include="UI\App_Plugins\Notely\views\dialogs\notely.comments.delete.html" />
+    <Content Include="UI\App_Plugins\Notely\views\dialogs\notely.comments.edit.html" />
     <Content Include="UI\App_Plugins\Notely\views\notely.html" />
     <Content Include="UI\App_Plugins\Notely\views\propertyeditors\notely.datatypepicker.html" />
     <Content Include="Web.config" />
@@ -314,7 +317,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Trees\" />
-    <Folder Include="UI\App_Plugins\Notely\views\dialogs\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Notely.Core\Notely.Core.csproj">

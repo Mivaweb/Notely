@@ -96,7 +96,7 @@ namespace Notely.Core.Persistence.Repositories
         /// <returns></returns>
         public IEnumerable<Comment> GetAll(params int[] ids)
         {
-            return _dbContext.Database.Fetch<Comment>("SELECT * FROM commentorComments ORDER BY type, createDate");
+            return _dbContext.Database.Fetch<Comment>("SELECT * FROM notelyComments ORDER BY type, createDate");
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Notely.Core.Persistence.Repositories
         /// <returns></returns>
         public IEnumerable<Comment> GetAllByContentProp(int contentId, int propertyTypeId)
         {
-            return _dbContext.Database.Fetch<Comment>("SELECT * FROM commentorComments WHERE contentId = @p1 AND propertyTypeId = @p2 ORDER BY type, createDate", new { p1 = contentId, p2 = propertyTypeId });
+            return _dbContext.Database.Fetch<Comment>("SELECT * FROM notelyComments WHERE contentId = @p1 AND propertyTypeId = @p2 ORDER BY type, createDate", new { p1 = contentId, p2 = propertyTypeId });
         }
 
         /// <summary>

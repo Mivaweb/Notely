@@ -82,8 +82,7 @@ var Comment = function () {
     self.type = 0;
     self.assignedTo = null;
     self.state = false;
-    self.nodeId = -1;
-    self.contentProperty = new ContentProperty();
+    self.contentProperty = null;
 };
 
 angular.module('notely.models').constant('Comment', Comment);
@@ -100,7 +99,7 @@ angular.module('notely.models').constant('Comment', Comment);
  * 
  */
 
-var User = new function () {
+var User = function () {
     var self = this;
 
     self.id = -1;
@@ -167,6 +166,129 @@ angular.module('notely.models').factory('dataTypeBuilder', [
     function (modelsBuilder, DataType) {
 
         var Constructor = DataType;
+
+        return {
+            createEmpty: function () {
+                return new Constructor();
+            },
+            convert: function (jsonResult) {
+                return modelsBuilder.convert(jsonResult, Constructor);
+            }
+        };
+
+    }
+
+]);
+
+/*
+ * @ngdoc service
+ * @name propertyBuilder
+ * 
+ * @decription
+ * Modelsbuilder for the Property model
+ * 
+ */
+angular.module('notely.models').factory('propertyBuilder', [
+
+    'modelsBuilder',
+    'Property',
+
+    function (modelsBuilder, Property) {
+
+        var Constructor = Property;
+
+        return {
+            createEmpty: function () {
+                return new Constructor();
+            },
+            convert: function (jsonResult) {
+                return modelsBuilder.convert(jsonResult, Constructor);
+            }
+        };
+
+    }
+
+]);
+
+/*
+ * @ngdoc service
+ * @name contentPropertyBuilder
+ * 
+ * @decription
+ * Modelsbuilder for the ContentProperty model
+ * 
+ */
+angular.module('notely.models').factory('contentPropertyBuilder', [
+
+    'modelsBuilder',
+    'ContentProperty',
+
+    function (modelsBuilder, ContentProperty) {
+
+        var Constructor = ContentProperty;
+
+        return {
+            createEmpty: function () {
+                return new Constructor();
+            },
+            convert: function (jsonResult) {
+                return modelsBuilder.convert(jsonResult, Constructor);
+            }
+        };
+
+    }
+
+]);
+
+/*
+ * @ngdoc service
+ * @name commentsBuilder
+ * 
+ * @decription
+ * Modelsbuilder for the Comment model
+ * 
+ */
+angular.module('notely.models').factory('commentsBuilder', [
+
+    'modelsBuilder',
+    'Comment',
+    'contentPropertyBuilder',
+
+    function (modelsBuilder, Comment, contentPropertyBuilder) {
+
+        var Constructor = Comment;
+
+        return {
+            createEmpty: function () {
+                var _c = new Constructor();
+                _c.contentProperty = contentPropertyBuilder.createEmpty();
+                return _c;
+            },
+            convert: function (jsonResult) {
+                return modelsBuilder.convert(jsonResult, Constructor);
+            }
+        };
+
+    }
+
+]);
+
+/*
+ * @ngdoc service
+ * @name usersBuilder
+ * 
+ * @decription
+ * Modelsbuilder for the User model
+ * 
+ */
+angular.module('notely.models').factory('usersBuilder', [
+
+    'modelsBuilder',
+    'User',
+
+    function (modelsBuilder, User) {
+
+        var Constructor = User;
 
         return {
             createEmpty: function () {

@@ -11,13 +11,20 @@ namespace Notely.Web.Models
     /// </summary>
     public class ContentPropertyViewModel
     {
-        [JsonProperty("nodeId")]
-        public int NodeId { get; set; }
+        [JsonProperty("contentId")]
+        public int ContentId { get; set; }
 
         [JsonProperty("propertyDataId")]
         public int PropertyDataId { get; set; }
 
         [JsonProperty("propertyTypeAlias")]
         public string PropertyTypeAlias { get; set; }
+
+        public ContentPropertyViewModel()
+        {
+            ContentId = -1;
+            PropertyDataId = -1;
+            PropertyTypeAlias = "";
+        }
     }
 }

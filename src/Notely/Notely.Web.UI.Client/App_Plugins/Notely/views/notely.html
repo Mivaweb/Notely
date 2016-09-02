@@ -1,2 +1,70 @@
-﻿<div ng-controller="Notely.PropertyEditors.MainController" ng-init="init()" class="commentor-container ng-cloak">
+﻿<div ng-controller="Notely.PropertyEditors.MainController" ng-init="init()" class="notely-container" ng-show="loaded">
+
+    <!--<notely-property view="property.view" config="property.config" value="model.value" alias="model.alias"></notely-property>-->
+
+    <div class="notely-property" ng-include="property.view"></div>
+
+    <div class="notely-default" ng-show="showDefault">
+        To add comments to this property you first need to <strong>add a value and hit save</strong> or hit <strong>Save and Publish</strong> and refresh the page.
+    </div>
+
+    <div class="notely-item" ng-show="hasProperty">
+        <!-- Begin .notely-nav -->
+        <ul class="notely-nav">
+            <li class="notely-nav_expand" ng-click="expand()">
+                <i class="icon" ng-class="{'icon-navigation-right': comments.length > 0 && !showComments, 'icon-navigation-down': comments.length > 0 && showComments}"></i>
+                {{comments.length}} comments
+            </li>
+            <li>
+                <button type="button" class="btn btn-success" ng-show="comments.length < model.config.limit" ng-click="addComment()"><i class="icon icon-add"></i></button>
+            </li>
+        </ul><!-- End .notely-nav -->
+        <!-- Begin .notely-comments -->
+        <div class="notely-comments" ng-show="showComments && comments.length > 0">
+
+            <div class="notely-comments_typelist">
+                <div class="notely-comments_typelist--heading">
+                    <h4><i class="icon icon-notepad"></i>Comments List</h4>
+                </div>
+
+                <div class="notely-comments_typelist--body">
+                    <table ng-if="comments.length > 0">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="comment in comments track by $index" ng-class="{'notely-comments_done': comment.state == true}">
+                                <td>
+                                    <i ng-if="comment.type == 0" class="icon icon-info"></i>
+                                    <i ng-if="comment.type == 1" class="icon icon-pushpin"></i>
+                                    <i ng-if="comment.type == 2" class="icon icon-brackets"></i>
+                                    <i ng-if="comment.type == 3" class="icon icon-split-alt"></i>
+                                </td>
+                                <td class="notely-comments_text"><a href ng-click="editComment(comment)">{{comment.title}}</a></td>
+                                <td class="notely-comments_text" ng-bind-html-unsafe="renderDescription(comment)"></td>
+                                <td align="right">
+                                    <a href class="notely-comments_action done" ng-if="comment.type > 0 && comment.state == false" ng-click="taskComplete(comment.id)"><i class="icon icon-check"></i></a>
+                                    <a href class="notely-comments_action delete" ng-click="deleteComment(comment.id)"><i class="icon icon-delete"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div><!-- End .notely-comments -->
+    </div>
+
+    <!-- Overlay -->
+    <umb-overlay ng-if="overlay.show"
+                 model="overlay"
+                 view="overlay.view"
+                 position="right">
+    </umb-overlay>
+
 </div>

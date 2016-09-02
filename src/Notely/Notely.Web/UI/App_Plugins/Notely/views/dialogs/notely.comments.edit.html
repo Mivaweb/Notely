@@ -1,0 +1,55 @@
+﻿<div ng-controller="Notely.PropertyEditors.EditController" ng-init="init()" class="notely-modal">
+
+    <p>
+        Edit comment of property <strong>{{model.property.label}}</strong>.
+    </p>
+
+    <h5>Properties</h5>
+
+    <div class="umb-control-group">
+        <label class="control-label">
+            Type
+        </label>
+        <div class="controls controls-row">
+            <select name="notelyType" class="umb-editor umb-dropdown" ng-disabled="model.comment.state == true" ng-model="model.comment.type">
+                <option value="0">Info</option>
+                <option value="1">Todo</option>
+                <option value="2">Development</option>
+                <option value="3">Test</option>
+            </select>
+        </div>
+    </div>
+    <div class="umb-control-group">
+        <label class="control-label">
+            Title
+        </label>
+        <div class="controls controls-row">
+            <input name="notelyTitle" type="text" value="" ng-disabled="model.comment.state == true" ng-model="model.comment.title" placeholder="Name" class="umb-editor" />
+        </div>
+    </div>
+    <div class="umb-control-group">
+        <label class="control-label">
+            Description
+        </label>
+        <div class="controls controls-row">
+            <textarea name="notelyDescription" ng-disabled="model.comment.state == true" ng-model="model.comment.description" rows="6" class="umb-editor" placeholder="Enter short description"></textarea>
+        </div>
+    </div>
+    <div class="umb-control-group">
+        <label class="control-label">
+            Assign to user
+        </label>
+        <div class="controls controls-row">
+            <select ng-hide="model.comment.assignedTo && model.comment.assignedTo.id >= 0" name="notelyUser"
+                    class="umb-editor umb-dropdown"
+                    ng-model="model.comment.assignedTo"
+                    ng-options="i.name for i in users | orderBy:'name' track by i.id"
+                    ng-disabled="model.comment.type == 0 || model.comment.state == true"></select>
+            <div class="notely-clear-select" ng-show="model.comment.assignedTo && model.comment.assignedTo.id >= 0">
+                <span>{{model.comment.assignedTo.name}}</span>
+                <i class="icon icon-delete" ng-hide="model.comment.state == true" ng-click="resetAssigndTo()"></i>
+            </div>
+        </div>
+    </div>
+
+</div>

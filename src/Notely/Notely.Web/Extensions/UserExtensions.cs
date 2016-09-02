@@ -24,8 +24,8 @@ namespace Notely.Web.Extensions
             // Create a new UserViewModel
             return new UserViewModel()
             {
-                Id = user.Id,
-                Name = user.Name
+                Id = iuser.Id,
+                Name = iuser.Name
             };
         }
     }

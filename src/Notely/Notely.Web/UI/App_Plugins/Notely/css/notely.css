@@ -1,1 +1,145 @@
-﻿
+﻿[class*=notely-] a {
+    text-decoration: none;
+}
+
+[class*=notely-] {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+}
+
+.notely-property {
+    margin-bottom: 15px;
+}
+
+.notely-nav {
+    margin-bottom: 15px;
+}
+
+.notely-nav > li {
+    display: inline-block;
+    line-height: 28px;
+    vertical-align: middle;
+}
+
+.notely-nav > li + li {
+    margin-left: 10px;
+}
+
+.notely-nav > li > i {
+    position: relative;
+    top: 1px;
+}
+
+.notely-nav_expand {
+    cursor: pointer;
+}
+
+.notely-nav .btn {
+    padding: 3px 8px;
+}
+
+.notely-modal .umb-editor {
+    width: 95%;
+}
+
+.notely-container .umb-overlay .umb-overlay__title {
+    font-weight: 400;
+}
+
+.notely-comments {
+    margin-bottom: 15px;
+}
+
+.notely-comments .notely-comments_typelist--heading {
+    padding: 8px 15px;
+    position: relative;
+    border-bottom: 1px solid #ccc;
+}
+
+.notely-comments .notely-comments_typelist--heading i {
+    position: absolute;
+    left: 15px;
+    top: 7px;
+    font-size: 18px;
+}
+
+.notely-comments h4 {
+    margin: 0;
+    padding: 0;
+    padding-left: 25px;
+}
+
+.notely-comments .notely-comments_typelist--body {
+    padding: 15px;
+}
+
+.notely-comments table {
+    width: 100%;
+}
+
+.notely-comments table > thead th {
+    border-bottom: 1px solid #ccc;
+    padding: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    background-repeat: no-repeat;
+    background-position: center right;
+    text-align: left;
+}
+
+.notely-comments table > tbody td {
+    padding: 8px 4px;
+}
+
+.notely-comments table > tbody > tr:nth-of-type(odd) {
+    background-color: #fbfbfb;
+}
+
+.notely-comments table tbody tr.notely-comments_done td.notely-comments_text {
+    text-decoration: line-through;
+}
+
+.notely-comments table a {
+    color: #2e8aea;
+}
+
+.notely-comments table .label {
+    text-shadow: none;
+    padding: 4px 6px 2px;
+    font-size: 12px;
+}
+
+.notely-comments table .label-success {
+    background-color: #8ECF7F;
+}
+
+.notely-comments table .label-primary {
+    background-color: #2b95c1;
+}
+
+.notely-bold {
+    font-weight: bold;
+}
+
+.notely-comments_action {
+    
+}
+
+.notely-comments_action.done {
+    color: #46a546 !important;
+}
+
+.notely-comments_action.delete {
+    color: #9d261d !important;
+}
+
+.notely-clear-select i {
+    color: #9d261d !important;
+    cursor: pointer;
+}
+
+.notely-default {
+    color: #b0b0b0;
+    font-size: 12px;
+}

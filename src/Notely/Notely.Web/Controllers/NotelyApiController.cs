@@ -105,24 +105,24 @@ namespace Notely.Web.Controllers
         {
             ContentPropertyViewModel _propertyVM = new ContentPropertyViewModel()
             {
-                NodeId = contentId,
+                ContentId = contentId,
                 PropertyDataId = propertyDataId,
                 PropertyTypeAlias = propertyTypeAlias
             };
 
             var commenVm = new CommentViewModel();
 
-            if (_propertyVM.NodeId > 0 && _propertyVM.PropertyDataId > 0)
+            if (_propertyVM.ContentId > 0 && _propertyVM.PropertyDataId > 0)
             {
                 using (CommentsRepository repo = new CommentsRepository())
                 {
-                    var _content = Services.ContentService.GetById(_propertyVM.NodeId);
+                    var _content = Services.ContentService.GetById(_propertyVM.ContentId);
                     var _property = _content.Properties.FirstOrDefault(
                             p => p.Id == _propertyVM.PropertyDataId || p.Alias.Equals(_propertyVM.PropertyTypeAlias)
                         );
 
                     return repo.GetAllByContentProp(
-                            _propertyVM.NodeId, _property != null ? _property.PropertyType.Id : -1)
+                            _propertyVM.ContentId, _property != null ? _property.PropertyType.Id : -1)
                             .Select(c => commenVm.Convert(c)
                         );
                 }

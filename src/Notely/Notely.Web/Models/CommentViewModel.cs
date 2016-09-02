@@ -31,5 +31,16 @@ namespace Notely.Web.Models
 
         [JsonProperty("contentProperty")]
         public ContentPropertyViewModel ContentProperty { get; set; }
+
+        public CommentViewModel()
+        {
+            Id = -1;
+            Type = 0;
+            Title = Description = "";
+            AssignedTo = null;
+            State = false;
+            CreateDate = DateTime.Now;
+            ContentProperty = null;
+        }
     }
 }

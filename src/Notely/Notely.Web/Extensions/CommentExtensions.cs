@@ -29,7 +29,7 @@ namespace Notely.Web.Extensions
             if (commentVm.ContentProperty == null)
                 throw new ArgumentNullException("ContentProperty of the comment is not defined.");
 
-            var _content = UmbracoContext.Current.Application.Services.ContentService.GetById(commentVm.ContentProperty.NodeId);
+            var _content = UmbracoContext.Current.Application.Services.ContentService.GetById(commentVm.ContentProperty.ContentId);
 
             /* 
              * 1) We first check if we can find the property type based on the property data id.
@@ -50,7 +50,7 @@ namespace Notely.Web.Extensions
                 State = commentVm.State,
                 Title = commentVm.Title,
                 Type = commentVm.Type,
-                ContentId = commentVm.ContentProperty.NodeId,
+                ContentId = commentVm.ContentProperty.ContentId,
                 PropertyTypeId = _property != null ? _property.PropertyType.Id : -1
             };
 
@@ -72,22 +72,25 @@ namespace Notely.Web.Extensions
         public static CommentViewModel Convert(this CommentViewModel commentVm, Comment comment)
         {
             var userVm = new UserViewModel();
+            var contentProperty = new ContentPropertyViewModel() { ContentId = comment.ContentId };
 
             // Create a new CommentViewModel
-            return new CommentViewModel()
+            var result = new CommentViewModel()
             {
-                AssignedTo =
+                AssignedTo = comment.AssignedTo.HasValue ? 
                     userVm.Convert(
-                        comment.AssignedTo.HasValue ?
-                        UmbracoContext.Current.Application.Services.UserService.GetUserById(comment.AssignedTo.Value) :
-                        null),
+                        UmbracoContext.Current.Application.Services.UserService.GetUserById(comment.AssignedTo.Value)
+                    ) : null,
                 CreateDate = comment.CreateDate,
                 Description = comment.Description,
                 Id = comment.Id,
                 State = comment.State,
                 Title = comment.Title,
-                Type = comment.Type
+                Type = comment.Type,
+                ContentProperty = contentProperty
             };
+
+            return result;
         }
     }
 }
