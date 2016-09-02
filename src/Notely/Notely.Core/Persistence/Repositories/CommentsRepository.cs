@@ -66,7 +66,7 @@ namespace Notely.Core.Persistence.Repositories
         /// <param name="contentId"></param>
         public void DeleteByContent(int contentId)
         {
-            _dbContext.Database.Delete<Comment>("DELETE FROM commentorComments WHERE contentId = @p1", new { p1 = contentId });
+            _dbContext.Database.Delete<Comment>("DELETE FROM notelyComments WHERE contentId = @p1", new { p1 = contentId });
         }
 
         /// <summary>

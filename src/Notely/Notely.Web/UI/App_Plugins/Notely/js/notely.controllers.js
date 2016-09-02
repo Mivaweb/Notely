@@ -74,7 +74,9 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
 
                     // We also need to append the config to the model.config scope
                     // because only then the property editor will load in the configuration prevalues
-                    $scope.model.config = $scope.property.config;
+                    angular.extend($scope.model.config, $scope.property.config);
+
+                    console.log($scope.model.config)
                 });
 
             }

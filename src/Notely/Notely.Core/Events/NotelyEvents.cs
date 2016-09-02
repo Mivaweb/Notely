@@ -25,8 +25,25 @@ namespace Notely.Core.Events
 
             // Add events to cleanup commentor comments
             ContentService.Deleted += ContentService_Deleted;
+            ContentService.EmptiedRecycleBin += ContentService_EmptiedRecycleBin;
         }
 
+        // Event fires when clicking on Empty recycle bin
+        private void ContentService_EmptiedRecycleBin(IContentService sender, Umbraco.Core.Events.RecycleBinEventArgs e)
+        {
+            if(e.IsContentRecycleBin)
+            {
+                using (CommentsRepository repo = new CommentsRepository())
+                {
+                    foreach (var node in e.AllPropertyData)
+                    {
+                        repo.DeleteByContent(node.Key);
+                    }
+                }
+            }
+        }
+
+        // Events fires when deleting a node from the recycle bin
         private void ContentService_Deleted(IContentService sender, Umbraco.Core.Events.DeleteEventArgs<Umbraco.Core.Models.IContent> e)
         {
             using (CommentsRepository repo = new CommentsRepository())
