@@ -74,11 +74,11 @@
     padding: 15px;
 }
 
-.notely-comments table {
+table.notely-table {
     width: 100%;
 }
 
-.notely-comments table > thead th {
+table.notely-table > thead th {
     border-bottom: 1px solid #ccc;
     padding: 4px;
     cursor: pointer;
@@ -88,33 +88,33 @@
     text-align: left;
 }
 
-.notely-comments table > tbody td {
+table.notely-table > tbody td {
     padding: 8px 4px;
 }
 
-.notely-comments table > tbody > tr:nth-of-type(odd) {
+table.notely-table > tbody > tr:nth-of-type(odd) {
     background-color: #fbfbfb;
 }
 
-.notely-comments table tbody tr.notely-comments_done td.notely-comments_text {
+table.notely-table tbody tr.notely-comments_done td.notely-comments_text {
     text-decoration: line-through;
 }
 
-.notely-comments table a {
+table.notely-table a {
     color: #2e8aea;
 }
 
-.notely-comments table .label {
+table.notely-table .label {
     text-shadow: none;
     padding: 4px 6px 2px;
     font-size: 12px;
 }
 
-.notely-comments table .label-success {
+table.notely-table .label-success {
     background-color: #8ECF7F;
 }
 
-.notely-comments table .label-primary {
+table.notely-table .label-primary {
     background-color: #2b95c1;
 }
 

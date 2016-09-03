@@ -1,62 +1,72 @@
-﻿<div ng-controller="Notely.Backoffice.AllCommentsController" ng-init="init()">
+﻿<form ng-controller="Notely.Backoffice.CommentsController" ng-init="init()" val-form-manager>
     <umb-panel>
-        <umb-header>
+
+        <umb-header tabs="visibleTabs">
             <div class="span7">
                 <div class="umb-headline-editor-wrapper">
-                    <h1>All comments</h1>
+                    <h1>All Comments</h1>
                 </div>
             </div>
             <div class="span5"></div>
-
         </umb-header>
-        <div class="umb-panel-body" ng-show="loaded">
 
-            <div class="umb-pane">
+        <umb-tab-view>
+            <umb-tab id="tab1">
 
-                <!-- Begin .umb-listview -->
-                <div class="umb-list-view" ng-if="comments.length > 0">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <td>Type</td>
-                                <td>Content Node</td>
-                                <td>Property Alias</td>
-                                <td>Title</td>
-                                <td>Description</td>
-                                <td>Assigned To</td>
-                                <td>State</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="comment in comments track by $index">
-                                <td>
-                                    <i ng-if="comment.type == 0" class="icon icon-info"></i>
-                                    <i ng-if="comment.type == 1" class="icon icon-pushpin"></i>
-                                    <i ng-if="comment.type == 2" class="icon icon-brackets"></i>
-                                    <i ng-if="comment.type == 3" class="icon icon-split-alt"></i>
-                                </td>
-                                <td>
-                                    <a href="#/content/content/edit/{{comment.contentProperty.contentId}}">{{comment.contentProperty.contentId}}</a>
-                                </td>
-                                <td>
-                                    {{comment.contentProperty.propertyTypeAlias}}
-                                </td>
-                                <td>{{comment.title}}</td>
-                                <td>{{comment.description}}</td>
-                                <td>{{comment.assignedTo ? comment.assignedTo.name : '-'}}</td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div><!-- End .umb-listview -->
+                <div class="umb-panel-body" ng-show="loaded">
 
-                <!-- Default message -->
-                <div ng-if="comments.length == 0" class="umb-empty-state -center">
-                    No comments have been added
+                    <div class="umb-pane">
+
+                        <!-- Begin .umb-listview -->
+                        <div class="umb-list-view" ng-if="comments.length > 0">
+                            <table class="notely-table">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Content Node</th>
+                                        <th>Property Alias</th>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Assigned To</th>
+                                        <th>State</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="comment in comments track by $index">
+                                        <td>
+                                            <i ng-if="comment.type == 0" class="icon icon-info"></i>
+                                            <i ng-if="comment.type == 1" class="icon icon-pushpin"></i>
+                                            <i ng-if="comment.type == 2" class="icon icon-brackets"></i>
+                                            <i ng-if="comment.type == 3" class="icon icon-split-alt"></i>
+                                        </td>
+                                        <td>
+                                            <a href="#/content/content/edit/{{comment.contentProperty.contentId}}">{{comment.contentProperty.contentName}}</a>
+                                        </td>
+                                        <td>
+                                            {{comment.contentProperty.propertyTypeAlias}}
+                                        </td>
+                                        <td>{{comment.title}}</td>
+                                        <td>{{comment.description}}</td>
+                                        <td>{{comment.assignedTo ? comment.assignedTo.name : '-'}}</td>
+                                        <td align="right">
+                                            <a href class="notely-comments_action done" ng-if="comment.type > 0 && comment.state == false" ng-click="taskComplete(comment.id)"><i class="icon icon-check"></i></a>
+                                            <a href class="notely-comments_action delete" ng-click="deleteComment(comment.id)"><i class="icon icon-delete"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div><!-- End .umb-listview -->
+                        <!-- Default message -->
+                        <div ng-if="comments.length == 0" class="umb-empty-state -center">
+                            No comments have been added
+                        </div>
+
+                    </div>
+
                 </div>
 
-            </div>
+            </umb-tab>
+        </umb-tab-view>
 
-        </div>
     </umb-panel>
-</div>
+</form>

@@ -56,6 +56,14 @@ angular.module('notely.resources').factory('notelyResources',
                 );
             },
 
+            // Get my comments
+            getMyComments: function (user) {
+                return umbRequestHelper.resourcePromise(
+                    $http.get("backoffice/notely/notelyapi/getmycomments", { params: { userId: user.id } }),
+                    "Unable to retreive the comments!"
+                );
+            },
+
             // Get the comment object
             getComment: function (id) {
                 return umbRequestHelper.resourcePromise(
@@ -92,6 +100,14 @@ angular.module('notely.resources').factory('notelyResources',
             taskComplete: function (id) {
                 return umbRequestHelper.resourcePromise(
                     $http.post("backoffice/notely/notelyapi/taskcomplete", id),
+                    "Unable to set task as completed!"
+                );
+            },
+
+            // Cleanup comments
+            cleanupComments: function () {
+                return umbRequestHelper.resourcePromise(
+                    $http.delete("backoffice/notely/notelyapi/cleanupcomments"),
                     "Unable to set task as completed!"
                 );
             }

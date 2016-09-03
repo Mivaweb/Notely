@@ -21,8 +21,8 @@ namespace Notely.Web.Trees
                 var nodes = new TreeNodeCollection();
 
                 // ===> Routepath has to be: /appsection/treealias/htmlview/ID 
-                nodes.Add(this.CreateTreeNode("comments", id, queryStrings, "All comments", "icon-notepad", false, "/notely/notely/allcomments/manage"));
-                nodes.Add(this.CreateTreeNode("myComments", id, queryStrings, "My comments", "icon-operator", false, "/notely/notely/mycomments/manage"));
+                nodes.Add(this.CreateTreeNode("comments", id, queryStrings, "All comments", "icon-notepad", false, "/notely/notely/comments/0"));
+                nodes.Add(this.CreateTreeNode("myComments", id, queryStrings, "My comments", "icon-operator", false, "/notely/notely/comments/1"));
                 nodes.Add(this.CreateTreeNode("cleanup", id, queryStrings, "Cleanup", "icon-trash-alt-2", false, "/notely/notely/cleanup/manage"));
 
                 return nodes;

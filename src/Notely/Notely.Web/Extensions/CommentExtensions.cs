@@ -22,7 +22,7 @@ namespace Notely.Web.Extensions
         public static Comment Convert(this Comment comment, CommentViewModel commentVm)
         {
             /* 
-             * Check if the ConentProperty is defined => 
+             * Check if the ContentProperty is defined => 
              * without it will be hard to know for which content node and property
              * we are talking about.
              */
@@ -71,8 +71,24 @@ namespace Notely.Web.Extensions
         /// <returns></returns>
         public static CommentViewModel Convert(this CommentViewModel commentVm, Comment comment)
         {
+            var _content = UmbracoContext.Current.Application.Services.ContentService.GetById(comment.ContentId);
+
+            /* 
+             * 1) We first check if we can find the property type based on the property data id.
+             *    If we can't find the type then there is a new version published of the property value.
+             * 2) Next step is to find the type based on the alias of the property.
+             * 
+             */
+            var _property = _content.Properties.FirstOrDefault(
+                    p => p.PropertyType.Id == comment.PropertyTypeId
+                );
+
             var userVm = new UserViewModel();
-            var contentProperty = new ContentPropertyViewModel() { ContentId = comment.ContentId };
+            var contentProperty = new ContentPropertyViewModel() {
+                ContentId = comment.ContentId,
+                ContentName = _content.Name,
+                PropertyTypeAlias = _property.Alias
+            };
 
             // Create a new CommentViewModel
             var result = new CommentViewModel()

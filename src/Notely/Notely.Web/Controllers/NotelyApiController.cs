@@ -149,6 +149,22 @@ namespace Notely.Web.Controllers
         }
 
         /// <summary>
+        /// Get a list of <see cref="CommentViewModel"/>
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public IEnumerable<CommentViewModel> GetMyComments(int userId)
+        {
+            var commenVm = new CommentViewModel();
+
+            using (CommentsRepository repo = new CommentsRepository())
+            {
+                return repo.GetAllByAssignee(userId).Select(c => commenVm.Convert(c));
+            }
+        }
+
+        /// <summary>
         /// Add a new comment
         /// </summary>
         /// <param name="comment">A <see cref="CommentViewModel"/> object</param>
@@ -188,6 +204,51 @@ namespace Notely.Web.Controllers
             {
                 repo.Delete(id);
             }
+        }
+
+        /// <summary>
+        /// Cleanup comments
+        /// </summary>
+        /// <returns>Count of comments that were deleted</returns>
+        [HttpDelete]
+        public int CleanupComments()
+        {
+            int result = 0;
+
+            using (CommentsRepository repo = new CommentsRepository())
+            {
+                var comments = repo.GetAll();
+                foreach(var comment in comments)
+                {
+                    bool delete = false;
+
+                    // Check if the content exists
+                    var _content = Services.ContentService.GetById(comment.ContentId);
+
+                    if(_content != null)
+                    {
+                        // Check if property exists
+                        var _property = _content.Properties.FirstOrDefault(
+                            p => p.PropertyType.Id == comment.PropertyTypeId
+                        );
+
+                        if (_property == null) delete = true;
+                    }
+                    else
+                    {
+                        delete = true;
+                    }
+
+                    if(delete)
+                    {
+                        repo.Delete(comment);
+                        result++;
+                    }
+
+                }
+            }
+
+            return result;
         }
 
         /// <summary>

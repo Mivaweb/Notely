@@ -1,13 +1,46 @@
-﻿<div ng-controller="Notely.Backoffice.CleanupController">
+﻿<form ng-controller="Notely.Backoffice.CleanupController" ng-init="init()" val-form-manager>
     <umb-panel>
-        <umb-header>
+
+        <umb-header tabs="visibleTabs">
             <div class="span7">
                 <div class="umb-headline-editor-wrapper">
                     <h1>Cleanup</h1>
                 </div>
             </div>
             <div class="span5"></div>
-
         </umb-header>
+
+        <umb-tab-view>
+            <umb-tab id="tab1">
+
+                <div class="umb-pane" ng-show="loaded">
+
+                    <div class="row-fluid">
+                        <div class="span6">
+
+                            <h3>Cleanup comments</h3>
+
+                            <p>
+                                All comments that are not linked to a content node will be removed. <br />
+                                <strong>*This can happen when you remove a property from an existing document type.</strong>
+                            </p>
+
+                            <button type="button" class="btn btn-danger" ng-click="cleanup()">Cleanup folder</button>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </umb-tab>
+        </umb-tab-view>
+
     </umb-panel>
-</div>
+
+    <!-- Overlay -->
+    <umb-overlay ng-if="overlay.show"
+                 model="overlay"
+                 view="overlay.view"
+                 position="right">
+    </umb-overlay>
+</form>

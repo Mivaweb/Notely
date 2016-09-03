@@ -14,6 +14,9 @@ namespace Notely.Web.Models
         [JsonProperty("contentId")]
         public int ContentId { get; set; }
 
+        [JsonProperty("contentName")]
+        public string ContentName { get; set; }
+
         [JsonProperty("propertyDataId")]
         public int PropertyDataId { get; set; }
 
@@ -23,6 +26,7 @@ namespace Notely.Web.Models
         public ContentPropertyViewModel()
         {
             ContentId = -1;
+            ContentName = "";
             PropertyDataId = -1;
             PropertyTypeAlias = "";
         }

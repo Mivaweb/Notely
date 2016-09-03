@@ -75,8 +75,6 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
                     // We also need to append the config to the model.config scope
                     // because only then the property editor will load in the configuration prevalues
                     angular.extend($scope.model.config, $scope.property.config);
-
-                    console.log($scope.model.config)
                 });
 
             }
@@ -157,11 +155,13 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
 
         // Edit comment
         $scope.editComment = function (comment) {
+            // Assign the propertydataid ( model.id ) to the comment object
+            comment.contentProperty.propertyDataId = $scope.model.id;
+
             $scope.overlay = {
                 view: "/App_Plugins/Notely/views/dialogs/notely.comments.edit.html",
                 title: "Edit comment",
-                property: $scope.model,
-                commentId: comment.id,
+                comment: angular.copy(comment),
                 show: true,
                 hideSubmitButton: comment.state == true,
                 close: function (oldModel) {
@@ -273,13 +273,9 @@ angular.module('notely').controller('Notely.PropertyEditors.EditController', [
         // Init controller
         $scope.init = function () {
 
-            // Get comment by id
-            notelyResources.getComment($scope.model.commentId).then(function (data) {
-                $scope.model.comment = commentsBuilder.convert(data);
-                $scope.model.comment.contentProperty.contentId = $routeParams.id;
-                $scope.model.comment.contentProperty.propertyDataId = $scope.model.property.id
-                $scope.model.comment.contentProperty.propertyTypeAlias = $scope.model.property.alias;
-            });
+            // Comment model is already in scope when calling the overlay
+            // So we don't need to call the api again to catch the comment data
+            // We also made a copy so that changes are not visible in the list untill we hit save!
 
             // Get active users to display in select
             var usersPromise = notelyResources.getUsers();
@@ -331,49 +327,120 @@ angular.module('notely').controller('Notely.PropertyEditors.DeleteController', [
 
 /*
  * @ngdoc Controller
- * @name Notely.Backoffice.AllCommentsController
+ * @name Notely.Backoffice.CommentsController
  * 
  */
-angular.module('notely').controller('Notely.Backoffice.AllCommentsController', [
+angular.module('notely').controller('Notely.Backoffice.CommentsController', [
 
     '$scope',
     'notelyResources',
     'commentsBuilder',
+    'userService',
+    '$routeParams',
+    'dialogService',
+    'notificationsService',
 
-    function ($scope, notelyResources, commentsBuilder) {
+    function ($scope, notelyResources, commentsBuilder, userService, $routeParams, dialogService, notificationsService) {
 
         $scope.loaded = false;
         $scope.comments = [];
+
+        $scope.visibleTabs = [];
 
         // Init function
         $scope.init = function () {
 
-            var commentsPromise = notelyResources.getAllComments();
-            commentsPromise.then(function (data) {
-                $scope.comments = commentsBuilder.convert(data);
+            // Setup tabs
+            $scope.visibleTabs.push({
+                id: 1,
+                label: 'Comments Listing'
             });
+
+            // Get all the comments
+            $scope.load();
 
             $scope.loaded = true;
 
-        }
+        };
 
-    }
+        // Load the comments from the API
+        $scope.load = function () {
 
-]);
+            // Check if we need to show all comments or only the ones of the logged in user
+            if ($routeParams.id == 1)
+            {
+                // Show user
+                userService.getCurrentUser().then(function (user) {
+                    var commentsPromise = notelyResources.getMyComments(user);
+                    commentsPromise.then(function (data) {
+                        $scope.comments = commentsBuilder.convert(data);
+                    });
+                });
+            } else {
+                // Show all
+                var commentsPromise = notelyResources.getAllComments();
+                commentsPromise.then(function (data) {
+                    $scope.comments = commentsBuilder.convert(data);
+                });
+            }
 
-/*
- * @ngdoc Controller
- * @name Notely.Backoffice.MyCommentsController
- * 
- */
-angular.module('notely').controller('Notely.Backoffice.MyCommentsController', [
+        };
 
-    '$scope',
-   
-    function ($scope) {
+        // Edit comment
+        $scope.editComment = function (comment) {
+            $scope.overlay = {
+                view: "/App_Plugins/Notely/views/dialogs/notely.comments.edit.html",
+                title: "Edit comment",
+                comment: angular.copy(comment),
+                show: true,
+                hideSubmitButton: comment.state == true,
+                close: function (oldModel) {
+                    $scope.overlay.show = false;
+                    $scope.overlay = null;
+                },
+                submit: function (model) {
+                    // Update comment
+                    notelyResources.updateComment(model.comment).then(function () {
+                        // Get the comments
+                        $scope.load();
+                    });
 
-        $scope.loaded = false;
-        $scope.comments = [];
+                    $scope.overlay.show = false;
+                    $scope.overlay = null;
+
+                    // Show notification
+                    notificationsService.success("Comment saved", "Comment is successfully saved.");
+                }
+            };
+        };
+
+        // Delete a comment
+        $scope.deleteComment = function (commentId) {
+            dialogService.open({
+                template: '/App_Plugins/Notely/views/dialogs/notely.comments.delete.html',
+                dialogData: commentId,
+                callback: function (data) {
+                    notelyResources.deleteComment(data).then(function () {
+                        // Get the comments
+                        $scope.load();
+
+                        // Show notification
+                        notificationsService.success("Comment removed", "Comment is successfully delete.");
+                    });
+                }
+            });
+        };
+
+        // Set task as done
+        $scope.taskComplete = function (commentId) {
+            notelyResources.taskComplete(commentId).then(function () {
+                // Get the comments
+                $scope.load();
+
+                // Show notification
+                notificationsService.success("Task completed", "Todo comment is set completed.");
+            });
+        };
 
     }
 
@@ -387,10 +454,35 @@ angular.module('notely').controller('Notely.Backoffice.MyCommentsController', [
 angular.module('notely').controller('Notely.Backoffice.CleanupController', [
 
     '$scope',
+    'notelyResources',
+    'notificationsService',
 
-    function ($scope) {
+    function ($scope, notelyResources, notificationsService) {
 
         $scope.loaded = false;
+
+        $scope.visibleTabs = [];
+
+        // Init function
+        $scope.init = function () {
+
+            // Setup tabs
+            $scope.visibleTabs.push({
+                id: 1,
+                label: 'Cleanup Comments'
+            });
+
+            $scope.loaded = true;
+
+        };
+
+        // Cleanup comments
+        $scope.cleanup = function () {
+            var cleanupPromise = notelyResources.cleanupComments();
+            cleanupPromise.then(function (data) {
+                notificationsService.success("Cleanup done", data + " unnecessary comments were removed.");
+            });
+        };
 
     }
 

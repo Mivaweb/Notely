@@ -111,6 +111,16 @@ namespace Notely.Core.Persistence.Repositories
         }
 
         /// <summary>
+        /// Get a list of <see cref="Comment"/> object of a assignee
+        /// </summary>
+        /// <param name="assignee"></param>
+        /// <returns></returns>
+        public IEnumerable<Comment> GetAllByAssignee(int assignee)
+        {
+            return _dbContext.Database.Fetch<Comment>("SELECT * FROM notelyComments WHERE assignedTo = @p1 ORDER BY type, createDate", new { p1 = assignee });
+        }
+
+        /// <summary>
         /// Dispose
         /// </summary>
         public void Dispose() { }
