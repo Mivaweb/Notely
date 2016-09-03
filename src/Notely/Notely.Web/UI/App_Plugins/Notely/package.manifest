@@ -35,7 +35,9 @@
 		"~/App_Plugins/Notely/js/notely.resources.js",
 		"~/App_Plugins/Notely/js/notely.services.js",
 		"~/App_Plugins/Notely/js/notely.directives.js",
-		"~/App_Plugins/Notely/js/notely.controllers.js"
+		"~/App_Plugins/Notely/js/notely.controllers.js",
+		"~/App_Plugins/Notely/js/Chart.min.js",
+		"~/App_Plugins/Notely/js/angular-chart.min.js"
 	],
 	"css": [
 		"~/App_Plugins/Notely/css/notely.css"

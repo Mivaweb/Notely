@@ -1,4 +1,4 @@
-﻿<form ng-controller="Notely.Backoffice.CommentsController" ng-init="init()" val-form-manager>
+﻿<form ng-controller="Notely.Backoffice.CommentsController" ng-init="init()" val-form-manager class="notely-backoffice">
     <umb-panel>
 
         <umb-header tabs="visibleTabs">
@@ -11,11 +11,81 @@
         </umb-header>
 
         <umb-tab-view>
-            <umb-tab id="tab1">
+            <umb-tab id="tab1" ng-show="loaded" class="notely-bg-gray">
 
-                <div class="umb-pane" ng-show="loaded">
+                <div class="notely-backoffice_flex">
 
-                    <!-- Begin .umb-listview -->
+                    <!-- Begin .notely-backoffice-chart -->
+                    <div class="notely-backoffice-chart">
+                        <div class="umb-pane">
+                            <div class="row">
+
+                                <div class="span3">
+                                    <h4>All Tasks</h4>
+                                    <canvas id="chAllTasks" class="chart chart-doughnut" chart-data="data" chart-labels="labels"></canvas>
+                                </div>
+
+                                <div class="span3">
+                                    <h4>Content Tasks</h4>
+                                    <canvas id="chContentTasks" class="chart chart-doughnut" chart-data="data" chart-labels="labels"></canvas>
+                                </div>
+
+                                <div class="span3">
+                                    <h4>Type Tasks</h4>
+                                    <canvas id="chTypeTasks" class="chart chart-doughnut" chart-data="data" chart-labels="labels"></canvas>
+                                </div>
+
+                                <div class="span3">
+                                    <h4>My Tasks</h4>
+                                    <canvas id="chMyTasks" class="chart chart-doughnut" chart-data="data" chart-labels="labels"></canvas>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div><!-- End .notely-backoffice-chart -->
+
+                    <!-- Begin .notely-manager-container -->
+                    <div class="notely-backoffice-container">
+                        <div class="notely-backoffice-table_header">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="notely-backoffice-table_cell"></th>
+                                        <th class="notely-backoffice-table_cell">Open</th>
+                                        <th class="notely-backoffice-table_cell">Closed</th>
+                                        <th class="notely-backoffice-table_cell">Info</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="notely-backoffice-table_body">
+                            <table>
+                                <tbody>
+                                    <tr ng-repeat="comment in comments track by $index">
+                                        <td class="notely-backoffice-table_cell">
+
+                                            <div class="notely-tile notely-tile_root">
+                                                <div class="notely-tile_content">
+                                                    <a href="#/content/content/edit/{{comment.contentProperty.contentId}}">{{comment.contentProperty.contentName}}</a>
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                        <td class="notely-backoffice-table_cell notely-backoffice-table_cell_value"></td>
+                                        <td class="notely-backoffice-table_cell notely-backoffice-table_cell_value"></td>
+                                        <td class="notely-backoffice-table_cell notely-backoffice-table_cell_value"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><!-- End .notely-manager-container -->
+
+
+                </div>
+
+
+                <!--<div class="umb-pane">
+
                     <div class="umb-list-view" ng-if="comments.length > 0">
                         <table class="notely-table">
                             <thead>
@@ -26,7 +96,7 @@
                                     <th>Title</th>
                                     <th>Description</th>
                                     <th>Assigned To</th>
-                                    <th>State</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -47,19 +117,19 @@
                                     <td class="notely-comments_text">{{comment.description}}</td>
                                     <td class="notely-comments_text">{{comment.assignedTo ? comment.assignedTo.name : '-'}}</td>
                                     <td align="right">
-                                        <a href class="notely-comments_action done" ng-if="comment.type > 0 && comment.state == false" ng-click="taskComplete(comment.id)"><i class="icon icon-check"></i></a>
-                                        <a href class="notely-comments_action delete" ng-click="deleteComment(comment.id)"><i class="icon icon-delete"></i></a>
+                                        <a href class="btn btn-success" ng-if="comment.type > 0 && comment.state == false" ng-click="taskComplete(comment.id)"><i class="icon icon-check"></i> Done</a>
+                                        <a href class="btn btn-default" ng-click="deleteComment(comment.id)"><i class="icon icon-trash"></i> Delete</a>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                    </div><!-- End .umb-listview -->
-                    <!-- Default message -->
+                    </div>
+
                     <div ng-if="comments.length == 0" class="umb-empty-state -center">
                         No comments have been added
                     </div>
 
-                </div>
+                </div>-->
 
             </umb-tab>
         </umb-tab-view>

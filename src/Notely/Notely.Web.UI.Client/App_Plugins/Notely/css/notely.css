@@ -100,7 +100,7 @@ table.notely-table tbody tr.notely-comments_done td.notely-comments_text {
     text-decoration: line-through;
 }
 
-table.notely-table a {
+table.notely-table a:not(.btn) {
     color: #2e8aea;
 }
 
@@ -142,4 +142,99 @@ table.notely-table .label-primary {
 .notely-default {
     color: #b0b0b0;
     font-size: 12px;
+}
+
+.notely-backoffice .tab-content,
+.notely-backoffice .umb-tab-pane,
+.notely-backoffice .umb-tab-pane-inner,
+.notely-backoffice .umb-tab-pane-inner > div {
+    height: 100%;
+}
+
+.notely-backoffice_flex {
+    display: table;
+    height: 100%;
+    width: 100%;
+}
+
+.notely-backoffice-chart {
+    background: #FFFFFF;
+    padding: 10px 10px;
+    border-bottom: 1px solid #dddddd;
+    width: 100%;
+    display: table-row;
+    height: 0;
+    position: relative;
+}
+
+.notely-backoffice-container {
+    position: relative;
+    overflow: auto;
+    background: #ffffff;
+    height: 100%;
+    width: 99%;
+}
+
+.notely-backoffice-table_header,
+.notely-backoffice-table_body {
+    position: absolute;
+}
+
+.notely-backoffice-table_header {
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.notely-backoffice-table_body {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 30px;
+    overflow: auto;
+}
+
+.notely-backoffice-table_header > table,
+.notely-backoffice-table_body > table {
+    width: 100%;
+}
+
+.notely-backoffice-table_header > table > thead > tr > th,
+.notely-backoffice-table_body > table > tbody > tr > td {
+    width: 25%;
+}
+
+.notely-backoffice-table_body > table {
+    border-collapse: separate;
+    border-spacing: 5px;
+}
+
+.notely-backoffice-table_cell {
+    text-align: left;
+    padding: 5px 10px;
+}
+
+.notely-backoffice-table_cell_value {
+    background-color: #f0f0f0;
+}
+
+.notely-tile {
+    position: relative;
+    margin: 5px 5px 10px 5px;
+    border: 1px solid #dddddd;
+    border-left: 0;
+}
+
+.notely-tile.notely-tile_root:after {
+    content: "";
+    background-color: #57b7e7;
+    width: 5px;
+    position: absolute;
+    top: -1px;
+    bottom: -1px;
+    left: 0;
+}
+
+.notely-tile_content {
+    padding: 15px;
 }

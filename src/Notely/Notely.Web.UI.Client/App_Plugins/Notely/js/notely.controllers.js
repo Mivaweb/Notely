@@ -359,6 +359,10 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
             // Get all the comments
             $scope.load();
 
+            // Load charts
+            $scope.labels = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
+            $scope.data = [300, 500, 100];
+
             $scope.loaded = true;
 
         };
