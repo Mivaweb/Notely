@@ -283,6 +283,7 @@
     <Content Include="packages.config" />
     <Content Include="UI\App_Plugins\Notely\backoffice\notely\comments.html" />
     <Content Include="UI\App_Plugins\Notely\backoffice\notely\cleanup.html" />
+    <Content Include="UI\App_Plugins\Notely\backoffice\notely\settings.html" />
     <Content Include="UI\App_Plugins\Notely\css\notely.css" />
     <Content Include="UI\App_Plugins\Notely\js\notely.controllers.js" />
     <Content Include="UI\App_Plugins\Notely\js\notely.directives.js" />
@@ -311,7 +312,11 @@
   <ItemGroup>
     <Compile Include="Controllers\NotelyApiController.cs" />
     <Compile Include="Extensions\CommentExtensions.cs" />
+    <Compile Include="Extensions\CommentStateExtensions.cs" />
+    <Compile Include="Extensions\CommentTypeExtensions.cs" />
     <Compile Include="Extensions\UserExtensions.cs" />
+    <Compile Include="Models\CommentStateViewModel.cs" />
+    <Compile Include="Models\CommentTypeViewModel.cs" />
     <Compile Include="Models\CommentViewModel.cs" />
     <Compile Include="Models\ContentPropertyViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />

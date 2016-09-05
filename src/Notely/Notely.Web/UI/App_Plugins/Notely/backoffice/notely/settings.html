@@ -1,0 +1,105 @@
+﻿<form ng-controller="Notely.Backoffice.SettingsController" ng-init="init()" val-form-manager>
+    <umb-panel>
+
+        <umb-header tabs="visibleTabs">
+            <div class="span7">
+                <div class="umb-headline-editor-wrapper">
+                    <h1>Settings</h1>
+                </div>
+            </div>
+            <div class="span5"></div>
+        </umb-header>
+
+        <umb-tab-view>
+            <umb-tab id="tab1">
+
+                <div class="umb-pane" ng-show="loaded">
+
+                    <div class="umb-property">
+                        <ng-form name="propertyForm">
+                            <div class="control-group umb-control-group notely-control-group">
+                                <label class="control-label">
+                                    Comment Types
+                                    <small>You can activate/deactive comment types</small>
+                                </label>
+                                <div class="controls">
+                                    <div class="umb-property-editor">
+
+                                        <table class="notely-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Icon</th>
+                                                    <th>Comment Type</th>
+                                                    <th>Can Assign?</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="type in commentTypes track by $index">
+                                                    <td><i class="icon" ng-class="type.icon"></i></td>
+                                                    <td>{{type.title}}</td>
+                                                    <td>
+                                                        <i ng-if="type.canAssign" class="icon icon-check"></i>
+                                                        <i ng-if="!type.canAssign" class="icon icon-delete"></i>
+                                                    </td>
+                                                    <td align="right">
+                                                        <a href class="btn btn-default notely-btn-round"><i class="icon icon-edit"></i></a>
+                                                        <a href class="btn btn-default notely-btn-round"><i class="icon icon-trash"></i></a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <button type="button" class="btn btn-success"><i class="icon icon-add"></i></button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-form>
+                    </div>
+
+                    <div class="umb-property">
+                        <ng-form name="propertyForm">
+                            <div class="control-group umb-control-group notely-control-group">
+                                <label class="control-label">
+                                    Comment States
+                                    <small>You can view the different comment states</small>
+                                </label>
+                                <div class="controls">
+                                    <div class="umb-property-editor">
+
+                                        <table class="notely-table">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Title</th>
+                                                    <th>Color</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="state in commentStates track by $index">
+                                                    <td>{{state.id}}</td>
+                                                    <td>{{state.title}}</td>
+                                                    <td>{{state.color}}</td>
+                                                    <td align="right">
+                                                        <a href class="btn btn-default notely-btn-round"><i class="icon icon-edit"></i></a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-form>
+                    </div>
+
+                </div>
+
+            </umb-tab>
+        </umb-tab-view>
+
+    </umb-panel>
+
+</form>

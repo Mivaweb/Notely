@@ -226,9 +226,10 @@ angular.module('notely').controller('Notely.PropertyEditors.AddController', [
     'notelyResources',
     '$routeParams',
     'commentsBuilder',
+    'commentTypesBuilder',
     'usersBuilder',
 
-    function ($scope, notelyResources, $routeParams, commentsBuilder, usersBuilder) {
+    function ($scope, notelyResources, $routeParams, commentsBuilder, commentTypesBuilder, usersBuilder) {
 
         // Reset comment window
         $scope.model.comment = commentsBuilder.createEmpty();
@@ -238,11 +239,23 @@ angular.module('notely').controller('Notely.PropertyEditors.AddController', [
 
         // Init controller
         $scope.init = function () {
+            // Get comment types
+            var commentTypesPromise = notelyResources.getCommentTypes();
+            commentTypesPromise.then(function (data) {
+                $scope.commentTypes = commentTypesBuilder.convert(data);
+                $scope.model.comment.type = commentTypesBuilder.convert($scope.commentTypes[0]);
+            });
+
             // Get active users to display in select
             var usersPromise = notelyResources.getUsers();
             usersPromise.then(function (data) {
                 $scope.users = usersBuilder.convert(data);
             });
+        };
+
+        $scope.commentTypeChanged = function () {
+            if (!$scope.model.comment.type.canAssign)
+                $scope.resetAssigndTo();
         };
 
         // Reset select
@@ -443,6 +456,59 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
 
                 // Show notification
                 notificationsService.success("Task completed", "Todo comment is set completed.");
+            });
+        };
+
+    }
+
+]);
+
+/*
+ * @ngdoc Controller
+ * @name Notely.Backoffice.SettingsController
+ * 
+ */
+angular.module('notely').controller('Notely.Backoffice.SettingsController', [
+
+    '$scope',
+    'notelyResources',
+    'commentTypesBuilder',
+    'commentStatesBuilder',
+    'notificationsService',
+
+    function ($scope, notelyResources, commentTypesBuilder, commentStatesBuilder, notificationsService) {
+
+        $scope.loaded = false;
+
+        $scope.visibleTabs = [];
+
+        $scope.commentTypes = [];
+
+        // Init function
+        $scope.init = function () {
+
+            // Setup tabs
+            $scope.visibleTabs.push({
+                id: 1,
+                label: 'Notely Settings'
+            });
+
+            $scope.load();
+
+            $scope.loaded = true;
+
+        };
+
+        // Load data
+        $scope.load = function () {
+            var commentTypePromise = notelyResources.getCommentTypes();
+            commentTypePromise.then(function (data) {
+                $scope.commentTypes = commentTypesBuilder.convert(data);
+            });
+
+            var commentStatePromise = notelyResources.getCommentStates();
+            commentStatePromise.then(function (data) {
+                $scope.commentStates = commentStatesBuilder.convert(data);
             });
         };
 

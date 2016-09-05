@@ -12,11 +12,8 @@
             Type
         </label>
         <div class="controls controls-row">
-            <select name="notelyType" class="umb-editor umb-dropdown" ng-model="model.comment.type">
-                <option value="0">Info</option>
-                <option value="1">Task</option>
-                <option value="2">Development</option>
-                <option value="3">Test</option>
+            <select name="notelyType" class="umb-editor umb-dropdown" ng-change="commentTypeChanged()" ng-model="model.comment.type"
+                    ng-options="c.title for c in commentTypes track by c.id">
             </select>
         </div>
     </div>
@@ -41,14 +38,15 @@
             Assign to user
         </label>
         <div class="controls controls-row">
-            <select ng-hide="model.comment.assignedTo && model.comment.assignedTo.id >= 0" name="notelyUser"
+            <select name="notelyUser"
                     class="umb-editor umb-dropdown"
+                    ng-hide="model.comment.assignedTo && model.comment.assigndTo.id > 0"
                     ng-model="model.comment.assignedTo"
                     ng-options="i.name for i in users | orderBy:'name' track by i.id"
-                    ng-disabled="model.comment.type == 0 || model.comment.state == true"></select>
-            <div class="notely-clear-select" ng-show="model.comment.assignedTo && model.comment.assignedTo.id >= 0">
+                    ng-disabled="!model.comment.type.canAssign"></select>
+            <div class="notely-clear-select" ng-show="model.comment.assignedTo && model.comment.assigndTo.id > 0">
                 <span>{{model.comment.assignedTo.name}}</span>
-                <i class="icon icon-delete" ng-hide="model.comment.state == true" ng-click="resetAssigndTo()"></i>
+                <i class="icon icon-delete" ng-click="resetAssigndTo()"></i>
             </div>
         </div>
     </div>

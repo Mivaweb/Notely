@@ -6,7 +6,7 @@ using Umbraco.Core.Persistence.DatabaseAnnotations;
 namespace Notely.Core.Models
 {
     /// <summary>
-    /// Defins the Comment DTO
+    /// Defines the Comment DTO
     /// </summary>
     [TableName("notelyComments")]
     [PrimaryKey("Id", autoIncrement = true)]
@@ -24,6 +24,7 @@ namespace Notely.Core.Models
         public int PropertyTypeId { get; set; }
 
         [Column("type")]
+        [ForeignKey(typeof(CommentType), Column = "id", Name = "FK_Comment_CommentType")]
         public int Type { get; set; }
 
         [Column("title")]
@@ -37,9 +38,19 @@ namespace Notely.Core.Models
         public int? AssignedTo { get; set; }
 
         [Column("state")]
-        public bool State { get; set; }
+        [ForeignKey(typeof(CommentState), Column = "id", Name = "FK_Comment_CommentState")]
+        public int State { get; set; }
+
+        [Column("closed")]
+        public bool Closed { get; set; }
 
         [Column("createDate")]
         public DateTime CreateDate { get; set; }
+
+        [Ignore]
+        public virtual CommentType CommentType { get; set; }
+
+        [Ignore]
+        public virtual CommentState CommentState { get; set; }
     }
 }

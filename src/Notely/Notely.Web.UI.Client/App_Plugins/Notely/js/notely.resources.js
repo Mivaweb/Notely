@@ -34,6 +34,22 @@ angular.module('notely.resources').factory('notelyResources',
                 );
             },
 
+            // Get the comment types
+            getCommentTypes: function () {
+                return umbRequestHelper.resourcePromise(
+                    $http.get("backoffice/notely/notelyapi/getcommenttypes"),
+                    'Unable to retreive the comment types!'
+                );
+            },
+
+            // Get the comment states
+            getCommentStates: function () {
+                return umbRequestHelper.resourcePromise(
+                    $http.get("backoffice/notely/notelyapi/getcommentstates"),
+                    'Unable to retreive the comment states!'
+                );
+            },
+
             // Get the comments of a given content node and property
             getComments: function (property) {
 

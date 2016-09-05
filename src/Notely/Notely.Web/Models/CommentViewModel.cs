@@ -12,7 +12,7 @@ namespace Notely.Web.Models
         public int Id { get; set; }
 
         [JsonProperty("type")]
-        public int Type { get; set; }
+        public CommentTypeViewModel Type { get; set; }
 
         [JsonProperty("title")]
         public string Title { get; set; }
@@ -24,7 +24,7 @@ namespace Notely.Web.Models
         public UserViewModel AssignedTo { get; set; }
 
         [JsonProperty("state")]
-        public bool State { get; set; }
+        public CommentStateViewModel State { get; set; }
 
         [JsonProperty("createDate")]
         public DateTime CreateDate { get; set; }
@@ -32,15 +32,19 @@ namespace Notely.Web.Models
         [JsonProperty("contentProperty")]
         public ContentPropertyViewModel ContentProperty { get; set; }
 
+        [JsonProperty("closed")]
+        public bool Closed { get; set; }
+
         public CommentViewModel()
         {
             Id = -1;
-            Type = 0;
+            Type = null;
             Title = Description = "";
             AssignedTo = null;
-            State = false;
+            State = null;
             CreateDate = DateTime.Now;
             ContentProperty = null;
+            Closed = false;
         }
     }
 }

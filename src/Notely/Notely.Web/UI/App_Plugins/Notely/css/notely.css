@@ -8,6 +8,14 @@
     padding: 0;
 }
 
+.notely-control-group {
+    padding-bottom: 20px;
+}
+
+.notely-control-group .controls {
+    margin-left: 240px;
+}
+
 .notely-property {
     margin-bottom: 15px;
 }
@@ -76,6 +84,7 @@
 
 table.notely-table {
     width: 100%;
+    margin-bottom: 20px;
 }
 
 table.notely-table > thead th {
@@ -92,7 +101,7 @@ table.notely-table > tbody td {
     padding: 8px 4px;
 }
 
-table.notely-table > tbody > tr:nth-of-type(odd) {
+table.notely-table.notely-table-striped > tbody > tr:nth-of-type(odd) {
     background-color: #fbfbfb;
 }
 
@@ -237,4 +246,23 @@ table.notely-table .label-primary {
 
 .notely-tile_content {
     padding: 15px;
+}
+
+.notely-btn-round {
+    background: transparent;
+    border-radius: 100%;
+    padding: 0;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    border-color: #dddddd;
+    transition: all 100ms linear;
+}
+
+.notely-btn-round:hover,
+.notely-btn-round:focus {
+    background: #2e8aea;
+    border-color: #2e8aea;
+    color: #ffffff;
 }

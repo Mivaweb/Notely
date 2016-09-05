@@ -47,15 +47,15 @@ namespace Notely.Web.Extensions
                 CreateDate = commentVm.CreateDate,
                 Description = commentVm.Description,
                 Id = commentVm.Id,
-                State = commentVm.State,
+                State = commentVm.State.Id,
                 Title = commentVm.Title,
-                Type = commentVm.Type,
+                Type = commentVm.Type.Id,
                 ContentId = commentVm.ContentProperty.ContentId,
                 PropertyTypeId = _property != null ? _property.PropertyType.Id : -1
             };
 
             // Only if it has a assignee and its not an info note
-            if (commentVm.AssignedTo != null && commentVm.Type > 0)
+            if (commentVm.AssignedTo != null && commentVm.Type.CanAssign)
             {
                 _comment.AssignedTo = commentVm.AssignedTo.Id;
             }
@@ -84,6 +84,9 @@ namespace Notely.Web.Extensions
                 );
 
             var userVm = new UserViewModel();
+            var commentTypeVm = new CommentTypeViewModel();
+            var commentStateVm = new CommentStateViewModel();
+
             var contentProperty = new ContentPropertyViewModel() {
                 ContentId = comment.ContentId,
                 ContentName = _content.Name,
@@ -100,10 +103,11 @@ namespace Notely.Web.Extensions
                 CreateDate = comment.CreateDate,
                 Description = comment.Description,
                 Id = comment.Id,
-                State = comment.State,
+                State = commentStateVm.Convert(comment.CommentState),
                 Title = comment.Title,
-                Type = comment.Type,
-                ContentProperty = contentProperty
+                Type = commentTypeVm.Convert(comment.CommentType),
+                ContentProperty = contentProperty,
+                Closed = comment.Closed
             };
 
             return result;

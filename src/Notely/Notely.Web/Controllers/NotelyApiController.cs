@@ -175,6 +175,7 @@ namespace Notely.Web.Controllers
 
             CommentViewModel commentDto = JsonConvert.DeserializeObject<CommentViewModel>(commentVm.ToString());
             commentDto.CreateDate = DateTime.Now;
+            commentDto.State.Id = 1;
 
             DoAddOrUpdate(comment.Convert(commentDto));
         }
@@ -261,11 +262,41 @@ namespace Notely.Web.Controllers
             using (CommentsRepository repo = new CommentsRepository())
             {
                 var comment = repo.Get(Convert.ToInt32(id));
-                if (comment.Type > 0 && comment.State == false)
+                if (comment.Type > 0)
                 {
-                    comment.State = true;
+                    comment.State = 3;
                     repo.AddOrUpdate(comment);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Get a list of <see cref="CommentType"/> objects
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IEnumerable<CommentTypeViewModel> GetCommentTypes()
+        {
+            var _commentType = new CommentTypeViewModel();
+
+            using (var repo = new CommentTypesRepository())
+            {
+                return repo.GetAll().Select(c => _commentType.Convert(c));
+            }
+        }
+
+        /// <summary>
+        /// Get a list of <see cref="CommentStateViewModel"/> objects
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IEnumerable<CommentStateViewModel> GetCommentStates()
+        {
+            var _commentState = new CommentStateViewModel();
+
+            using (var repo = new CommentStatesRepository())
+            {
+                return repo.GetAll().Select(c => _commentState.Convert(c));
             }
         }
 
