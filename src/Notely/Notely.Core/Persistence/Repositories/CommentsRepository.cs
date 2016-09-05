@@ -86,7 +86,7 @@ namespace Notely.Core.Persistence.Repositories
         /// <returns></returns>
         public Comment Get(int id)
         {
-            return _dbContext.Database.Fetch<Comment, CommentType, CommentState>("SELECT nc.*, ncs.*, nct.* FROM notelyComments AS nc JOIN notelyCommentStates AS ncs ON ncs.id = nc.state JOIN notelyCommentTypes AS nct ON nct.id = nc.type WHERE id = @p1", new { p1 = id })[0];
+            return _dbContext.Database.Fetch<Comment, CommentType, CommentState>("SELECT nc.*, ncs.*, nct.* FROM notelyComments AS nc JOIN notelyCommentStates AS ncs ON ncs.id = nc.state JOIN notelyCommentTypes AS nct ON nct.id = nc.type WHERE nc.id = @p1", new { p1 = id })[0];
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Notely.Core.Persistence.Repositories
         /// <returns></returns>
         public IEnumerable<Comment> GetAllByContentProp(int contentId, int propertyTypeId)
         {
-            return _dbContext.Database.Fetch<Comment>("SELECT * FROM notelyComments WHERE contentId = @p1 AND propertyTypeId = @p2 ORDER BY type, createDate", new { p1 = contentId, p2 = propertyTypeId });
+            return _dbContext.Database.Fetch<Comment, CommentState, CommentType>("SELECT nc.*, ncs.*, nct.* FROM notelyComments AS nc JOIN notelyCommentStates AS ncs ON ncs.id = nc.state JOIN notelyCommentTypes AS nct ON nct.id = nc.type WHERE nc.contentId = @p1 AND nc.propertyTypeId = @p2 ORDER BY nc.type, nc.createDate", new { p1 = contentId, p2 = propertyTypeId });
         }
 
         /// <summary>

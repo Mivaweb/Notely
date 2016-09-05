@@ -119,7 +119,7 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
 
         // Render the comment description field
         $scope.renderDescription = function (comment) {
-            return comment.description + (comment.type > 0 && comment.assignedTo ? ' <strong>[Assigned to: ' + comment.assignedTo.name + ']</strong>' : '');
+            return comment.description + (comment.type.canAssign && comment.assignedTo ? ' <strong>[Assigned to: ' + comment.assignedTo.name + ']</strong>' : '');
         };
 
         // Add a new comment
@@ -278,10 +278,11 @@ angular.module('notely').controller('Notely.PropertyEditors.EditController', [
     '$scope',
     'notelyResources',
     'commentsBuilder',
+    'commentTypesBuilder',
     'usersBuilder',
     '$routeParams',
 
-    function ($scope, notelyResources, commentsBuilder, usersBuilder, $routeParams) {
+    function ($scope, notelyResources, commentsBuilder, commentTypesBuilder, usersBuilder, $routeParams) {
 
         // Init controller
         $scope.init = function () {
@@ -289,6 +290,12 @@ angular.module('notely').controller('Notely.PropertyEditors.EditController', [
             // Comment model is already in scope when calling the overlay
             // So we don't need to call the api again to catch the comment data
             // We also made a copy so that changes are not visible in the list untill we hit save!
+
+            // Get comment types
+            var commentTypesPromise = notelyResources.getCommentTypes();
+            commentTypesPromise.then(function (data) {
+                $scope.commentTypes = commentTypesBuilder.convert(data);
+            });
 
             // Get active users to display in select
             var usersPromise = notelyResources.getUsers();

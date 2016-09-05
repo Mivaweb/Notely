@@ -11,12 +11,8 @@
             Type
         </label>
         <div class="controls controls-row">
-            <select name="notelyType" class="umb-editor umb-dropdown" ng-disabled="model.comment.state == true" ng-model="model.comment.type">
-                <option value="0">Info</option>
-                <option value="1">Todo</option>
-                <option value="2">Development</option>
-                <option value="3">Test</option>
-            </select>
+            <select name="notelyType" class="umb-editor umb-dropdown" ng-change="commentTypeChanged()" ng-model="model.comment.type"
+                    ng-options="c.title for c in commentTypes track by c.id"></select>
         </div>
     </div>
     <div class="umb-control-group">

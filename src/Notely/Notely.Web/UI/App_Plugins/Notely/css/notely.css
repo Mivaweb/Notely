@@ -135,13 +135,13 @@ table.notely-table .label-primary {
     
 }
 
-.notely-comments_action.done {
+/*.notely-comments_action.done {
     color: #46a546 !important;
 }
 
 .notely-comments_action.delete {
     color: #9d261d !important;
-}
+}*/
 
 .notely-clear-select i {
     color: #9d261d !important;
