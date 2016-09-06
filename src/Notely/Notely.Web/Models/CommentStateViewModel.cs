@@ -17,13 +17,10 @@ namespace Notely.Web.Models
         [JsonProperty("title")]
         public string Title { get; set; }
 
-        [JsonProperty("color")]
-        public string Color { get; set; }
-
         public CommentStateViewModel()
         {
             Id = -1;
-            Title = Color = "";
+            Title = "";
         }
     }
 }

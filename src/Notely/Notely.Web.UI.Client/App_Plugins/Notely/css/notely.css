@@ -115,16 +115,24 @@ table.notely-table a:not(.btn) {
 
 table.notely-table .label {
     text-shadow: none;
-    padding: 4px 6px 2px;
+    padding: 4px 6px;
     font-size: 12px;
 }
 
-table.notely-table .label-success {
-    background-color: #8ECF7F;
+table.notely-table .label-open {
+    background-color: #D9D9D9;
 }
 
-table.notely-table .label-primary {
-    background-color: #2b95c1;
+table.notely-table .label-approved {
+    background-color: #8CD0EC;
+}
+
+table.notely-table .label-pending {
+    background-color: #F9AF82;
+}
+
+table.notely-table .label-done {
+    background-color: #8ECF7F;
 }
 
 .notely-bold {

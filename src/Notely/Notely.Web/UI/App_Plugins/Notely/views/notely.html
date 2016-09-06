@@ -34,16 +34,18 @@
                                 <th></th>
                                 <th>Name</th>
                                 <th>Description</th>
+                                <th>State</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="comment in comments track by $index" ng-class="{'notely-comments_done': comment.state == true}">
+                            <tr ng-repeat="comment in comments track by $index">
                                 <td>
-                                    <i class="icon" ng-class="comment.type.icon"></i>
+                                    <i title="{{comment.type.title}}" class="icon" ng-class="comment.type.icon"></i>
                                 </td>
                                 <td class="notely-comments_text"><a href ng-click="editComment(comment)">{{comment.title}}</a></td>
                                 <td class="notely-comments_text" ng-bind-html-unsafe="renderDescription(comment)"></td>
+                                <td><span ng-show="comment.type.canAssign" class="label" ng-class="'label-' + comment.state.title | lowercase">{{comment.state.title}}</span></td>
                                 <td align="right">
                                     <a href class="btn btn-default notely-btn-round" ng-click="editComment(comment)"><i class="icon icon-edit"></i></a>
                                     <a href class="btn btn-default notely-btn-round" ng-click="deleteComment(comment.id)"><i class="icon icon-delete"></i></a>

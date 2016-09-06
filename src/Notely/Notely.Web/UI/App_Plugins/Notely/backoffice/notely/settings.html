@@ -74,17 +74,13 @@
                                                     <th></th>
                                                     <th>Title</th>
                                                     <th>Color</th>
-                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr ng-repeat="state in commentStates track by $index">
                                                     <td>{{state.id}}</td>
                                                     <td>{{state.title}}</td>
-                                                    <td>{{state.color}}</td>
-                                                    <td align="right">
-                                                        <a href class="btn btn-default notely-btn-round"><i class="icon icon-edit"></i></a>
-                                                    </td>
+                                                    <td><span class="label" ng-class="'label-' + state.title | lowercase">{{state.title}}</span></td>
                                                 </tr>
                                             </tbody>
                                         </table>

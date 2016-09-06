@@ -23,10 +23,10 @@ namespace Notely.Core.Events
             if (!db.TableExist("notelyCommentStates"))
             {
                 db.CreateTable<CommentState>(false);
-                dbContext.Database.Insert(new CommentState() { Id = 1, Title = "Open", Color = "" });
-                dbContext.Database.Insert(new CommentState() { Id = 2, Title = "Approved", Color = "" });
-                dbContext.Database.Insert(new CommentState() { Id = 3, Title = "Pending", Color = "" });
-                dbContext.Database.Insert(new CommentState() { Id = 4, Title = "Done", Color = "" });
+                dbContext.Database.Insert(new CommentState() { Id = 1, Title = "Open" });
+                dbContext.Database.Insert(new CommentState() { Id = 2, Title = "Approved" });
+                dbContext.Database.Insert(new CommentState() { Id = 3, Title = "Pending" });
+                dbContext.Database.Insert(new CommentState() { Id = 4, Title = "Done" });
             }
               
             if (!db.TableExist("notelyCommentTypes"))

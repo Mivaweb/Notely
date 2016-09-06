@@ -227,9 +227,10 @@ angular.module('notely').controller('Notely.PropertyEditors.AddController', [
     '$routeParams',
     'commentsBuilder',
     'commentTypesBuilder',
+    'commentStatesBuilder',
     'usersBuilder',
 
-    function ($scope, notelyResources, $routeParams, commentsBuilder, commentTypesBuilder, usersBuilder) {
+    function ($scope, notelyResources, $routeParams, commentsBuilder, commentTypesBuilder, commentStatesBuilder, usersBuilder) {
 
         // Reset comment window
         $scope.model.comment = commentsBuilder.createEmpty();
@@ -243,7 +244,14 @@ angular.module('notely').controller('Notely.PropertyEditors.AddController', [
             var commentTypesPromise = notelyResources.getCommentTypes();
             commentTypesPromise.then(function (data) {
                 $scope.commentTypes = commentTypesBuilder.convert(data);
-                $scope.model.comment.type = commentTypesBuilder.convert($scope.commentTypes[0]);
+                $scope.model.comment.type = $scope.commentTypes[0];
+            });
+
+            // Get comment states
+            var commentStatesPromise = notelyResources.getCommentStates();
+            commentStatesPromise.then(function (data) {
+                $scope.commentStates = commentStatesBuilder.convert(data);
+                $scope.model.comment.state = $scope.commentStates[0];
             });
 
             // Get active users to display in select
@@ -253,9 +261,13 @@ angular.module('notely').controller('Notely.PropertyEditors.AddController', [
             });
         };
 
+        // Comment type changed
         $scope.commentTypeChanged = function () {
             if (!$scope.model.comment.type.canAssign)
                 $scope.resetAssigndTo();
+
+            // Reset state
+            $scope.model.comment.state = $scope.commentStates[0];
         };
 
         // Reset select
@@ -279,10 +291,11 @@ angular.module('notely').controller('Notely.PropertyEditors.EditController', [
     'notelyResources',
     'commentsBuilder',
     'commentTypesBuilder',
+    'commentStatesBuilder',
     'usersBuilder',
     '$routeParams',
 
-    function ($scope, notelyResources, commentsBuilder, commentTypesBuilder, usersBuilder, $routeParams) {
+    function ($scope, notelyResources, commentsBuilder, commentTypesBuilder, commentStatesBuilder, usersBuilder, $routeParams) {
 
         // Init controller
         $scope.init = function () {
@@ -297,11 +310,26 @@ angular.module('notely').controller('Notely.PropertyEditors.EditController', [
                 $scope.commentTypes = commentTypesBuilder.convert(data);
             });
 
+            // Get comment states
+            var commentStatesPromise = notelyResources.getCommentStates();
+            commentStatesPromise.then(function (data) {
+                $scope.commentStates = commentStatesBuilder.convert(data);
+            });
+
             // Get active users to display in select
             var usersPromise = notelyResources.getUsers();
             usersPromise.then(function (data) {
                 $scope.users = usersBuilder.convert(data);
             });
+        };
+
+        // Comment type changed
+        $scope.commentTypeChanged = function () {
+            if (!$scope.model.comment.type.canAssign)
+                $scope.resetAssigndTo();
+
+            // Reset state
+            $scope.model.comment.state = $scope.commentStates[0];
         };
 
         // Reset select

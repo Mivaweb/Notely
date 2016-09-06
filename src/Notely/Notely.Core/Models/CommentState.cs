@@ -15,8 +15,5 @@ namespace Notely.Core.Models
 
         [Column("title")]
         public string Title { get; set; }
-
-        [Column("color")]
-        public string Color { get; set; }
     }
 }

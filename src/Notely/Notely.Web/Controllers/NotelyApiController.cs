@@ -175,7 +175,6 @@ namespace Notely.Web.Controllers
 
             CommentViewModel commentDto = JsonConvert.DeserializeObject<CommentViewModel>(commentVm.ToString());
             commentDto.CreateDate = DateTime.Now;
-            commentDto.State.Id = 1;
 
             DoAddOrUpdate(comment.Convert(commentDto));
         }

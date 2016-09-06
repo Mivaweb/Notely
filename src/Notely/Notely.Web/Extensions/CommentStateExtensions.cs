@@ -19,8 +19,7 @@ namespace Notely.Web.Extensions
             return new CommentStateViewModel()
             {
                 Id = commentState.Id,
-                Title = commentState.Title,
-                Color = commentState.Color
+                Title = commentState.Title
             };
         }
     }
