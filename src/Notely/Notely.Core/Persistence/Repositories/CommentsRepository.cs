@@ -96,7 +96,7 @@ namespace Notely.Core.Persistence.Repositories
         /// <returns></returns>
         public IEnumerable<Comment> GetAll(params int[] ids)
         {
-            return _dbContext.Database.Fetch<Comment>("SELECT * FROM notelyComments ORDER BY type, createDate");
+            return _dbContext.Database.Fetch<Comment, CommentState, CommentType>("SELECT nc.*, ncs.*, nct.* FROM notelyComments AS nc JOIN notelyCommentStates AS ncs ON ncs.id = nc.state JOIN notelyCommentTypes AS nct ON nct.id = nc.type ORDER BY nc.contentId, nc.propertyTypeId, nc.type, nc.createDate");
         }
 
         /// <summary>
@@ -117,7 +117,16 @@ namespace Notely.Core.Persistence.Repositories
         /// <returns></returns>
         public IEnumerable<Comment> GetAllByAssignee(int assignee)
         {
-            return _dbContext.Database.Fetch<Comment>("SELECT * FROM notelyComments WHERE assignedTo = @p1 ORDER BY type, createDate", new { p1 = assignee });
+            return _dbContext.Database.Fetch<Comment, CommentState, CommentType>("SELECT nc.*, ncs.*, nct.* FROM notelyComments AS nc JOIN notelyCommentStates AS ncs ON ncs.id = nc.state JOIN notelyCommentTypes AS nct ON nct.id = nc.type WHERE assignedTo = @p1 ORDER BY type, createDate", new { p1 = assignee });
+        }
+
+        /// <summary>
+        /// Get a list of unique content nodes with comments
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<int> GetUniqueContentNodes()
+        {
+            return _dbContext.Database.Fetch<int>("SELECT DISTINCT contentId FROM notelyComments");
         }
 
         /// <summary>

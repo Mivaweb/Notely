@@ -15,5 +15,6 @@ namespace Notely.Core.Persistence.Repositories.Interfaces
         void DeleteByContent(int contentId);
         IEnumerable<Comment> GetAllByContentProp(int contentId, int propertyTypeId);
         IEnumerable<Comment> GetAllByAssignee(int assignee);
+        IEnumerable<int> GetUniqueContentNodes();
     }
 }

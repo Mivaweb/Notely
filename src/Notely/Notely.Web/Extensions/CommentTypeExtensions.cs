@@ -16,6 +16,9 @@ namespace Notely.Web.Extensions
         /// <returns></returns>
         public static CommentTypeViewModel Convert(this CommentTypeViewModel commentTypeVm, CommentType commentType)
         {
+            if (commentType == null)
+                return null;
+
             return new CommentTypeViewModel()
             {
                 Id = commentType.Id,

@@ -163,7 +163,7 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
                 title: "Edit comment",
                 comment: angular.copy(comment),
                 show: true,
-                hideSubmitButton: comment.state == true,
+                hideSubmitButton: false,
                 close: function (oldModel) {
                     $scope.overlay.show = false;
                     $scope.overlay = null;
@@ -375,6 +375,34 @@ angular.module('notely').controller('Notely.PropertyEditors.DeleteController', [
 
 /*
  * @ngdoc Controller
+ * @name Notely.Backoffice.DashboardController
+ * 
+ */
+angular.module('notely').controller('Notely.Backoffice.DashboardController', [
+
+    '$scope',
+    'notelyResources',
+    '$routeParams',
+    'dialogService',
+    'notificationsService',
+
+    function ($scope, notelyResources, $routeParams, dialogService, notificationsService) {
+
+        $scope.loaded = false;
+
+        // Init function
+        $scope.init = function () {
+
+            $scope.loaded = true;
+
+        };
+
+    }
+
+]);
+
+/*
+ * @ngdoc Controller
  * @name Notely.Backoffice.CommentsController
  * 
  */
@@ -382,16 +410,18 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
 
     '$scope',
     'notelyResources',
-    'commentsBuilder',
+    'backOfficeNodesBuilder',
     'userService',
     '$routeParams',
     'dialogService',
     'notificationsService',
 
-    function ($scope, notelyResources, commentsBuilder, userService, $routeParams, dialogService, notificationsService) {
+    function ($scope, notelyResources, backOfficeNodesBuilder, userService, $routeParams, dialogService, notificationsService) {
 
         $scope.loaded = false;
+
         $scope.comments = [];
+        $scope.contentNodes = [];
 
         $scope.visibleTabs = [];
 
@@ -407,12 +437,6 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
             // Get all the comments
             $scope.load();
 
-            // Load charts
-            $scope.labels = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
-            $scope.data = [300, 500, 100];
-
-            $scope.loaded = true;
-
         };
 
         // Load the comments from the API
@@ -421,18 +445,12 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
             // Check if we need to show all comments or only the ones of the logged in user
             if ($routeParams.id == 1)
             {
-                // Show user
-                userService.getCurrentUser().then(function (user) {
-                    var commentsPromise = notelyResources.getMyComments(user);
-                    commentsPromise.then(function (data) {
-                        $scope.comments = commentsBuilder.convert(data);
-                    });
-                });
+
             } else {
-                // Show all
-                var commentsPromise = notelyResources.getAllComments();
-                commentsPromise.then(function (data) {
-                    $scope.comments = commentsBuilder.convert(data);
+                notelyResources.getUniqueContentNodes().then(function (data) {
+
+                    console.log(data);
+
                 });
             }
 

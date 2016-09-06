@@ -126,6 +126,14 @@ angular.module('notely.resources').factory('notelyResources',
                     $http.delete("backoffice/notely/notelyapi/cleanupcomments"),
                     "Unable to set task as completed!"
                 );
+            },
+
+            // Get unique content node id's with comments
+            getUniqueContentNodes: function () {
+                return umbRequestHelper.resourcePromise(
+                    $http.get("backoffice/notely/notelyapi/getuniquecontentnodes"),
+                    "Unable to get the unique content nodes!"
+                );
             }
         };
     }

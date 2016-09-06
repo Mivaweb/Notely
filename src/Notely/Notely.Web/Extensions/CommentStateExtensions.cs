@@ -16,6 +16,9 @@ namespace Notely.Web.Extensions
         /// <returns></returns>
         public static CommentStateViewModel Convert(this CommentStateViewModel commentStateVm, CommentState commentState)
         {
+            if (commentState == null)
+                return null;
+
             return new CommentStateViewModel()
             {
                 Id = commentState.Id,

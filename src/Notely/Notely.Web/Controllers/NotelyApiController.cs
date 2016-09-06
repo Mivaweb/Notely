@@ -298,6 +298,60 @@ namespace Notely.Web.Controllers
                 return repo.GetAll().Select(c => _commentState.Convert(c));
             }
         }
+        
+        /// <summary>
+        /// Get a list of content node id's with comments
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IEnumerable<int> GetUniqueContentNodes()
+        {
+            using(var repo = new CommentsRepository())
+            {
+                return repo.GetUniqueContentNodes();
+            }
+        }
+
+        /// <summary>
+        /// Get details of the content
+        /// </summary>
+        /// <param name="contentId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public BackOfficeNode GetBackOfficeNodeDetails(int contentId)
+        {
+            var _result = new BackOfficeNode();
+            var _boComment = new BackOfficeComment();
+
+            using (var repo = new CommentsRepository())
+            {
+                // Step 1: Get the content node details
+                var _content = Services.ContentService.GetById(contentId);
+
+                if (_content == null)
+                    throw new ArgumentNullException("contentId");
+
+                _result.ContentId = contentId;
+                _result.ContentName = _content.Name;
+                
+                foreach(var prop in _content.Properties)
+                {
+                    // Step 2: Add properties and comments
+                    _result.Properties.Add(new BackOfficeProperty() {
+
+                        Alias = prop.Alias,
+                        Id = prop.PropertyType.Id,
+                        Comments = repo.GetAllByContentProp(
+                            _content.Id, prop.PropertyType.Id)
+                            .Select(c => _boComment.Convert(c)).ToList()
+
+                    });
+                }
+
+            }
+
+            return _result;
+        }
 
         #region Private methods
 

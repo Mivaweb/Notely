@@ -152,6 +152,74 @@ var User = function () {
 
 angular.module('notely.models').constant('User', User);
 
+
+/*
+ * @ngdoc model
+ * @name BackOfficeNode
+ * @function
+ * 
+ * @description
+ * Represents the js version of the Notely's BackOfficeNode
+ * 
+ */
+
+var BackOfficeNode = function () {
+    var self = this;
+
+    self.contentId = -1;
+    self.contentName = '';
+    self.properties = [];
+};
+
+angular.module('notely.models').constant('BackOfficeNode', BackOfficeNode);
+
+
+/*
+ * @ngdoc model
+ * @name BackOfficeProperty
+ * @function
+ * 
+ * @description
+ * Represents the js version of the Notely's BackOfficeProperty
+ * 
+ */
+
+var BackOfficeProperty = function () {
+    var self = this;
+
+    self.id = -1;
+    self.alias = '';
+    self.comments = [];
+};
+
+angular.module('notely.models').constant('BackOfficeProperty', BackOfficeProperty);
+
+
+/*
+ * @ngdoc model
+ * @name BackOfficeComment
+ * @function
+ * 
+ * @description
+ * Represents the js version of the Notely's BackOfficeComment
+ * 
+ */
+
+var BackOfficeComment = function () {
+    var self = this;
+
+    self.id = -1;
+    self.title = '';
+    self.description = '';
+    self.type = null;
+    self.assignedTo = null;
+    self.state = null;
+};
+
+angular.module('notely.models').constant('BackOfficeComment', BackOfficeComment);
+
+
+
 /*
 * @ngdoc service
 * @name modelsBuilder
@@ -400,6 +468,37 @@ angular.module('notely.models').factory('usersBuilder', [
     function (modelsBuilder, User) {
 
         var Constructor = User;
+
+        return {
+            createEmpty: function () {
+                return new Constructor();
+            },
+            convert: function (jsonResult) {
+                return modelsBuilder.convert(jsonResult, Constructor);
+            }
+        };
+
+    }
+
+]);
+
+
+/*
+ * @ngdoc service
+ * @name backOfficeNodesBuilder
+ * 
+ * @decription
+ * Modelsbuilder for the User model
+ * 
+ */
+angular.module('notely.models').factory('backOfficeNodesBuilder', [
+
+    'modelsBuilder',
+    'BackOfficeNode',
+
+    function (modelsBuilder, BackOfficeNode) {
+
+        var Constructor = BackOfficeNode;
 
         return {
             createEmpty: function () {
