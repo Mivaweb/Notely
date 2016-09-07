@@ -129,9 +129,17 @@ angular.module('notely.resources').factory('notelyResources',
             },
 
             // Get unique content node id's with comments
-            getUniqueContentNodes: function () {
+            getUniqueContentNodes: function (userId) {
                 return umbRequestHelper.resourcePromise(
-                    $http.get("backoffice/notely/notelyapi/getuniquecontentnodes"),
+                    $http.get("backoffice/notely/notelyapi/getuniquecontentnodes", { params: { userId: userId } }),
+                    "Unable to get the unique content nodes!"
+                );
+            },
+
+            // Get details of a content node: backoffice
+            getContentNodeDetails: function (contentId, userId) {
+                return umbRequestHelper.resourcePromise(
+                    $http.get("backoffice/notely/notelyapi/getbackofficenodedetails", { params: { contentId: contentId, userId: userId } }),
                     "Unable to get the unique content nodes!"
                 );
             }

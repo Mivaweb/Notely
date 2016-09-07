@@ -300,15 +300,16 @@ namespace Notely.Web.Controllers
         }
         
         /// <summary>
-        /// Get a list of content node id's with comments
+        /// Get a list of unique content id's that has comments
         /// </summary>
+        /// <param name="userId">For a certain user ( assignedTo )</param>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<int> GetUniqueContentNodes()
+        public IEnumerable<int> GetUniqueContentNodes(int userId)
         {
             using(var repo = new CommentsRepository())
             {
-                return repo.GetUniqueContentNodes();
+                return repo.GetUniqueContentNodes(userId);
             }
         }
 
@@ -318,7 +319,7 @@ namespace Notely.Web.Controllers
         /// <param name="contentId"></param>
         /// <returns></returns>
         [HttpGet]
-        public BackOfficeNode GetBackOfficeNodeDetails(int contentId)
+        public BackOfficeNode GetBackOfficeNodeDetails(int contentId, int userId)
         {
             var _result = new BackOfficeNode();
             var _boComment = new BackOfficeComment();
@@ -334,14 +335,18 @@ namespace Notely.Web.Controllers
                 _result.ContentId = contentId;
                 _result.ContentName = _content.Name;
                 
-                foreach(var prop in _content.Properties)
+                foreach(var prop in _content.Properties.Where(p => p.PropertyType.PropertyEditorAlias == "Notely"))
                 {
                     // Step 2: Add properties and comments
                     _result.Properties.Add(new BackOfficeProperty() {
 
                         Alias = prop.Alias,
                         Id = prop.PropertyType.Id,
-                        Comments = repo.GetAllByContentProp(
+                        Name = prop.PropertyType.Name,
+                        Comments = userId >= 0 ? repo.GetAllByContentProp(
+                            _content.Id, prop.PropertyType.Id, userId)
+                            .Select(c => _boComment.Convert(c)).ToList() :
+                            repo.GetAllByContentProp(
                             _content.Id, prop.PropertyType.Id)
                             .Select(c => _boComment.Convert(c)).ToList()
 

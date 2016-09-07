@@ -22,6 +22,12 @@ namespace Notely.Web.Models
         public string Alias { get; set; }
 
         /// <summary>
+        /// Property name
+        /// </summary>
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        /// <summary>
         /// List of comments
         /// </summary>
         [JsonProperty("comments")]
@@ -34,6 +40,7 @@ namespace Notely.Web.Models
         {
             Id = -1;
             Alias = "";
+            Name = "";
             Comments = new List<BackOfficeComment>();
         }
     }

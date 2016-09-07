@@ -411,22 +411,33 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
     '$scope',
     'notelyResources',
     'backOfficeNodesBuilder',
+    'commentTypesBuilder',
+    'commentStatesBuilder',
     'userService',
     '$routeParams',
     'dialogService',
     'notificationsService',
 
-    function ($scope, notelyResources, backOfficeNodesBuilder, userService, $routeParams, dialogService, notificationsService) {
+    function ($scope, notelyResources, backOfficeNodesBuilder, commentTypesBuilder, commentStatesBuilder,
+        userService, $routeParams, dialogService, notificationsService) {
 
         $scope.loaded = false;
-
-        $scope.comments = [];
-        $scope.contentNodes = [];
-
+        $scope.expanded = false;
+        $scope.treeNode = 0; // 0 = all comments / 1 = my comments
+        $scope.options = {
+            type: {},
+            state: {}
+        };
+        $scope.commentTypes = [];
+        $scope.commentStates = [];
+        $scope.backOfficeDetails = [];
         $scope.visibleTabs = [];
 
         // Init function
         $scope.init = function () {
+
+            // Get current tree node
+            $scope.treeNode = $routeParams.id;
 
             // Setup tabs
             $scope.visibleTabs.push({
@@ -434,82 +445,79 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
                 label: 'Comments Listing'
             });
 
+            // Get all the options
+            $scope.loadOptions();
+
             // Get all the comments
             $scope.load();
+
+        };
+
+        // Load the filter options
+        $scope.loadOptions = function () {
+
+            // Get comment types
+            var commentTypesPromise = notelyResources.getCommentTypes();
+            commentTypesPromise.then(function (data) {
+                $scope.commentTypes = commentTypesBuilder.convert(data);
+                $scope.model.comment.type = $scope.commentTypes[0];
+            });
+
+            // Get comment states
+            var commentStatesPromise = notelyResources.getCommentStates();
+            commentStatesPromise.then(function (data) {
+                $scope.commentStates = commentStatesBuilder.convert(data);
+                $scope.model.comment.state = $scope.commentStates[0];
+            });
 
         };
 
         // Load the comments from the API
         $scope.load = function () {
 
-            // Check if we need to show all comments or only the ones of the logged in user
-            if ($routeParams.id == 1)
+            // Check id of the route parameters:
+            // Case 1: My comments => so we need to get the current logged in user and get his comments
+            // Case 0: All comments
+            var _userServicePromise = userService.getCurrentUser();
+            var _user = -1;
+
+            if ($scope.treeNode == 1)
             {
-
-            } else {
-                notelyResources.getUniqueContentNodes().then(function (data) {
-
-                    console.log(data);
-
-                });
+                _userServicePromise.then(function (user) { _user = user.id; });
             }
 
-        };
+            notelyResources.getUniqueContentNodes(_user).then(function (data) {
 
-        // Edit comment
-        $scope.editComment = function (comment) {
-            $scope.overlay = {
-                view: "/App_Plugins/Notely/views/dialogs/notely.comments.edit.html",
-                title: "Edit comment",
-                comment: angular.copy(comment),
-                show: true,
-                hideSubmitButton: comment.state == true,
-                close: function (oldModel) {
-                    $scope.overlay.show = false;
-                    $scope.overlay = null;
-                },
-                submit: function (model) {
-                    // Update comment
-                    notelyResources.updateComment(model.comment).then(function () {
-                        // Get the comments
-                        $scope.load();
+                angular.forEach(data, function (content) {
+
+                    var contentPromise = notelyResources.getContentNodeDetails(content, _user);
+                    contentPromise.then(function (details) {
+                        $scope.backOfficeDetails.push(backOfficeNodesBuilder.convert(details));
                     });
 
-                    $scope.overlay.show = false;
-                    $scope.overlay = null;
+                });
 
-                    // Show notification
-                    notificationsService.success("Comment saved", "Comment is successfully saved.");
-                }
-            };
+            });
+
+            $scope.loaded = true;
+
         };
 
-        // Delete a comment
-        $scope.deleteComment = function (commentId) {
-            dialogService.open({
-                template: '/App_Plugins/Notely/views/dialogs/notely.comments.delete.html',
-                dialogData: commentId,
-                callback: function (data) {
-                    notelyResources.deleteComment(data).then(function () {
-                        // Get the comments
-                        $scope.load();
-
-                        // Show notification
-                        notificationsService.success("Comment removed", "Comment is successfully delete.");
-                    });
-                }
-            });
+        // Expand the content node details
+        $scope.expandContent = function (index) {
+            $scope.backOfficeDetails[index].showDetails = !$scope.backOfficeDetails[index].showDetails;
         };
 
-        // Set task as done
-        $scope.taskComplete = function (commentId) {
-            notelyResources.taskComplete(commentId).then(function () {
-                // Get the comments
-                $scope.load();
+        // Toggle content nodes
+        $scope.toggleContentNodes = function () {
+            $scope.expanded = !$scope.expanded;
 
-                // Show notification
-                notificationsService.success("Task completed", "Todo comment is set completed.");
-            });
+            angular.forEach($scope.backOfficeDetails, function (content) { content.showDetails = $scope.expanded; });
+        }
+
+        // Render the comment description field
+        $scope.renderDescription = function (comment) {
+            return comment.description + (comment.type.canAssign && comment.assignedTo ? ' <strong>[Assigned to: ' + comment.assignedTo.name + ']</strong>' : '');
         };
 
     }

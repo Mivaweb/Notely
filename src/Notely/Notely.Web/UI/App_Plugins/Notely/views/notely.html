@@ -25,22 +25,22 @@
             <table class="notely-table" ng-if="comments.length > 0">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>State</th>
-                        <th></th>
+                        <th class="notely-table-width-commenttype"></th>
+                        <th class="notely-table-width-commenttitle">Title</th>
+                        <th class="notely-table-width-commentdesc">Description</th>
+                        <th class="notely-table-width-commentstate">State</th>
+                        <th class="notely-table-width-commentactions"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="comment in comments track by $index">
-                        <td>
+                        <td class="notely-table-width-commenttype">
                             <i title="{{comment.type.title}}" class="icon" ng-class="comment.type.icon"></i>
                         </td>
-                        <td class="notely-comments_text"><a href ng-click="editComment(comment)">{{comment.title}}</a></td>
-                        <td class="notely-comments_text" ng-bind-html-unsafe="renderDescription(comment)"></td>
-                        <td><span ng-show="comment.type.canAssign" class="label" ng-class="'label-' + comment.state.title | lowercase">{{comment.state.title}}</span></td>
-                        <td align="right">
+                        <td class="notely-table-width-commenttitle"><a href ng-click="editComment(comment)">{{comment.title}}</a></td>
+                        <td class="notely-table-width-commentdesc" ng-bind-html-unsafe="renderDescription(comment)"></td>
+                        <td class="notely-table-width-commentstate"><span ng-show="comment.type.canAssign" class="label" ng-class="'label-' + comment.state.title | lowercase">{{comment.state.title}}</span></td>
+                        <td class="notely-table-width-commentactions">
                             <a href class="btn btn-default notely-btn-round" ng-click="editComment(comment)"><i class="icon icon-edit"></i></a>
                             <a href class="btn btn-default notely-btn-round" ng-click="deleteComment(comment.id)"><i class="icon icon-delete"></i></a>
                         </td>

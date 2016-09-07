@@ -1,4 +1,4 @@
-﻿[class*=notely-] a {
+﻿[class*=notely-] a:not(.notely-link) {
     text-decoration: none;
 }
 
@@ -8,8 +8,16 @@
     padding: 0;
 }
 
+.row > [class^=span] > .umb-editor {
+    max-width: 86%;
+}
+
 .notely-control-group {
     padding-bottom: 20px;
+}
+
+.notely-control-group .control-label .btn {
+    margin-top: 15px;
 }
 
 .notely-control-group .controls {
@@ -85,6 +93,9 @@ table.notely-table.notely-table-striped > tbody > tr:nth-of-type(odd) {
 table.notely-table tbody tr.notely-comments_done td.notely-comments_text {
     text-decoration: line-through;
 }
+table.notely-table.notely-table-bordered > tbody > tr > td {
+    border-bottom: 1px solid #f1f1f1;
+}
 
 table.notely-table a:not(.btn) {
     color: #2e8aea;
@@ -112,21 +123,30 @@ table.notely-table .label-done {
     background-color: #8ECF7F;
 }
 
+table.notely-table td.notely-table-width-commenttype {
+    width: 10%;
+}
+
+table.notely-table td.notely-table-width-commenttitle {
+    width: 20%;
+}
+
+table.notely-table td.notely-table-width-commentdesc {
+    width: 40%;
+}
+
+table.notely-table td.notely-table-width-commentstate {
+    width: 15%;
+}
+
+table.notely-table td.notely-table-width-commentactions {
+    width: 15%;
+    text-align: right;
+}
+
 .notely-bold {
     font-weight: bold;
 }
-
-.notely-comments_action {
-    
-}
-
-/*.notely-comments_action.done {
-    color: #46a546 !important;
-}
-
-.notely-comments_action.delete {
-    color: #9d261d !important;
-}*/
 
 .notely-clear-select i {
     color: #9d261d !important;
@@ -160,20 +180,75 @@ table.notely-table .label-done {
 }
 
 .notely-btn-round {
-    background: transparent;
     border-radius: 100%;
     padding: 0;
     width: 28px;
     height: 28px;
     line-height: 28px;
     text-align: center;
-    border-color: #dddddd;
     transition: all 100ms linear;
 }
 
-.notely-btn-round:hover,
-.notely-btn-round:focus {
+.notely-btn-round.btn-default {
+    border-color: #dddddd;
+    background: transparent;
+}
+
+.notely-btn-round.btn-default:hover,
+.notely-btn-round.btn-default:focus {
     background: #2e8aea;
     border-color: #2e8aea;
     color: #ffffff;
+}
+
+.notely-backoffice-list {
+    margin-top: 20px;
+}
+
+.notely-backoffice-item {
+    margin-bottom: 15px;
+    border: 2px solid transparent;
+    transition: border 100ms linear;
+}
+
+.notely-backoffice-item > h4 {
+    padding: 0 15px;
+}
+
+.notely-backoffice-item > h4 > i {
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.notely-backoffice-item_body .umb-property {
+    margin: 20px 20px 0;
+}
+
+.notely-link {
+    text-decoration: underline;
+}
+
+.notely-backoffice-item.notely-collapsed {
+    border-color: #eeeeee;
+}
+
+.notely-backoffice-default {
+    margin-bottom: 20px;
+}
+
+.notely-backoffice-options {
+    padding: 20px;
+    background: #f9f9f9;
+    margin-bottom: 20px;
+}
+
+.notely-backoffice-options .row + .row {
+    margin-top: 20px;
+}
+
+@media (max-width: 767px) {
+    .notely-control-group .controls {
+        margin-left: 0;
+        margin-top: 10px;
+    }
 }

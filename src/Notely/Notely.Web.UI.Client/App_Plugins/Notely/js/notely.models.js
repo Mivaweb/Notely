@@ -168,6 +168,7 @@ var BackOfficeNode = function () {
 
     self.contentId = -1;
     self.contentName = '';
+    self.showDetails = false;
     self.properties = [];
 };
 
@@ -189,6 +190,7 @@ var BackOfficeProperty = function () {
 
     self.id = -1;
     self.alias = '';
+    self.name = '';
     self.comments = [];
 };
 
