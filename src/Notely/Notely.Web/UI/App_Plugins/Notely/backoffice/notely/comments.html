@@ -37,11 +37,18 @@
                                     <option value="">Select state</option>
                                 </select>
                             </div>
+                            <div class="span6">
+                                <div class="umb-editor umb-boolean">
+                                    <input type="checkbox" value="" ng-model="options.hiding" />
+                                    <span>Hide content properties without comments</span>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="row">
-                            <div class="span3">
+                            <div class="span6">
                                 <button type="button" class="btn btn-success" ng-click="reset()">Reset</button>
+                                <a href class="notely-reload" ng-click="reload()"><i class="icon icon-refresh"></i><span>Reload</span></a>
                             </div>
                         </div>
 
@@ -54,7 +61,10 @@
                     <div class="notely-backoffice-list">
 
                         <!-- Begin .notely-backoffice-item -->
-                        <div ng-repeat="content in backOfficeDetails track by $index" class="notely-backoffice-item" ng-class="{'notely-collapsed': !content.showDetails}" ng-show="content.properties.length > 0">
+                        <div ng-repeat="content in backOfficeDetails track by $index" 
+                             class="notely-backoffice-item" 
+                             ng-class="{'notely-collapsed': !content.showDetails}" 
+                             ng-show="content.properties.length > 0">
 
                             <h4>
                                 <i class="icon"
@@ -64,7 +74,7 @@
                             </h4>
 
                             <div class="notely-backoffice-item_body" ng-show="content.showDetails">
-                                <div ng-repeat="property in content.properties" class="umb-property">
+                                <div ng-repeat="property in content.properties" class="umb-property" ng-hide="filteredComments.length == 0 && options.hiding">
                                     <ng-form name="propertyForm">
                                         <div class="control-group umb-control-group notely-control-group">
                                             <label class="control-label">

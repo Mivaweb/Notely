@@ -251,6 +251,27 @@ table.notely-table td.notely-table-width-commentactions {
     color: #ccc;
 }
 
+.notely-reload {
+    padding: 5px 12px;
+    line-height: 20px;
+    font-size: 14px;
+    vertical-align: middle;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.notely-reload > span {
+    padding-top: 2px;
+    padding-left: 8px;
+}
+
+.notely-reload > i {
+    font-size: 20px;
+    display: inline-block;
+    margin-top: -2px;
+    vertical-align: middle;
+}
+
 @media (max-width: 767px) {
     .notely-control-group .controls {
         margin-left: 0;

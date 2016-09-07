@@ -426,7 +426,8 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
         $scope.treeNode = 0; // 0 = all comments / 1 = my comments
         $scope.options = {
             type: {},
-            state: {}
+            state: {},
+            hiding: false
         };
         $scope.commentTypes = [];
         $scope.commentStates = [];
@@ -452,7 +453,6 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
             // Get all the comments
             $scope.load();
 
-            console.log($scope)
         };
 
         // Load the filter options
@@ -503,13 +503,24 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
         $scope.reset = function () {
             $scope.options = {
                 type: {},
-                state: {}
+                state: {},
+                hiding: false
             };
+        };
+
+        // Reload
+        $scope.reload = function () {
+            $scope.loadOptions();
+            $scope.load();
+            $scope.reset();
+            $scope.expanded = false;
         };
 
         // Expand the content node details
         $scope.expandContent = function (index) {
             $scope.backOfficeDetails[index].showDetails = !$scope.backOfficeDetails[index].showDetails;
+
+            checkToggleState();
         };
 
         // Toggle content nodes
@@ -530,6 +541,54 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
                 $scope.options.state = {};
         };
 
+        // Edit comment
+        $scope.editComment = function (comment) {
+            
+            console.log(comment)
+
+            $scope.overlay = {
+                view: "/App_Plugins/Notely/views/dialogs/notely.comments.edit.html",
+                title: "Edit comment",
+                comment: angular.copy(comment),
+                show: true,
+                hideSubmitButton: false,
+                close: function (oldModel) {
+                    $scope.overlay.show = false;
+                    $scope.overlay = null;
+                },
+                submit: function (model) {
+                    // Update comment
+                    notelyResources.updateComment(model.comment).then(function () {
+                        // Get the comments
+                        $scope.load();
+                    });
+
+                    $scope.overlay.show = false;
+                    $scope.overlay = null;
+
+                    // Show notification
+                    notificationsService.success("Comment saved", "Comment is successfully saved.");
+                }
+            };
+        };
+
+        // Delete a comment
+        $scope.deleteComment = function (commentId) {
+            dialogService.open({
+                template: '/App_Plugins/Notely/views/dialogs/notely.comments.delete.html',
+                dialogData: commentId,
+                callback: function (data) {
+                    notelyResources.deleteComment(data).then(function () {
+                        // Get the comments
+                        $scope.load();
+
+                        // Show notification
+                        notificationsService.success("Comment removed", "Comment is successfully delete.");
+                    });
+                }
+            });
+        };
+
         function loadDetails(_user) {
             notelyResources.getUniqueContentNodes(_user).then(function (data) {
 
@@ -543,6 +602,13 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
                 });
 
             });
+        }
+
+        function checkToggleState() {
+            var result = $scope.backOfficeDetails.filter(function (detail) { return detail.showDetails == !$scope.expanded; });
+            
+            if(result.length == $scope.backOfficeDetails.length)
+                $scope.expanded = !$scope.expanded;
         }
 
     }
