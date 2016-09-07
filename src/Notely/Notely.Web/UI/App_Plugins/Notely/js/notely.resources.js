@@ -129,9 +129,9 @@ angular.module('notely.resources').factory('notelyResources',
             },
 
             // Get unique content node id's with comments
-            getUniqueContentNodes: function (userId) {
+            getUniqueContentNodes: function (userId, type, state) {
                 return umbRequestHelper.resourcePromise(
-                    $http.get("backoffice/notely/notelyapi/getuniquecontentnodes", { params: { userId: userId } }),
+                    $http.get("backoffice/notely/notelyapi/getuniquecontentnodes", { params: { userId: userId, type: type, state: state } }),
                     "Unable to get the unique content nodes!"
                 );
             },

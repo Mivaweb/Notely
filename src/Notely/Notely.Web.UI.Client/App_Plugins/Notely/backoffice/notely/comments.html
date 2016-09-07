@@ -23,6 +23,7 @@
                                 <select name="notelyType" class="umb-editor umb-dropdown"
                                         ng-show="commentTypes"
                                         ng-model="options.type"
+                                        ng-change="changedType()"
                                         ng-options="c.title for c in commentTypes track by c.id">
                                     <option value="">Select type</option>
                                 </select>
@@ -31,6 +32,7 @@
                                 <select name="notelyState" class="umb-editor umb-dropdown"
                                         ng-show="commentStates"
                                         ng-model="options.state"
+                                        ng-disabled="options.type.id > 0 && !options.type.canAssign"
                                         ng-options="c.title for c in commentStates track by c.id">
                                     <option value="">Select state</option>
                                 </select>
@@ -39,7 +41,7 @@
 
                         <div class="row">
                             <div class="span3">
-                                <button type="button" class="btn btn-success" ng-click="">Filter</button>
+                                <button type="button" class="btn btn-success" ng-click="reset()">Reset</button>
                             </div>
                         </div>
 
@@ -66,12 +68,12 @@
                                     <ng-form name="propertyForm">
                                         <div class="control-group umb-control-group notely-control-group">
                                             <label class="control-label">
-                                                {{property.name}} ({{property.comments.length}})
+                                                {{property.name}} ({{filteredComments.length}})
                                                 <small>Property alias: '<strong>{{property.alias}}</strong>'</small>
                                             </label>
                                             <div class="controls">
                                                 <div class="umb-property-editor">
-
+                                                    
                                                     <table class="notely-table notely-table-bordered" ng-if="property.comments.length > 0">
                                                         <thead>
                                                             <tr>
@@ -83,7 +85,7 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr ng-repeat="comment in property.comments">
+                                                            <tr ng-repeat="comment in $parent.filteredComments = (property.comments | filterType: options.type | filterState: options.state)">
                                                                 <td class="notely-table-width-commenttype">
                                                                     <i title="{{comment.type.title}}" class="icon" ng-class="comment.type.icon"></i>
                                                                 </td>
@@ -95,9 +97,12 @@
                                                                     <a href class="btn btn-default notely-btn-round" ng-click="deleteComment(comment.id)"><i class="icon icon-delete"></i></a>
                                                                 </td>
                                                             </tr>
+                                                            <tr class="notely-default-row" ng-if="filteredComments.length == 0">
+                                                                <td colspan="5">No comments to display for this property based on the filtering.</td>
+                                                            </tr>
                                                         </tbody>
                                                     </table>
-
+                                                    
                                                     <div ng-if="treeNode == 0 && property.comments.length == 0" class="notely-backoffice-default">
                                                         No comments are added to the property <strong>{{property.name}}</strong>. Click the add button to add your first comment.
                                                     </div>

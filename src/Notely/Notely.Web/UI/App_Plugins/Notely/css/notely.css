@@ -246,6 +246,11 @@ table.notely-table td.notely-table-width-commentactions {
     margin-top: 20px;
 }
 
+.notely-default-row {
+    text-align: center;
+    color: #ccc;
+}
+
 @media (max-width: 767px) {
     .notely-control-group .controls {
         margin-left: 0;

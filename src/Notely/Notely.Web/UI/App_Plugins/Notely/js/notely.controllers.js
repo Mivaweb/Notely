@@ -432,6 +432,7 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
         $scope.commentStates = [];
         $scope.backOfficeDetails = [];
         $scope.visibleTabs = [];
+        $scope.filteredComments = [];
 
         // Init function
         $scope.init = function () {
@@ -451,6 +452,7 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
             // Get all the comments
             $scope.load();
 
+            console.log($scope)
         };
 
         // Load the filter options
@@ -460,20 +462,21 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
             var commentTypesPromise = notelyResources.getCommentTypes();
             commentTypesPromise.then(function (data) {
                 $scope.commentTypes = commentTypesBuilder.convert(data);
-                $scope.model.comment.type = $scope.commentTypes[0];
             });
 
             // Get comment states
             var commentStatesPromise = notelyResources.getCommentStates();
             commentStatesPromise.then(function (data) {
                 $scope.commentStates = commentStatesBuilder.convert(data);
-                $scope.model.comment.state = $scope.commentStates[0];
             });
 
         };
 
         // Load the comments from the API
         $scope.load = function () {
+
+            // Reset
+            $scope.backOfficeDetails = [];
 
             // Check id of the route parameters:
             // Case 1: My comments => so we need to get the current logged in user and get his comments
@@ -483,24 +486,25 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
 
             if ($scope.treeNode == 1)
             {
-                _userServicePromise.then(function (user) { _user = user.id; });
-            }
+                _userServicePromise.then(function (user) {
+                    _user = user.id;
 
-            notelyResources.getUniqueContentNodes(_user).then(function (data) {
-
-                angular.forEach(data, function (content) {
-
-                    var contentPromise = notelyResources.getContentNodeDetails(content, _user);
-                    contentPromise.then(function (details) {
-                        $scope.backOfficeDetails.push(backOfficeNodesBuilder.convert(details));
-                    });
-
+                    loadDetails(_user);
                 });
-
-            });
+            } else {
+                loadDetails(_user);
+            }
 
             $scope.loaded = true;
 
+        };
+
+        // Reset
+        $scope.reset = function () {
+            $scope.options = {
+                type: {},
+                state: {}
+            };
         };
 
         // Expand the content node details
@@ -519,6 +523,27 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
         $scope.renderDescription = function (comment) {
             return comment.description + (comment.type.canAssign && comment.assignedTo ? ' <strong>[Assigned to: ' + comment.assignedTo.name + ']</strong>' : '');
         };
+
+        // Changed filter option type
+        $scope.changedType = function () {
+            if ($scope.options.type.id > 0 && !$scope.options.type.canAssign)
+                $scope.options.state = {};
+        };
+
+        function loadDetails(_user) {
+            notelyResources.getUniqueContentNodes(_user).then(function (data) {
+
+                angular.forEach(data, function (content) {
+
+                    var contentPromise = notelyResources.getContentNodeDetails(content, _user);
+                    contentPromise.then(function (details) {
+                        $scope.backOfficeDetails.push(backOfficeNodesBuilder.convert(details));
+                    });
+
+                });
+
+            });
+        }
 
     }
 

@@ -309,7 +309,8 @@ namespace Notely.Web.Controllers
         {
             using(var repo = new CommentsRepository())
             {
-                return repo.GetUniqueContentNodes(userId);
+                var result = repo.GetUniqueContentNodes(userId);
+                return result;
             }
         }
 
