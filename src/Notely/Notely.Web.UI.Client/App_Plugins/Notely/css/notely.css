@@ -59,7 +59,8 @@
     width: 95%;
 }
 
-.notely-container .umb-overlay .umb-overlay__title {
+.notely-container .umb-overlay .umb-overlay__title,
+.notely-backoffice .umb-overlay .umb-overlay__title {
     font-weight: 400;
 }
 

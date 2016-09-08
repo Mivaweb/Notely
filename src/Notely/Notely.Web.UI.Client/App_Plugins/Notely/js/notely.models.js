@@ -191,35 +191,11 @@ var BackOfficeProperty = function () {
     self.id = -1;
     self.alias = '';
     self.name = '';
+    self.limit = 1;
     self.comments = [];
 };
 
 angular.module('notely.models').constant('BackOfficeProperty', BackOfficeProperty);
-
-
-/*
- * @ngdoc model
- * @name BackOfficeComment
- * @function
- * 
- * @description
- * Represents the js version of the Notely's BackOfficeComment
- * 
- */
-
-var BackOfficeComment = function () {
-    var self = this;
-
-    self.id = -1;
-    self.title = '';
-    self.description = '';
-    self.type = null;
-    self.assignedTo = null;
-    self.state = null;
-};
-
-angular.module('notely.models').constant('BackOfficeComment', BackOfficeComment);
-
 
 
 /*

@@ -86,7 +86,7 @@ namespace Notely.Core.Persistence.Repositories
         /// <returns></returns>
         public Comment Get(int id)
         {
-            return _dbContext.Database.Fetch<Comment, CommentType, CommentState>("SELECT nc.*, ncs.*, nct.* FROM notelyComments AS nc JOIN notelyCommentStates AS ncs ON ncs.id = nc.state JOIN notelyCommentTypes AS nct ON nct.id = nc.type WHERE nc.id = @p1", new { p1 = id })[0];
+            return _dbContext.Database.Fetch<Comment, CommentType, CommentState>("SELECT nc.*, ncs.*, nct.* FROM notelyComments AS nc LEFT JOIN notelyCommentStates AS ncs ON ncs.id = nc.state JOIN notelyCommentTypes AS nct ON nct.id = nc.type WHERE nc.id = @p1", new { p1 = id })[0];
         }
 
         /// <summary>

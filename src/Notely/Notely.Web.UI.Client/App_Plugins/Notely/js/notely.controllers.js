@@ -124,13 +124,21 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
 
         // Add a new comment
         $scope.addComment = function () {
+
             // Extra check to see if comments limit is not reached
             if ($scope.comments.length < $scope.model.config.limit) {
+
+                // Create new contentProperty object
+                var _cp = contentPropertyBuilder.createEmpty();
+                _cp.contentId = $routeParams.id;
+                _cp.propertyDataId = $scope.model.id;
+                _cp.propertyTypeAlias = $scope.model.alias;
+
                 $scope.overlay = {
                     view: "/App_Plugins/Notely/views/dialogs/notely.comments.add.html",
                     title: "Add comment",
                     show: true,
-                    property: $scope.model,
+                    property: _cp,
                     hideSubmitButton: false,
                     close: function (oldModel) {
                         $scope.overlay.show = false;
@@ -150,7 +158,9 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
                         notificationsService.success("Comment added", "Comment is successfully added to the property editor.");
                     }
                 };
+
             }
+
         };
 
         // Edit comment
@@ -195,7 +205,7 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
                         $scope.load();
 
                         // Show notification
-                        notificationsService.success("Comment removed", "Comment is successfully delete.");
+                        notificationsService.success("Comment removed", "Comment is successfully deleted.");
                     });
                 }
             });
@@ -234,9 +244,9 @@ angular.module('notely').controller('Notely.PropertyEditors.AddController', [
 
         // Reset comment window
         $scope.model.comment = commentsBuilder.createEmpty();
-        $scope.model.comment.contentProperty.contentId = $routeParams.id;
-        $scope.model.comment.contentProperty.propertyDataId = $scope.model.property.id
-        $scope.model.comment.contentProperty.propertyTypeAlias = $scope.model.property.alias;
+        $scope.model.comment.contentProperty.contentId = $scope.model.property.contentId;
+        $scope.model.comment.contentProperty.propertyDataId = $scope.model.property.propertyDataId;
+        $scope.model.comment.contentProperty.propertyTypeAlias = $scope.model.property.propertyTypeAlias;
 
         // Init controller
         $scope.init = function () {
@@ -411,15 +421,17 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
     '$scope',
     'notelyResources',
     'backOfficeNodesBuilder',
+    'commentsBuilder',
     'commentTypesBuilder',
     'commentStatesBuilder',
+    'contentPropertyBuilder',
     'userService',
     '$routeParams',
     'dialogService',
     'notificationsService',
 
-    function ($scope, notelyResources, backOfficeNodesBuilder, commentTypesBuilder, commentStatesBuilder,
-        userService, $routeParams, dialogService, notificationsService) {
+    function ($scope, notelyResources, backOfficeNodesBuilder, commentsBuilder, commentTypesBuilder, commentStatesBuilder,
+        contentPropertyBuilder, userService, $routeParams, dialogService, notificationsService) {
 
         $scope.loaded = false;
         $scope.expanded = false;
@@ -541,11 +553,49 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
                 $scope.options.state = {};
         };
 
+        // Add a new comment
+        $scope.addComment = function (contentId, property) {
+
+            // Extra check to see if comments limit is not reached
+            if (property.comments.length < property.limit) {
+
+                // Create new contentProperty object
+                var _cp = contentPropertyBuilder.createEmpty();
+                _cp.contentId = contentId;
+                _cp.propertyDataId = property.id;
+                _cp.propertyTypeAlias = property.alias;
+
+                $scope.overlay = {
+                    view: "/App_Plugins/Notely/views/dialogs/notely.comments.add.html",
+                    title: "Add comment",
+                    show: true,
+                    property: _cp,
+                    hideSubmitButton: false,
+                    close: function (oldModel) {
+                        $scope.overlay.show = false;
+                        $scope.overlay = null;
+                    },
+                    submit: function (model) {
+                        // Add comment
+                        notelyResources.addComment(model.comment).then(function () {
+                            // Get the comments
+                            $scope.load();
+                            $scope.expanded = false;
+                        });
+
+                        $scope.overlay.show = false;
+                        $scope.overlay = null;
+
+                        // Show notification
+                        notificationsService.success("Comment added", "Comment is successfully added to the property editor.");
+                    }
+                };
+            }
+
+        };
+
         // Edit comment
         $scope.editComment = function (comment) {
-            
-            console.log(comment)
-
             $scope.overlay = {
                 view: "/App_Plugins/Notely/views/dialogs/notely.comments.edit.html",
                 title: "Edit comment",
@@ -559,8 +609,9 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
                 submit: function (model) {
                     // Update comment
                     notelyResources.updateComment(model.comment).then(function () {
-                        // Get the comments
+                        // Reload
                         $scope.load();
+                        $scope.expanded = false;
                     });
 
                     $scope.overlay.show = false;
@@ -583,7 +634,7 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
                         $scope.load();
 
                         // Show notification
-                        notificationsService.success("Comment removed", "Comment is successfully delete.");
+                        notificationsService.success("Comment removed", "Comment is successfully deleted.");
                     });
                 }
             });

@@ -63,3 +63,25 @@ angular.module('notely.filters').filter('filterState',
     }
 
 );
+
+/*
+ * @ngdoc filter
+ * @name orderByContentId
+ * 
+ * @description
+ * Sort comments based on the content id
+ * 
+ */
+angular.module('notely.filters').filter('orderByContentId',
+
+    function () {
+        return function (details) {
+            var sorted = details;
+            sorted.sort(function (a, b) {
+                return a.contentId > b.contentId ? 1 : -1;
+            });
+            return sorted;
+        };
+    }
+
+);

@@ -326,7 +326,7 @@ namespace Notely.Web.Controllers
         public BackOfficeNode GetBackOfficeNodeDetails(int contentId, int userId)
         {
             var _result = new BackOfficeNode();
-            var _boComment = new BackOfficeComment();
+            var _comment = new CommentViewModel();
 
             using (var repo = new CommentsRepository())
             {
@@ -341,18 +341,22 @@ namespace Notely.Web.Controllers
                 
                 foreach(var prop in _content.Properties.Where(p => p.PropertyType.PropertyEditorAlias == "Notely"))
                 {
+                    var dataTypeDef = Services.DataTypeService.GetDataTypeDefinitionById(prop.PropertyType.DataTypeDefinitionId);
+                    var limitValue = int.Parse(GetPreValues(dataTypeDef)["limit"].ToString());
+
                     // Step 2: Add properties and comments
                     _result.Properties.Add(new BackOfficeProperty() {
 
                         Alias = prop.Alias,
                         Id = prop.PropertyType.Id,
                         Name = prop.PropertyType.Name,
+                        Limit = limitValue,
                         Comments = userId >= 0 ? repo.GetAllByContentProp(
                             _content.Id, prop.PropertyType.Id, userId)
-                            .Select(c => _boComment.Convert(c)).ToList() :
+                            .Select(c => _comment.Convert(c)).ToList() :
                             repo.GetAllByContentProp(
                             _content.Id, prop.PropertyType.Id)
-                            .Select(c => _boComment.Convert(c)).ToList()
+                            .Select(c => _comment.Convert(c)).ToList()
 
                     });
                 }

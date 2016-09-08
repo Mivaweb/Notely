@@ -28,10 +28,16 @@ namespace Notely.Web.Models
         public string Name { get; set; }
 
         /// <summary>
+        /// Holds the limit prevalue of the property editor
+        /// </summary>
+        [JsonProperty("limit")]
+        public int Limit { get; set; }
+
+        /// <summary>
         /// List of comments
         /// </summary>
         [JsonProperty("comments")]
-        public List<BackOfficeComment> Comments { get; set; }
+        public List<CommentViewModel> Comments { get; set; }
 
         /// <summary>
         /// Constructor
@@ -39,9 +45,10 @@ namespace Notely.Web.Models
         public BackOfficeProperty()
         {
             Id = -1;
+            Limit = 1;
             Alias = "";
             Name = "";
-            Comments = new List<BackOfficeComment>();
+            Comments = new List<CommentViewModel>();
         }
     }
 }
