@@ -65,6 +65,49 @@ angular.module('notely.models').constant('ContentProperty', ContentProperty);
 
 /*
  * @ngdoc model
+ * @name CommentType
+ * @function
+ * 
+ * @description
+ * Represents the js version of the Notely's CommentType object
+ * 
+ */
+
+var CommentType = function () {
+    var self = this;
+
+    self.id = -1;
+    self.title = '';
+    self.icon = '';
+    self.canAssign = false;
+};
+
+angular.module('notely.models').constant('CommentType', CommentType);
+
+
+/*
+ * @ngdoc model
+ * @name CommentState
+ * @function
+ * 
+ * @description
+ * Represents the js version of the Notely's CommentState object
+ * 
+ */
+
+var CommentState = function () {
+    var self = this;
+
+    self.id = -1;
+    self.title = '';
+    self.color = '';
+};
+
+angular.module('notely.models').constant('CommentState', CommentState);
+
+
+/*
+ * @ngdoc model
  * @name Comment
  * @function
  * 
@@ -79,10 +122,11 @@ var Comment = function () {
     self.id = -1;
     self.title = '';
     self.description = '';
-    self.type = 0;
+    self.type = null;
     self.assignedTo = null;
-    self.state = false;
+    self.state = null;
     self.contentProperty = null;
+    self.closed = false;
 };
 
 angular.module('notely.models').constant('Comment', Comment);
@@ -107,6 +151,52 @@ var User = function () {
 };
 
 angular.module('notely.models').constant('User', User);
+
+
+/*
+ * @ngdoc model
+ * @name BackOfficeNode
+ * @function
+ * 
+ * @description
+ * Represents the js version of the Notely's BackOfficeNode
+ * 
+ */
+
+var BackOfficeNode = function () {
+    var self = this;
+
+    self.contentId = -1;
+    self.contentName = '';
+    self.showDetails = false;
+    self.properties = [];
+};
+
+angular.module('notely.models').constant('BackOfficeNode', BackOfficeNode);
+
+
+/*
+ * @ngdoc model
+ * @name BackOfficeProperty
+ * @function
+ * 
+ * @description
+ * Represents the js version of the Notely's BackOfficeProperty
+ * 
+ */
+
+var BackOfficeProperty = function () {
+    var self = this;
+
+    self.id = -1;
+    self.alias = '';
+    self.name = '';
+    self.limit = 1;
+    self.comments = [];
+};
+
+angular.module('notely.models').constant('BackOfficeProperty', BackOfficeProperty);
+
 
 /*
 * @ngdoc service
@@ -240,6 +330,69 @@ angular.module('notely.models').factory('contentPropertyBuilder', [
 
 ]);
 
+
+/*
+ * @ngdoc service
+ * @name commentTypeBuilder
+ * 
+ * @decription
+ * Modelsbuilder for the CommentType model
+ * 
+ */
+angular.module('notely.models').factory('commentTypesBuilder', [
+
+    'modelsBuilder',
+    'CommentType',
+
+    function (modelsBuilder, CommentType) {
+
+        var Constructor = CommentType;
+
+        return {
+            createEmpty: function () {
+                return new Constructor();
+            },
+            convert: function (jsonResult) {
+                return modelsBuilder.convert(jsonResult, Constructor);
+            }
+        };
+
+    }
+
+]);
+
+
+/*
+ * @ngdoc service
+ * @name commentStateBuilder
+ * 
+ * @decription
+ * Modelsbuilder for the CommentState model
+ * 
+ */
+angular.module('notely.models').factory('commentStatesBuilder', [
+
+    'modelsBuilder',
+    'CommentState',
+
+    function (modelsBuilder, CommentState) {
+
+        var Constructor = CommentState;
+
+        return {
+            createEmpty: function () {
+                return new Constructor();
+            },
+            convert: function (jsonResult) {
+                return modelsBuilder.convert(jsonResult, Constructor);
+            }
+        };
+
+    }
+
+]);
+
+
 /*
  * @ngdoc service
  * @name commentsBuilder
@@ -253,8 +406,10 @@ angular.module('notely.models').factory('commentsBuilder', [
     'modelsBuilder',
     'Comment',
     'contentPropertyBuilder',
+    'commentTypesBuilder',
+    'commentStatesBuilder',
 
-    function (modelsBuilder, Comment, contentPropertyBuilder) {
+    function (modelsBuilder, Comment, contentPropertyBuilder, commentTypesBuilder, commentStatesBuilder) {
 
         var Constructor = Comment;
 
@@ -262,6 +417,8 @@ angular.module('notely.models').factory('commentsBuilder', [
             createEmpty: function () {
                 var _c = new Constructor();
                 _c.contentProperty = contentPropertyBuilder.createEmpty();
+                _c.type = commentTypesBuilder.createEmpty();
+                _c.state = commentStatesBuilder.createEmpty();
                 return _c;
             },
             convert: function (jsonResult) {
@@ -289,6 +446,37 @@ angular.module('notely.models').factory('usersBuilder', [
     function (modelsBuilder, User) {
 
         var Constructor = User;
+
+        return {
+            createEmpty: function () {
+                return new Constructor();
+            },
+            convert: function (jsonResult) {
+                return modelsBuilder.convert(jsonResult, Constructor);
+            }
+        };
+
+    }
+
+]);
+
+
+/*
+ * @ngdoc service
+ * @name backOfficeNodesBuilder
+ * 
+ * @decription
+ * Modelsbuilder for the User model
+ * 
+ */
+angular.module('notely.models').factory('backOfficeNodesBuilder', [
+
+    'modelsBuilder',
+    'BackOfficeNode',
+
+    function (modelsBuilder, BackOfficeNode) {
+
+        var Constructor = BackOfficeNode;
 
         return {
             createEmpty: function () {

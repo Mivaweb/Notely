@@ -1,0 +1,37 @@
+﻿<div ng-controller="Notely.Types.AddController" ng-init="init()" class="notely-modal">
+
+    <p>
+        Add a new comment type to Notely.
+    </p>
+
+    <h5>Properties</h5>
+
+    <div class="umb-control-group">
+        <label class="control-label">
+            Title
+        </label>
+        <div class="controls controls-row">
+            <input name="notelyTitle" type="text" value="" ng-model="model.type.title" placeholder="Title" class="umb-editor" />
+        </div>
+    </div>
+    <div class="umb-control-group">
+        <label class="control-label">
+            Icon
+        </label>
+        <div class="controls controls-row">
+            <div class="notely-controls-icon" ng-click="openIconPicker()">
+                <i class="icon" ng-class="model.type.icon"></i>
+            </div>
+        </div>
+    </div>
+    <div class="umb-control-group">
+        <label class="control-label">
+            Can be assigned to?
+        </label>
+        <div class="controls controls-row">
+            <div class="umb-editor umb-boolean">
+                <input type="checkbox" value="" ng-model="model.type.canAssign" />
+            </div>
+        </div>
+    </div>
+</div>

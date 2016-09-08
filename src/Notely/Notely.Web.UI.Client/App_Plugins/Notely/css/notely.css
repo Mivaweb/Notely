@@ -1,4 +1,4 @@
-﻿[class*=notely-] a {
+﻿[class*=notely-] a:not(.notely-link) {
     text-decoration: none;
 }
 
@@ -6,6 +6,22 @@
     list-style: none outside none;
     margin: 0;
     padding: 0;
+}
+
+.row > [class^=span] > .umb-editor {
+    max-width: 86%;
+}
+
+.notely-control-group {
+    padding-bottom: 20px;
+}
+
+.notely-control-group .control-label .btn {
+    margin-top: 15px;
+}
+
+.notely-control-group .controls {
+    margin-left: 240px;
 }
 
 .notely-property {
@@ -43,7 +59,8 @@
     width: 95%;
 }
 
-.notely-container .umb-overlay .umb-overlay__title {
+.notely-container .umb-overlay .umb-overlay__title,
+.notely-backoffice .umb-overlay .umb-overlay__title {
     font-weight: 400;
 }
 
@@ -51,34 +68,12 @@
     margin-bottom: 15px;
 }
 
-.notely-comments .notely-comments_typelist--heading {
-    padding: 8px 15px;
-    position: relative;
-    border-bottom: 1px solid #ccc;
-}
-
-.notely-comments .notely-comments_typelist--heading i {
-    position: absolute;
-    left: 15px;
-    top: 7px;
-    font-size: 18px;
-}
-
-.notely-comments h4 {
-    margin: 0;
-    padding: 0;
-    padding-left: 25px;
-}
-
-.notely-comments .notely-comments_typelist--body {
-    padding: 15px;
-}
-
-.notely-comments table {
+table.notely-table {
     width: 100%;
+    margin-bottom: 20px;
 }
 
-.notely-comments table > thead th {
+table.notely-table > thead th {
     border-bottom: 1px solid #ccc;
     padding: 4px;
     cursor: pointer;
@@ -88,50 +83,70 @@
     text-align: left;
 }
 
-.notely-comments table > tbody td {
+table.notely-table > tbody td {
     padding: 8px 4px;
 }
 
-.notely-comments table > tbody > tr:nth-of-type(odd) {
+table.notely-table.notely-table-striped > tbody > tr:nth-of-type(odd) {
     background-color: #fbfbfb;
 }
 
-.notely-comments table tbody tr.notely-comments_done td.notely-comments_text {
+table.notely-table tbody tr.notely-comments_done td.notely-comments_text {
     text-decoration: line-through;
 }
+table.notely-table.notely-table-bordered > tbody > tr > td {
+    border-bottom: 1px solid #f1f1f1;
+}
 
-.notely-comments table a {
+table.notely-table a:not(.btn) {
     color: #2e8aea;
 }
 
-.notely-comments table .label {
+table.notely-table .label {
     text-shadow: none;
-    padding: 4px 6px 2px;
+    padding: 4px 6px;
     font-size: 12px;
 }
 
-.notely-comments table .label-success {
+table.notely-table .label-open {
+    background-color: #D9D9D9;
+}
+
+table.notely-table .label-approved {
+    background-color: #8CD0EC;
+}
+
+table.notely-table .label-pending {
+    background-color: #F9AF82;
+}
+
+table.notely-table .label-done {
     background-color: #8ECF7F;
 }
 
-.notely-comments table .label-primary {
-    background-color: #2b95c1;
+table.notely-table td.notely-table-width-commenttype {
+    width: 10%;
+}
+
+table.notely-table td.notely-table-width-commenttitle {
+    width: 20%;
+}
+
+table.notely-table td.notely-table-width-commentdesc {
+    width: 40%;
+}
+
+table.notely-table td.notely-table-width-commentstate {
+    width: 15%;
+}
+
+table.notely-table td.notely-table-width-commentactions {
+    width: 15%;
+    text-align: right;
 }
 
 .notely-bold {
     font-weight: bold;
-}
-
-.notely-comments_action {
-    
-}
-
-.notely-comments_action.done {
-    color: #46a546 !important;
-}
-
-.notely-comments_action.delete {
-    color: #9d261d !important;
 }
 
 .notely-clear-select i {
@@ -142,4 +157,146 @@
 .notely-default {
     color: #b0b0b0;
     font-size: 12px;
+}
+
+.notely-tile {
+    position: relative;
+    margin: 5px 5px 10px 5px;
+    border: 1px solid #dddddd;
+    border-left: 0;
+}
+
+.notely-tile.notely-tile_root:after {
+    content: "";
+    background-color: #57b7e7;
+    width: 5px;
+    position: absolute;
+    top: -1px;
+    bottom: -1px;
+    left: 0;
+}
+
+.notely-tile_content {
+    padding: 15px;
+}
+
+.notely-btn-round {
+    border-radius: 100%;
+    padding: 0;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    transition: all 100ms linear;
+}
+
+.notely-btn-round.btn-default {
+    border-color: #dddddd;
+    background: transparent;
+}
+
+.notely-btn-round.btn-default:hover,
+.notely-btn-round.btn-default:focus {
+    background: #2e8aea;
+    border-color: #2e8aea;
+    color: #ffffff;
+}
+
+.notely-backoffice-list {
+    margin-top: 20px;
+}
+
+.notely-backoffice-item {
+    margin-bottom: 15px;
+    border: 2px solid transparent;
+    transition: border 100ms linear;
+}
+
+.notely-backoffice-item > h4 {
+    padding: 0 15px;
+}
+
+.notely-backoffice-item > h4 > i {
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.notely-backoffice-item_body .umb-property {
+    margin: 20px 20px 0;
+}
+
+.notely-link {
+    text-decoration: underline;
+}
+
+.notely-backoffice-item.notely-collapsed {
+    border-color: #eeeeee;
+}
+
+.notely-backoffice-default {
+    margin-bottom: 20px;
+}
+
+.notely-backoffice-options {
+    padding: 20px;
+    background: #f9f9f9;
+    margin-bottom: 20px;
+}
+
+.notely-backoffice-options .row + .row {
+    margin-top: 20px;
+}
+
+.notely-default-row {
+    text-align: center;
+    color: #ccc;
+}
+
+.notely-reload {
+    padding: 5px 12px;
+    line-height: 20px;
+    font-size: 14px;
+    vertical-align: middle;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.notely-reload > span {
+    padding-top: 2px;
+    padding-left: 8px;
+}
+
+.notely-reload > i {
+    font-size: 20px;
+    display: inline-block;
+    margin-top: -2px;
+    vertical-align: middle;
+}
+
+.notely-controls-icon {
+    display: -ms-flexbox;
+    display: flex;
+    height: 55px;
+    cursor: pointer;
+    background: #fff;
+    border: 1px solid #ececec;
+    animation: fadeIn .5s;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex: 0 0 55px;
+    flex: 0 0 55px;
+    width: 55px;
+}
+
+.notely-controls-icon .icon {
+    font-size: 35px;
+}
+
+@media (max-width: 767px) {
+    .notely-control-group .controls {
+        margin-left: 0;
+        margin-top: 10px;
+    }
 }

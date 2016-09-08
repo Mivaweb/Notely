@@ -2,7 +2,7 @@
 
     <!--<notely-property view="property.view" config="property.config" value="model.value" alias="model.alias"></notely-property>-->
 
-    <div class="notely-property" ng-include="property.view"></div>
+    <div ng-show="property.view" class="notely-property" ng-include="property.view"></div>
 
     <div class="notely-default" ng-show="showDefault">
         To add comments to this property you first need to <strong>add a value and hit save</strong> or hit <strong>Save and Publish</strong> and refresh the page.
@@ -22,40 +22,31 @@
         <!-- Begin .notely-comments -->
         <div class="notely-comments" ng-show="showComments && comments.length > 0">
 
-            <div class="notely-comments_typelist">
-                <div class="notely-comments_typelist--heading">
-                    <h4><i class="icon icon-notepad"></i>Comments List</h4>
-                </div>
-
-                <div class="notely-comments_typelist--body">
-                    <table ng-if="comments.length > 0">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="comment in comments track by $index" ng-class="{'notely-comments_done': comment.state == true}">
-                                <td>
-                                    <i ng-if="comment.type == 0" class="icon icon-info"></i>
-                                    <i ng-if="comment.type == 1" class="icon icon-pushpin"></i>
-                                    <i ng-if="comment.type == 2" class="icon icon-brackets"></i>
-                                    <i ng-if="comment.type == 3" class="icon icon-split-alt"></i>
-                                </td>
-                                <td class="notely-comments_text"><a href ng-click="editComment(comment)">{{comment.title}}</a></td>
-                                <td class="notely-comments_text" ng-bind-html-unsafe="renderDescription(comment)"></td>
-                                <td align="right">
-                                    <a href class="notely-comments_action done" ng-if="comment.type > 0 && comment.state == false" ng-click="taskComplete(comment.id)"><i class="icon icon-check"></i></a>
-                                    <a href class="notely-comments_action delete" ng-click="deleteComment(comment.id)"><i class="icon icon-delete"></i></a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <table class="notely-table" ng-if="comments.length > 0">
+                <thead>
+                    <tr>
+                        <th class="notely-table-width-commenttype"></th>
+                        <th class="notely-table-width-commenttitle">Title</th>
+                        <th class="notely-table-width-commentdesc">Description</th>
+                        <th class="notely-table-width-commentstate">State</th>
+                        <th class="notely-table-width-commentactions"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="comment in comments track by $index">
+                        <td class="notely-table-width-commenttype">
+                            <i title="{{comment.type.title}}" class="icon" ng-class="comment.type.icon"></i>
+                        </td>
+                        <td class="notely-table-width-commenttitle"><a href ng-click="editComment(comment)">{{comment.title}}</a></td>
+                        <td class="notely-table-width-commentdesc" ng-bind-html-unsafe="renderDescription(comment)"></td>
+                        <td class="notely-table-width-commentstate"><span ng-show="comment.type.canAssign" class="label" ng-class="'label-' + comment.state.title | lowercase">{{comment.state.title}}</span></td>
+                        <td class="notely-table-width-commentactions">
+                            <a href class="btn btn-default notely-btn-round" ng-click="editComment(comment)"><i class="icon icon-edit"></i></a>
+                            <a href class="btn btn-default notely-btn-round" ng-click="deleteComment(comment.id)"><i class="icon icon-delete"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
         </div><!-- End .notely-comments -->
     </div>

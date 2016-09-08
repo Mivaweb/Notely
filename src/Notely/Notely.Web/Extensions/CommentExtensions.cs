@@ -9,7 +9,7 @@ using Notely.Web.Models;
 namespace Notely.Web.Extensions
 {
     /// <summary>
-    /// Defines extension methods for the <see cref="Comment"/> and <see cref="CommentViewModel"/> classes
+    /// Implement extension methods for the <see cref="Comment"/> and <see cref="CommentViewModel"/> classes
     /// </summary>
     public static class CommentExtensions
     {
@@ -22,7 +22,7 @@ namespace Notely.Web.Extensions
         public static Comment Convert(this Comment comment, CommentViewModel commentVm)
         {
             /* 
-             * Check if the ConentProperty is defined => 
+             * Check if the ContentProperty is defined => 
              * without it will be hard to know for which content node and property
              * we are talking about.
              */
@@ -47,17 +47,22 @@ namespace Notely.Web.Extensions
                 CreateDate = commentVm.CreateDate,
                 Description = commentVm.Description,
                 Id = commentVm.Id,
-                State = commentVm.State,
                 Title = commentVm.Title,
-                Type = commentVm.Type,
+                Type = commentVm.Type.Id,
                 ContentId = commentVm.ContentProperty.ContentId,
                 PropertyTypeId = _property != null ? _property.PropertyType.Id : -1
             };
 
             // Only if it has a assignee and its not an info note
-            if (commentVm.AssignedTo != null && commentVm.Type > 0)
+            if (commentVm.AssignedTo != null && commentVm.Type.CanAssign)
             {
                 _comment.AssignedTo = commentVm.AssignedTo.Id;
+            }
+
+            // If the comment type can not have an assignee make sure its set to null
+            if(commentVm.Type.CanAssign)
+            {
+                _comment.State = commentVm.State.Id;
             }
 
             return _comment;
@@ -71,8 +76,27 @@ namespace Notely.Web.Extensions
         /// <returns></returns>
         public static CommentViewModel Convert(this CommentViewModel commentVm, Comment comment)
         {
+            var _content = UmbracoContext.Current.Application.Services.ContentService.GetById(comment.ContentId);
+
+            /* 
+             * 1) We first check if we can find the property type based on the property data id.
+             *    If we can't find the type then there is a new version published of the property value.
+             * 2) Next step is to find the type based on the alias of the property.
+             * 
+             */
+            var _property = _content.Properties.FirstOrDefault(
+                    p => p.PropertyType.Id == comment.PropertyTypeId
+                );
+
             var userVm = new UserViewModel();
-            var contentProperty = new ContentPropertyViewModel() { ContentId = comment.ContentId };
+            var commentTypeVm = new CommentTypeViewModel();
+            var commentStateVm = new CommentStateViewModel();
+
+            var contentProperty = new ContentPropertyViewModel() {
+                ContentId = comment.ContentId,
+                ContentName = _content.Name,
+                PropertyTypeAlias = _property.Alias
+            };
 
             // Create a new CommentViewModel
             var result = new CommentViewModel()
@@ -84,10 +108,11 @@ namespace Notely.Web.Extensions
                 CreateDate = comment.CreateDate,
                 Description = comment.Description,
                 Id = comment.Id,
-                State = comment.State,
+                State = commentStateVm.Convert(comment.CommentState),
                 Title = comment.Title,
-                Type = comment.Type,
-                ContentProperty = contentProperty
+                Type = commentTypeVm.Convert(comment.CommentType),
+                ContentProperty = contentProperty,
+                Closed = comment.Closed
             };
 
             return result;

@@ -7,7 +7,8 @@
         'notely.filters',
         'notely.directives',
         'notely.resources',
-        'notely.services'
+        'notely.services',
+        'chart.js'
     ]);
 
     angular.module('notely.models', []);

@@ -4,7 +4,8 @@
     "grunt-mkdir": "1.0.0",
     "grunt-contrib-clean": "1.0.0",
     "grunt-contrib-copy": "1.0.0",
-    "grunt-contrib-watch": "1.0.0"
+    "grunt-contrib-watch": "1.0.0",
+    "angular-chart.js": "1.0.2"
   },
   "name": "Notely",
   "private": true,

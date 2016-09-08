@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Notely.Core.Models
 {
     /// <summary>
-    /// Defines the DataType object
+    /// Implement the DataType object
     /// </summary>
     public class DataType
     {

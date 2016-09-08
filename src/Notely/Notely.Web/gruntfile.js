@@ -26,6 +26,18 @@ module.exports = function (grunt) {
                 src: '**/*',
                 dest: '../Notely.Web.UI.Client/App_Plugins/Notely',
                 expand: true
+            },
+            chartjs: {
+                cwd: 'node_modules/angular-chart.js/node_modules/chart.js/dist',
+                src: 'Chart.min.js',
+                dest: '../Notely.Web.UI.Client/App_Plugins/Notely/js',
+                expand: true
+            },
+            angularChart: {
+                cwd: 'node_modules/angular-chart.js/dist/',
+                src: 'angular-chart.min.js',
+                dest: '../Notely.Web.UI.Client/App_Plugins/Notely/js',
+                expand: true
             }
         },
         

@@ -18,6 +18,9 @@ using Umbraco.Web.Editors;
 
 namespace Notely.Web.Controllers
 {
+    /// <summary>
+    /// Implements a NotelyApiController
+    /// </summary>
     [IsBackOffice]
     [PluginController("Notely")]
     public class NotelyApiController : UmbracoAuthorizedJsonController
@@ -134,6 +137,37 @@ namespace Notely.Web.Controllers
         }
 
         /// <summary>
+        /// Get a list of <see cref="CommentViewModel"/>
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IEnumerable<CommentViewModel> GetAllComments()
+        {
+            var commenVm = new CommentViewModel();
+
+            using (CommentsRepository repo = new CommentsRepository())
+            {
+                return repo.GetAll().Select(c => commenVm.Convert(c));
+            }
+        }
+
+        /// <summary>
+        /// Get a list of <see cref="CommentViewModel"/>
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public IEnumerable<CommentViewModel> GetMyComments(int userId)
+        {
+            var commenVm = new CommentViewModel();
+
+            using (CommentsRepository repo = new CommentsRepository())
+            {
+                return repo.GetAllByAssignee(userId).Select(c => commenVm.Convert(c));
+            }
+        }
+
+        /// <summary>
         /// Add a new comment
         /// </summary>
         /// <param name="comment">A <see cref="CommentViewModel"/> object</param>
@@ -176,6 +210,51 @@ namespace Notely.Web.Controllers
         }
 
         /// <summary>
+        /// Cleanup comments
+        /// </summary>
+        /// <returns>Count of comments that were deleted</returns>
+        [HttpDelete]
+        public int CleanupComments()
+        {
+            int result = 0;
+
+            using (CommentsRepository repo = new CommentsRepository())
+            {
+                var comments = repo.GetAll();
+                foreach(var comment in comments)
+                {
+                    bool delete = false;
+
+                    // Check if the content exists
+                    var _content = Services.ContentService.GetById(comment.ContentId);
+
+                    if(_content != null)
+                    {
+                        // Check if property exists
+                        var _property = _content.Properties.FirstOrDefault(
+                            p => p.PropertyType.Id == comment.PropertyTypeId
+                        );
+
+                        if (_property == null) delete = true;
+                    }
+                    else
+                    {
+                        delete = true;
+                    }
+
+                    if(delete)
+                    {
+                        repo.Delete(comment);
+                        result++;
+                    }
+
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Set comment completed
         /// </summary>
         /// <param name="id"></param>
@@ -185,11 +264,163 @@ namespace Notely.Web.Controllers
             using (CommentsRepository repo = new CommentsRepository())
             {
                 var comment = repo.Get(Convert.ToInt32(id));
-                if (comment.Type > 0 && comment.State == false)
+                if (comment.Type > 0)
                 {
-                    comment.State = true;
+                    comment.State = 3;
                     repo.AddOrUpdate(comment);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Get a list of <see cref="CommentType"/> objects
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IEnumerable<CommentTypeViewModel> GetCommentTypes()
+        {
+            var _commentType = new CommentTypeViewModel();
+
+            using (var repo = new CommentTypesRepository())
+            {
+                return repo.GetAll().Select(c => _commentType.Convert(c));
+            }
+        }
+
+        /// <summary>
+        /// Get a list of <see cref="CommentStateViewModel"/> objects
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IEnumerable<CommentStateViewModel> GetCommentStates()
+        {
+            var _commentState = new CommentStateViewModel();
+
+            using (var repo = new CommentStatesRepository())
+            {
+                return repo.GetAll().Select(c => _commentState.Convert(c));
+            }
+        }
+        
+        /// <summary>
+        /// Get a list of unique content id's that has comments
+        /// </summary>
+        /// <param name="userId">For a certain user ( assignedTo )</param>
+        /// <returns></returns>
+        [HttpGet]
+        public IEnumerable<int> GetUniqueContentNodes(int userId)
+        {
+            using(var repo = new CommentsRepository())
+            {
+                var result = repo.GetUniqueContentNodes(userId);
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Get details of the content
+        /// </summary>
+        /// <param name="contentId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public BackOfficeNode GetBackOfficeNodeDetails(int contentId, int userId)
+        {
+            var _result = new BackOfficeNode();
+            var _comment = new CommentViewModel();
+
+            using (var repo = new CommentsRepository())
+            {
+                // Step 1: Get the content node details
+                var _content = Services.ContentService.GetById(contentId);
+
+                if (_content == null)
+                    throw new ArgumentNullException("contentId");
+
+                _result.ContentId = contentId;
+                _result.ContentName = _content.Name;
+                
+                foreach(var prop in _content.Properties.Where(p => p.PropertyType.PropertyEditorAlias == "Notely"))
+                {
+                    var dataTypeDef = Services.DataTypeService.GetDataTypeDefinitionById(prop.PropertyType.DataTypeDefinitionId);
+                    var limitValue = int.Parse(GetPreValues(dataTypeDef)["limit"].ToString());
+
+                    // Step 2: Add properties and comments
+                    _result.Properties.Add(new BackOfficeProperty() {
+
+                        Alias = prop.Alias,
+                        Id = prop.PropertyType.Id,
+                        Name = prop.PropertyType.Name,
+                        Limit = limitValue,
+                        Comments = userId >= 0 ? repo.GetAllByContentProp(
+                            _content.Id, prop.PropertyType.Id, userId)
+                            .Select(c => _comment.Convert(c)).ToList() :
+                            repo.GetAllByContentProp(
+                            _content.Id, prop.PropertyType.Id)
+                            .Select(c => _comment.Convert(c)).ToList()
+
+                    });
+                }
+
+            }
+
+            return _result;
+        }
+
+        /// <summary>
+        /// Get comment type
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>A <see cref="CommentTypeViewModel"/> object</returns>
+        [HttpGet]
+        public CommentTypeViewModel GetCommentType(int id)
+        {
+            using (CommentTypesRepository repo = new CommentTypesRepository())
+            {
+                var commentTypeVm = new CommentTypeViewModel();
+                return commentTypeVm.Convert(repo.Get(id));
+            }
+        }
+
+        /// <summary>
+        /// Add a new Comment Type
+        /// </summary>
+        /// <param name="commentType"></param>
+        [HttpPost]
+        public void AddCommentType(object commentType)
+        {
+            var _commentType = new CommentType();
+
+            CommentTypeViewModel commentTypeDto = JsonConvert.DeserializeObject<CommentTypeViewModel>(commentType.ToString());
+
+            DoAddOrUpdate(_commentType.Convert(commentTypeDto));
+        }
+
+        /// <summary>
+        /// Update an existing Comment Type
+        /// </summary>
+        /// <param name="commentType"></param>
+        [HttpPut]
+        public void UpdateCommentType(object commentType)
+        {
+            var _commentType = new CommentType();
+
+            CommentTypeViewModel commentTypeDto = JsonConvert.DeserializeObject<CommentTypeViewModel>(commentType.ToString());
+
+            DoAddOrUpdate(_commentType.Convert(commentTypeDto));
+        }
+
+        /// <summary>
+        /// Delete a comment type
+        /// </summary>
+        /// <param name="id"></param>
+        [HttpDelete]
+        public void DeleteCommentType(int id)
+        {
+            DeleteCommentsByType(id);
+
+            using (CommentTypesRepository repo = new CommentTypesRepository())
+            {
+                repo.Delete(id);
             }
         }
 
@@ -228,6 +459,33 @@ namespace Notely.Web.Controllers
                 if (!(comment.PropertyTypeId > 0)) throw new ArgumentException("PropertyType not found");
 
                 repo.AddOrUpdate(comment);
+            }
+        }
+
+        /// <summary>
+        /// Add or update a comment type
+        /// </summary>
+        /// <param name="commentType">A <see cref="CommentType"/> object</param>
+        private void DoAddOrUpdate(CommentType commentType)
+        {
+            using (CommentTypesRepository repo = new CommentTypesRepository())
+            {
+                repo.AddOrUpdate(commentType);
+            }
+        }
+
+        /// <summary>
+        /// Delete all comments based on a comment type
+        /// </summary>
+        /// <param name="commentTypeId"></param>
+        private void DeleteCommentsByType(int commentTypeId)
+        {
+            using (CommentsRepository repo = new CommentsRepository())
+            {
+                foreach(var comment in repo.GetAllByType(commentTypeId))
+                {
+                    repo.Delete(comment);
+                }
             }
         }
 

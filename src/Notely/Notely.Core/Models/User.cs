@@ -3,7 +3,7 @@
 namespace Notely.Core.Models
 {
     /// <summary>
-    /// Defines a user object ( Umbraco backoffice user )
+    /// Implement a user object ( Umbraco backoffice user )
     /// </summary>
     public class User
     {
