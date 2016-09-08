@@ -16,13 +16,13 @@
     padding-bottom: 20px;
 }
 
-.notely-control-group .control-label .btn {
-    margin-top: 15px;
-}
+    .notely-control-group .control-label .btn {
+        margin-top: 15px;
+    }
 
-.notely-control-group .controls {
-    margin-left: 240px;
-}
+    .notely-control-group .controls {
+        margin-left: 240px;
+    }
 
 .notely-property {
     margin-bottom: 15px;
@@ -32,20 +32,20 @@
     margin-bottom: 15px;
 }
 
-.notely-nav > li {
-    display: inline-block;
-    line-height: 28px;
-    vertical-align: middle;
-}
+    .notely-nav > li {
+        display: inline-block;
+        line-height: 28px;
+        vertical-align: middle;
+    }
 
-.notely-nav > li + li {
-    margin-left: 10px;
-}
+        .notely-nav > li + li {
+            margin-left: 10px;
+        }
 
-.notely-nav > li > i {
-    position: relative;
-    top: 1px;
-}
+        .notely-nav > li > i {
+            position: relative;
+            top: 1px;
+        }
 
 .notely-nav_expand {
     cursor: pointer;
@@ -73,77 +73,78 @@ table.notely-table {
     margin-bottom: 20px;
 }
 
-table.notely-table > thead th {
-    border-bottom: 1px solid #ccc;
-    padding: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    background-repeat: no-repeat;
-    background-position: center right;
-    text-align: left;
-}
+    table.notely-table > thead th {
+        border-bottom: 1px solid #ccc;
+        padding: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        background-repeat: no-repeat;
+        background-position: center right;
+        text-align: left;
+    }
 
-table.notely-table > tbody td {
-    padding: 8px 4px;
-}
+    table.notely-table > tbody td {
+        padding: 8px 4px;
+    }
 
-table.notely-table.notely-table-striped > tbody > tr:nth-of-type(odd) {
-    background-color: #fbfbfb;
-}
+    table.notely-table.notely-table-striped > tbody > tr:nth-of-type(odd) {
+        background-color: #fbfbfb;
+    }
 
-table.notely-table tbody tr.notely-comments_done td.notely-comments_text {
-    text-decoration: line-through;
-}
-table.notely-table.notely-table-bordered > tbody > tr > td {
-    border-bottom: 1px solid #f1f1f1;
-}
+    table.notely-table tbody tr.notely-comments_done td.notely-comments_text {
+        text-decoration: line-through;
+    }
 
-table.notely-table a:not(.btn) {
-    color: #2e8aea;
-}
+    table.notely-table.notely-table-bordered > tbody > tr > td {
+        border-bottom: 1px solid #f1f1f1;
+    }
 
-table.notely-table .label {
-    text-shadow: none;
-    padding: 4px 6px;
-    font-size: 12px;
-}
+    table.notely-table a:not(.btn) {
+        color: #2e8aea;
+    }
 
-table.notely-table .label-open {
-    background-color: #D9D9D9;
-}
+    table.notely-table .label {
+        text-shadow: none;
+        padding: 4px 6px;
+        font-size: 12px;
+    }
 
-table.notely-table .label-approved {
-    background-color: #8CD0EC;
-}
+    table.notely-table .label-open {
+        background-color: #D9D9D9;
+    }
 
-table.notely-table .label-pending {
-    background-color: #F9AF82;
-}
+    table.notely-table .label-approved {
+        background-color: #8CD0EC;
+    }
 
-table.notely-table .label-done {
-    background-color: #8ECF7F;
-}
+    table.notely-table .label-pending {
+        background-color: #F9AF82;
+    }
 
-table.notely-table td.notely-table-width-commenttype {
-    width: 10%;
-}
+    table.notely-table .label-done {
+        background-color: #8ECF7F;
+    }
 
-table.notely-table td.notely-table-width-commenttitle {
-    width: 20%;
-}
+    table.notely-table td.notely-table-width-commenttype {
+        width: 10%;
+    }
 
-table.notely-table td.notely-table-width-commentdesc {
-    width: 40%;
-}
+    table.notely-table td.notely-table-width-commenttitle {
+        width: 20%;
+    }
 
-table.notely-table td.notely-table-width-commentstate {
-    width: 15%;
-}
+    table.notely-table td.notely-table-width-commentdesc {
+        width: 40%;
+    }
 
-table.notely-table td.notely-table-width-commentactions {
-    width: 15%;
-    text-align: right;
-}
+    table.notely-table td.notely-table-width-commentstate {
+        width: 15%;
+    }
+
+    table.notely-table td.notely-table-width-commentactions {
+        width: 15%;
+        text-align: right;
+    }
 
 .notely-bold {
     font-weight: bold;
@@ -166,15 +167,15 @@ table.notely-table td.notely-table-width-commentactions {
     border-left: 0;
 }
 
-.notely-tile.notely-tile_root:after {
-    content: "";
-    background-color: #57b7e7;
-    width: 5px;
-    position: absolute;
-    top: -1px;
-    bottom: -1px;
-    left: 0;
-}
+    .notely-tile.notely-tile_root:after {
+        content: "";
+        background-color: #57b7e7;
+        width: 5px;
+        position: absolute;
+        top: -1px;
+        bottom: -1px;
+        left: 0;
+    }
 
 .notely-tile_content {
     padding: 15px;
@@ -190,17 +191,17 @@ table.notely-table td.notely-table-width-commentactions {
     transition: all 100ms linear;
 }
 
-.notely-btn-round.btn-default {
-    border-color: #dddddd;
-    background: transparent;
-}
+    .notely-btn-round.btn-default {
+        border-color: #dddddd;
+        background: transparent;
+    }
 
-.notely-btn-round.btn-default:hover,
-.notely-btn-round.btn-default:focus {
-    background: #2e8aea;
-    border-color: #2e8aea;
-    color: #ffffff;
-}
+        .notely-btn-round.btn-default:hover,
+        .notely-btn-round.btn-default:focus {
+            background: #2e8aea;
+            border-color: #2e8aea;
+            color: #ffffff;
+        }
 
 .notely-backoffice-list {
     margin-top: 20px;
@@ -212,14 +213,14 @@ table.notely-table td.notely-table-width-commentactions {
     transition: border 100ms linear;
 }
 
-.notely-backoffice-item > h4 {
-    padding: 0 15px;
-}
+    .notely-backoffice-item > h4 {
+        padding: 0 15px;
+    }
 
-.notely-backoffice-item > h4 > i {
-    cursor: pointer;
-    margin-right: 10px;
-}
+        .notely-backoffice-item > h4 > i {
+            cursor: pointer;
+            margin-right: 10px;
+        }
 
 .notely-backoffice-item_body .umb-property {
     margin: 20px 20px 0;
@@ -243,9 +244,9 @@ table.notely-table td.notely-table-width-commentactions {
     margin-bottom: 20px;
 }
 
-.notely-backoffice-options .row + .row {
-    margin-top: 20px;
-}
+    .notely-backoffice-options .row + .row {
+        margin-top: 20px;
+    }
 
 .notely-default-row {
     text-align: center;
@@ -261,17 +262,17 @@ table.notely-table td.notely-table-width-commentactions {
     margin-left: 10px;
 }
 
-.notely-reload > span {
-    padding-top: 2px;
-    padding-left: 8px;
-}
+    .notely-reload > span {
+        padding-top: 2px;
+        padding-left: 8px;
+    }
 
-.notely-reload > i {
-    font-size: 20px;
-    display: inline-block;
-    margin-top: -2px;
-    vertical-align: middle;
-}
+    .notely-reload > i {
+        font-size: 20px;
+        display: inline-block;
+        margin-top: -2px;
+        vertical-align: middle;
+    }
 
 .notely-controls-icon {
     display: -ms-flexbox;
@@ -290,13 +291,57 @@ table.notely-table td.notely-table-width-commentactions {
     width: 55px;
 }
 
-.notely-controls-icon .icon {
-    font-size: 35px;
+    .notely-controls-icon .icon {
+        font-size: 35px;
+    }
+
+.notely-shortcuts {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+.notely-shortcut-wrap {
+    display: block;
+    padding: 10px;
+    flex: 0 0 auto;
+    flex-basis: 20%;
+    max-width: 20%;
+}
+
+.notely-shortcut {
+    display: flex;
+    height: 100%;
+    padding: 15px 10px;
+    text-align: center;
+    background: #f8f8f8;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    flex-direction: column;
+    transition: border 100ms linear;
+}
+
+    .notely-shortcut:hover,
+    .notely-shortcut:focus {
+        border-color: #2e8aea;
+    }
+
+.notely-shortcut_title {
+    font-weight: 700;
 }
 
 @media (max-width: 767px) {
     .notely-control-group .controls {
         margin-left: 0;
         margin-top: 10px;
+    }
+
+    .notely-shortcut-wrap {
+        flex-basis: 40%;
+        max-width: 40%;
     }
 }
