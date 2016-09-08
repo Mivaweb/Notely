@@ -47,7 +47,6 @@ namespace Notely.Web.Extensions
                 CreateDate = commentVm.CreateDate,
                 Description = commentVm.Description,
                 Id = commentVm.Id,
-                State = commentVm.State.Id,
                 Title = commentVm.Title,
                 Type = commentVm.Type.Id,
                 ContentId = commentVm.ContentProperty.ContentId,
@@ -58,6 +57,12 @@ namespace Notely.Web.Extensions
             if (commentVm.AssignedTo != null && commentVm.Type.CanAssign)
             {
                 _comment.AssignedTo = commentVm.AssignedTo.Id;
+            }
+
+            // If the comment type can not have an assignee make sure its set to null
+            if(commentVm.Type.CanAssign)
+            {
+                _comment.State = commentVm.State.Id;
             }
 
             return _comment;
