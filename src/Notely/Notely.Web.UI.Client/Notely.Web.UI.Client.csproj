@@ -304,22 +304,6 @@
     <Content Include="App_Plugins\ModelsBuilder\modelsbuilder.controller.js" />
     <Content Include="App_Plugins\ModelsBuilder\modelsbuilder.htm" />
     <Content Include="App_Plugins\ModelsBuilder\modelsbuilder.resource.js" />
-    <Content Include="App_Plugins\Notely\backoffice\notely\allcomments.html" />
-    <Content Include="App_Plugins\Notely\backoffice\notely\cleanup.html" />
-    <Content Include="App_Plugins\Notely\backoffice\notely\mycomments.html" />
-    <Content Include="App_Plugins\Notely\css\notely.css" />
-    <Content Include="App_Plugins\Notely\js\notely.controllers.js" />
-    <Content Include="App_Plugins\Notely\js\notely.directives.js" />
-    <Content Include="App_Plugins\Notely\js\notely.filters.js" />
-    <Content Include="App_Plugins\Notely\js\notely.models.js" />
-    <Content Include="App_Plugins\Notely\js\notely.module.js" />
-    <Content Include="App_Plugins\Notely\js\notely.resources.js" />
-    <Content Include="App_Plugins\Notely\js\notely.services.js" />
-    <Content Include="App_Plugins\Notely\views\dialogs\notely.comments.add.html" />
-    <Content Include="App_Plugins\Notely\views\dialogs\notely.comments.delete.html" />
-    <Content Include="App_Plugins\Notely\views\dialogs\notely.comments.edit.html" />
-    <Content Include="App_Plugins\Notely\views\notely.html" />
-    <Content Include="App_Plugins\Notely\views\propertyeditors\notely.datatypepicker.html" />
     <Content Include="Config\grid.editors.config.js" />
     <Content Include="Config\Lang\cs-CZ.user.xml" />
     <Content Include="Config\Lang\da-DK.user.xml" />
@@ -2962,7 +2946,6 @@
     <Content Include="Umbraco\Webservices\TreeDataService.ashx" />
     <Content Include="Umbraco\Webservices\UltimatePickerAutoCompleteHandler.ashx" />
     <Content Include="Umbraco\Xslt\Web.config" />
-    <Content Include="App_Plugins\Notely\package.manifest" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

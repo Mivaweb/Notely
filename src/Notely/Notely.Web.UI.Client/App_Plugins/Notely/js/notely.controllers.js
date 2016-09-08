@@ -134,7 +134,7 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
                 _cp.propertyTypeAlias = $scope.model.alias;
 
                 $scope.overlay = {
-                    view: "/App_Plugins/Notely/views/dialogs/notely.comments.add.html",
+                    view: "/App_Plugins/Notely/backoffice/notely/dialogs/notely.comments.add.html",
                     title: "Add comment",
                     show: true,
                     property: _cp,
@@ -168,7 +168,7 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
             comment.contentProperty.propertyDataId = $scope.model.id;
 
             $scope.overlay = {
-                view: "/App_Plugins/Notely/views/dialogs/notely.comments.edit.html",
+                view: "/App_Plugins/Notely/backoffice/notely/dialogs/notely.comments.edit.html",
                 title: "Edit comment",
                 comment: angular.copy(comment),
                 show: true,
@@ -196,7 +196,7 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
         // Delete a comment
         $scope.deleteComment = function (commentId) {
             dialogService.open({
-                template: '/App_Plugins/Notely/views/dialogs/notely.comments.delete.html',
+                template: '/App_Plugins/Notely/backoffice/notely/dialogs/notely.comments.delete.html',
                 dialogData: commentId,
                 callback: function (data) {
                     notelyResources.deleteComment(data).then(function () {
@@ -229,7 +229,7 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
  * @ngdoc Controller
  * @name Notely.PropertyEditors.AddController
  */
-angular.module('notely').controller('Notely.PropertyEditors.AddController', [
+angular.module('notely').controller('Notely.Comments.AddController', [
 
     '$scope',
     'notelyResources',
@@ -294,7 +294,7 @@ angular.module('notely').controller('Notely.PropertyEditors.AddController', [
  * 
  * @description
  */
-angular.module('notely').controller('Notely.PropertyEditors.EditController', [
+angular.module('notely').controller('Notely.Comments.EditController', [
 
     '$scope',
     'notelyResources',
@@ -354,7 +354,7 @@ angular.module('notely').controller('Notely.PropertyEditors.EditController', [
  * @ngdoc Controller
  * @name Notely.PropertyEditors.DeleteController
  */
-angular.module('notely').controller('Notely.PropertyEditors.DeleteController', [
+angular.module('notely').controller('Notely.Comments.DeleteController', [
 
     '$scope',
     'notelyResources',
@@ -565,7 +565,7 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
                 _cp.propertyTypeAlias = property.alias;
 
                 $scope.overlay = {
-                    view: "/App_Plugins/Notely/views/dialogs/notely.comments.add.html",
+                    view: "/App_Plugins/Notely/backoffice/notely/dialogs/notely.comments.add.html",
                     title: "Add comment",
                     show: true,
                     property: _cp,
@@ -596,7 +596,7 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
         // Edit comment
         $scope.editComment = function (comment) {
             $scope.overlay = {
-                view: "/App_Plugins/Notely/views/dialogs/notely.comments.edit.html",
+                view: "/App_Plugins/Notely/backoffice/notely/dialogs/notely.comments.edit.html",
                 title: "Edit comment",
                 comment: angular.copy(comment),
                 show: true,
@@ -625,7 +625,7 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
         // Delete a comment
         $scope.deleteComment = function (commentId) {
             dialogService.open({
-                template: '/App_Plugins/Notely/views/dialogs/notely.comments.delete.html',
+                template: '/App_Plugins/Notely/backoffice/notely/dialogs/notely.comments.delete.html',
                 dialogData: commentId,
                 callback: function (data) {
                     notelyResources.deleteComment(data).then(function () {
