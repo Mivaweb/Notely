@@ -121,7 +121,12 @@
                                                         You have no assigned comments to the property <strong>{{property.name}}</strong>.
                                                     </div>
 
-                                                    <button ng-if="treeNode == 0" type="button" class="btn btn-success notely-btn-round" ng-click="addComment(content.contentId, property)"><i class="icon icon-add"></i></button>
+                                                    <button ng-if="treeNode == 0" type="button"
+                                                            class="btn btn-success notely-btn-round"
+                                                            ng-click="addComment(content.contentId, property)"
+                                                            ng-show="property.comments.length < property.limit">
+                                                        <i class="icon icon-add"></i>
+                                                    </button>
 
                                                 </div>
                                             </div>
