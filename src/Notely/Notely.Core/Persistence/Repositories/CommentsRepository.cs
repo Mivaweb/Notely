@@ -123,7 +123,7 @@ namespace Notely.Core.Persistence.Repositories
         }
 
         /// <summary>
-        /// Get a list of <see cref="Comment"/> object of a assignee
+        /// Get a list of <see cref="Comment"/> objects of a assignee
         /// </summary>
         /// <param name="assignee"></param>
         /// <returns></returns>
@@ -142,6 +142,16 @@ namespace Notely.Core.Persistence.Repositories
                 return _dbContext.Database.Fetch<int>("SELECT DISTINCT contentId FROM notelyComments WHERE assignedTo = @p1", new { p1 = userId });
             else
                 return _dbContext.Database.Fetch<int>("SELECT DISTINCT contentId FROM notelyComments");
+        }
+
+        /// <summary>
+        /// Get a list of <see cref="Comment"/> objects based on a comment type
+        /// </summary>
+        /// <param name="commentTypeId"></param>
+        /// <returns></returns>
+        public IEnumerable<Comment> GetAllByType(int commentTypeId)
+        {
+            return _dbContext.Database.Fetch<Comment>("SELECT * FROM notelyComments WHERE type = @p1", new { p1 = commentTypeId });
         }
 
         /// <summary>

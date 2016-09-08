@@ -273,6 +273,27 @@ table.notely-table td.notely-table-width-commentactions {
     vertical-align: middle;
 }
 
+.notely-controls-icon {
+    display: -ms-flexbox;
+    display: flex;
+    height: 55px;
+    cursor: pointer;
+    background: #fff;
+    border: 1px solid #ececec;
+    animation: fadeIn .5s;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex: 0 0 55px;
+    flex: 0 0 55px;
+    width: 55px;
+}
+
+.notely-controls-icon .icon {
+    font-size: 35px;
+}
+
 @media (max-width: 767px) {
     .notely-control-group .controls {
         margin-left: 0;

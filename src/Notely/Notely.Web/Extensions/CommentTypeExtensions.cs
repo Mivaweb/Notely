@@ -27,5 +27,23 @@ namespace Notely.Web.Extensions
                 CanAssign = commentType.CanAssign
             };
         }
+
+        /// <summary>
+        /// Converts a <see cref="CommentTypeViewModel"/> object to a <see cref="CommentType"/> object
+        /// </summary>
+        /// <param name="commentType"></param>
+        /// <param name="commentTypeVm"></param>
+        /// <returns></returns>
+        public static CommentType Convert(this CommentType commentType, CommentTypeViewModel commentTypeVm)
+        {
+            return new CommentType() {
+
+                Id = commentTypeVm.Id,
+                Title = commentTypeVm.Title,
+                Icon = commentTypeVm.Icon,
+                CanAssign = commentTypeVm.CanAssign
+
+            };
+        }
     }
 }

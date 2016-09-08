@@ -53,5 +53,12 @@ namespace Notely.Core.Persistence.Repositories.Interfaces
         /// <param name="userId">If a user id is given ( id >= 0 )</param>
         /// <returns></returns>
         IEnumerable<int> GetUniqueContentNodes(int userId);
+
+        /// <summary>
+        /// Get all comments based on the comment type id
+        /// </summary>
+        /// <param name="commentTypeId"></param>
+        /// <returns></returns>
+        IEnumerable<Comment> GetAllByType(int commentTypeId);
     }
 }

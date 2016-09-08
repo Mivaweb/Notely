@@ -142,6 +142,38 @@ angular.module('notely.resources').factory('notelyResources',
                     $http.get("backoffice/notely/notelyapi/getbackofficenodedetails", { params: { contentId: contentId, userId: userId } }),
                     "Unable to get the unique content nodes!"
                 );
+            },
+
+            // Get the comment type object
+            getCommentType: function (id) {
+                return umbRequestHelper.resourcePromise(
+                    $http.get("backoffice/notely/notelyapi/getcommenttype", { params: { id: id } }),
+                    "Unable to retreive the comment type!"
+                );
+            },
+
+            // Add a new comment type
+            addCommentType: function(commentType) {
+                return umbRequestHelper.resourcePromise(
+                    $http.post("backoffice/notely/notelyapi/addcommenttype", commentType),
+                    "Unable to add the comment type!"
+                );
+            },
+
+            // Update an existing comment type
+            updateCommentType: function (commentType) {
+                return umbRequestHelper.resourcePromise(
+                    $http.put("backoffice/notely/notelyapi/updatecommenttype", commentType),
+                    "Unable to update the comment type!"
+                );
+            },
+
+            // Delete comment type
+            deleteCommentType: function (id) {
+                return umbRequestHelper.resourcePromise(
+                    $http.delete("backoffice/notely/notelyapi/deletecommenttype", { params: { id: id } }),
+                    "Unable to delete the comment type!"
+                );
             }
         };
     }

@@ -43,14 +43,14 @@
                                                         <i ng-if="!type.canAssign" class="icon icon-delete"></i>
                                                     </td>
                                                     <td align="right">
-                                                        <a href class="btn btn-default notely-btn-round"><i class="icon icon-edit"></i></a>
-                                                        <a href class="btn btn-default notely-btn-round"><i class="icon icon-trash"></i></a>
+                                                        <a href class="btn btn-default notely-btn-round" ng-click="editType(type)"><i class="icon icon-edit"></i></a>
+                                                        <a href class="btn btn-default notely-btn-round" ng-click="deleteType(type.id)"><i class="icon icon-trash"></i></a>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
 
-                                        <button type="button" class="btn btn-success notely-btn-round"><i class="icon icon-add"></i></button>
+                                        <button type="button" class="btn btn-success notely-btn-round" ng-click="addType()"><i class="icon icon-add"></i></button>
 
                                     </div>
                                 </div>
@@ -97,5 +97,12 @@
         </umb-tab-view>
 
     </umb-panel>
+
+    <!-- Overlay -->
+    <umb-overlay ng-if="overlay.show"
+                 model="overlay"
+                 view="overlay.view"
+                 position="right">
+    </umb-overlay>
 
 </form>

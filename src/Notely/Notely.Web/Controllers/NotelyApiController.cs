@@ -366,6 +366,64 @@ namespace Notely.Web.Controllers
             return _result;
         }
 
+        /// <summary>
+        /// Get comment type
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>A <see cref="CommentTypeViewModel"/> object</returns>
+        [HttpGet]
+        public CommentTypeViewModel GetCommentType(int id)
+        {
+            using (CommentTypesRepository repo = new CommentTypesRepository())
+            {
+                var commentTypeVm = new CommentTypeViewModel();
+                return commentTypeVm.Convert(repo.Get(id));
+            }
+        }
+
+        /// <summary>
+        /// Add a new Comment Type
+        /// </summary>
+        /// <param name="commentType"></param>
+        [HttpPost]
+        public void AddCommentType(object commentType)
+        {
+            var _commentType = new CommentType();
+
+            CommentTypeViewModel commentTypeDto = JsonConvert.DeserializeObject<CommentTypeViewModel>(commentType.ToString());
+
+            DoAddOrUpdate(_commentType.Convert(commentTypeDto));
+        }
+
+        /// <summary>
+        /// Update an existing Comment Type
+        /// </summary>
+        /// <param name="commentType"></param>
+        [HttpPut]
+        public void UpdateCommentType(object commentType)
+        {
+            var _commentType = new CommentType();
+
+            CommentTypeViewModel commentTypeDto = JsonConvert.DeserializeObject<CommentTypeViewModel>(commentType.ToString());
+
+            DoAddOrUpdate(_commentType.Convert(commentTypeDto));
+        }
+
+        /// <summary>
+        /// Delete a comment type
+        /// </summary>
+        /// <param name="id"></param>
+        [HttpDelete]
+        public void DeleteCommentType(int id)
+        {
+            DeleteCommentsByType(id);
+
+            using (CommentTypesRepository repo = new CommentTypesRepository())
+            {
+                repo.Delete(id);
+            }
+        }
+
         #region Private methods
 
         /// <summary>
@@ -401,6 +459,33 @@ namespace Notely.Web.Controllers
                 if (!(comment.PropertyTypeId > 0)) throw new ArgumentException("PropertyType not found");
 
                 repo.AddOrUpdate(comment);
+            }
+        }
+
+        /// <summary>
+        /// Add or update a comment type
+        /// </summary>
+        /// <param name="commentType">A <see cref="CommentType"/> object</param>
+        private void DoAddOrUpdate(CommentType commentType)
+        {
+            using (CommentTypesRepository repo = new CommentTypesRepository())
+            {
+                repo.AddOrUpdate(commentType);
+            }
+        }
+
+        /// <summary>
+        /// Delete all comments based on a comment type
+        /// </summary>
+        /// <param name="commentTypeId"></param>
+        private void DeleteCommentsByType(int commentTypeId)
+        {
+            using (CommentsRepository repo = new CommentsRepository())
+            {
+                foreach(var comment in repo.GetAllByType(commentTypeId))
+                {
+                    repo.Delete(comment);
+                }
             }
         }
 

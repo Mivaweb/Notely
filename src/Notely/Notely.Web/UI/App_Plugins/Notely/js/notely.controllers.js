@@ -27,7 +27,6 @@ angular.module('notely').controller('Notely.PropertyEditors.DataTypePickerContro
 
 ]);
 
-
 /*
  * @ngdoc Controller
  * @name Notely.PropertyEditors.MainController
@@ -678,13 +677,12 @@ angular.module('notely').controller('Notely.Backoffice.SettingsController', [
     'commentTypesBuilder',
     'commentStatesBuilder',
     'notificationsService',
+    'dialogService',
 
-    function ($scope, notelyResources, commentTypesBuilder, commentStatesBuilder, notificationsService) {
+    function ($scope, notelyResources, commentTypesBuilder, commentStatesBuilder, notificationsService, dialogService) {
 
         $scope.loaded = false;
-
         $scope.visibleTabs = [];
-
         $scope.commentTypes = [];
 
         // Init function
@@ -712,6 +710,82 @@ angular.module('notely').controller('Notely.Backoffice.SettingsController', [
             var commentStatePromise = notelyResources.getCommentStates();
             commentStatePromise.then(function (data) {
                 $scope.commentStates = commentStatesBuilder.convert(data);
+            });
+        };
+
+        // Add comment type
+        $scope.addType = function () {
+
+            $scope.overlay = {
+                view: "/App_Plugins/Notely/backoffice/notely/dialogs/notely.types.add.html",
+                title: "Add type",
+                show: true,
+                hideSubmitButton: false,
+                close: function (oldModel) {
+                    $scope.overlay.show = false;
+                    $scope.overlay = null;
+                },
+                submit: function (model) {
+                    console.log(model)
+                    // Add comment
+                    notelyResources.addCommentType(model.type).then(function () {
+                        $scope.load();
+                    });
+
+                    $scope.overlay.show = false;
+                    $scope.overlay = null;
+
+                    // Show notification
+                    notificationsService.success("Comment Type added", "Comment Type is successfully added.");
+                }
+            };
+
+        };
+
+        // Edit comment type
+        $scope.editType = function (commentType) {
+
+            $scope.overlay = {
+                view: "/App_Plugins/Notely/backoffice/notely/dialogs/notely.types.edit.html",
+                title: "Edit type",
+                type: angular.copy(commentType),
+                show: true,
+                hideSubmitButton: false,
+                close: function (oldModel) {
+                    $scope.overlay.show = false;
+                    $scope.overlay = null;
+                },
+                submit: function (model) {
+
+                    // Update comment
+                    notelyResources.updateCommentType(model.type).then(function () {
+                        $scope.load();
+                    });
+
+                    $scope.overlay.show = false;
+                    $scope.overlay = null;
+
+                    // Show notification
+                    notificationsService.success("Comment type saved", "Comment Type is successfully saved.");
+                }
+            };
+
+        };
+
+        // Delete comment type
+        $scope.deleteType = function (commentTypeId) {
+            dialogService.open({
+                template: '/App_Plugins/Notely/backoffice/notely/dialogs/notely.types.delete.html',
+                dialogData: commentTypeId,
+                callback: function (data) {
+                    notelyResources.deleteCommentType(data).then(function () {
+                        // Get the comments
+                        $scope.load();
+
+                        // Show notification
+                        notificationsService.success("Comment Type removed", "Comment Type is successfully deleted.");
+                    });
+                }
             });
         };
 
@@ -755,6 +829,105 @@ angular.module('notely').controller('Notely.Backoffice.CleanupController', [
             cleanupPromise.then(function (data) {
                 notificationsService.success("Cleanup done", data + " unnecessary comments were removed.");
             });
+        };
+
+    }
+
+]);
+
+/*
+ * @ngdoc Controller
+ * @name Notely.Types.AddController
+ * 
+ */
+angular.module('notely').controller('Notely.Types.AddController', [
+
+    '$scope',
+    'dialogService',
+    'commentTypesBuilder',
+
+    function ($scope, dialogService, commentTypesBuilder) {
+
+        $scope.model.type = {};
+
+        // Init
+        $scope.init = function () {
+
+            $scope.model.type = commentTypesBuilder.createEmpty();
+            $scope.model.type.icon = "icon-info";
+
+        };
+
+        // Open icon picker dialog
+        $scope.openIconPicker = function () {
+            dialogService.iconPicker({
+                callback: function (data) {
+                    $scope.model.type.icon = data;
+                }
+            });
+        };
+
+    }
+
+]);
+
+/*
+ * @ngdoc Controller
+ * @name Notely.Types.EditController
+ * 
+ */
+angular.module('notely').controller('Notely.Types.EditController', [
+
+    '$scope',
+    'dialogService',
+    'commentTypesBuilder',
+
+    function ($scope, dialogService, commentTypesBuilder) {
+
+        // Init
+        $scope.init = function () {
+
+        };
+
+        // Open icon picker dialog
+        $scope.openIconPicker = function () {
+            dialogService.iconPicker({
+                callback: function (data) {
+                    $scope.model.type.icon = data;
+                }
+            });
+        };
+
+    }
+
+]);
+
+/*
+ * @ngdoc Controller
+ * @name Notely.Types.DeleteController
+ */
+angular.module('notely').controller('Notely.Types.DeleteController', [
+
+    '$scope',
+    'notelyResources',
+    'commentTypesBuilder',
+
+    function ($scope, notelyResources, commentTypesBuilder) {
+
+        // Init model object
+        $scope.model = {};
+
+        // Init controller
+        $scope.init = function (commentTypeId) {
+            // Get comment by id
+            notelyResources.getCommentType(commentTypeId).then(function (data) {
+                $scope.model.type = commentTypesBuilder.convert(data);
+            });
+        };
+
+        // Delete comment
+        $scope.deleteCommentType = function (commentTypeId) {
+            $scope.submit(commentTypeId);
         };
 
     }

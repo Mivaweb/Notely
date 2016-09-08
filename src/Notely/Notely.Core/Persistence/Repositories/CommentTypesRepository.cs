@@ -34,14 +34,40 @@ namespace Notely.Core.Persistence.Repositories
             return _dbContext.Database.Fetch<CommentType>("SELECT * FROM notelyCommentTypes ORDER BY ID");
         }
 
+        /// <summary>
+        /// Adds or updates the <see cref="CommentType"/> object
+        /// </summary>
+        /// <param name="entity"></param>
         public void AddOrUpdate(CommentType entity)
         {
-            throw new NotImplementedException();
+            if (entity.Id > 0)
+            {
+                // Update entity
+                _dbContext.Database.Update(entity);
+            }
+            else
+            {
+                // Add entity
+                _dbContext.Database.Insert(entity);
+            }
         }
 
+        /// <summary>
+        /// Delete comment type
+        /// </summary>
+        /// <param name="entity"></param>
         public void Delete(CommentType entity)
         {
-            throw new NotImplementedException();
+            _dbContext.Database.Delete(entity);
+        }
+
+        /// <summary>
+        /// Delete a comment type by id
+        /// </summary>
+        /// <param name="id"></param>
+        public void Delete(int id)
+        {
+            Delete(Get(id));
         }
         
         /// <summary>

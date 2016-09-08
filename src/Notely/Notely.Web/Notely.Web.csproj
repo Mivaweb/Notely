@@ -284,6 +284,9 @@
     <Content Include="UI\App_Plugins\Notely\backoffice\notely\comments.html" />
     <Content Include="UI\App_Plugins\Notely\backoffice\notely\cleanup.html" />
     <Content Include="UI\App_Plugins\Notely\backoffice\notely\dashboard.html" />
+    <Content Include="UI\App_Plugins\Notely\backoffice\notely\dialogs\notely.types.delete.html" />
+    <Content Include="UI\App_Plugins\Notely\backoffice\notely\dialogs\notely.types.add.html" />
+    <Content Include="UI\App_Plugins\Notely\backoffice\notely\dialogs\notely.types.edit.html" />
     <Content Include="UI\App_Plugins\Notely\backoffice\notely\settings.html" />
     <Content Include="UI\App_Plugins\Notely\css\notely.css" />
     <Content Include="UI\App_Plugins\Notely\js\notely.controllers.js" />
