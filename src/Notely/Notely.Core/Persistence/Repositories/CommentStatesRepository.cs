@@ -58,13 +58,10 @@ namespace Notely.Core.Persistence.Repositories
         {
             return _dbContext.Database.Single<CommentState>(id);
         }
-        
+
         /// <summary>
         /// Dispose
         /// </summary>
-        public void Dispose()
-        {
-            
-        }
+        public void Dispose() { }
     }
 }

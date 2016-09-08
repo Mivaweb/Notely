@@ -67,9 +67,6 @@ namespace Notely.Core.Persistence.Repositories
         /// <summary>
         ///  Dispose
         /// </summary>
-        public void Dispose()
-        {
-
-        }
+        public void Dispose() { }
     }
 }

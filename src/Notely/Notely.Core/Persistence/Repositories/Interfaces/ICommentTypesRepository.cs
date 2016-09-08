@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using Umbraco.Core.Persistence.Repositories;
+﻿using Umbraco.Core.Persistence.Repositories;
 
 using Notely.Core.Models;
 
