@@ -39,7 +39,8 @@ namespace Notely.Core.Models
 
         [Column("state")]
         [ForeignKey(typeof(CommentState), Column = "id", Name = "FK_Comment_CommentState")]
-        public int State { get; set; }
+        [NullSetting(NullSetting = NullSettings.Null)]
+        public int? State { get; set; }
 
         [Column("closed")]
         public bool Closed { get; set; }
