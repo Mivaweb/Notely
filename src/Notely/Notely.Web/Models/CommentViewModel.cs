@@ -4,7 +4,7 @@ using System;
 namespace Notely.Web.Models
 {
     /// <summary>
-    /// Defines a CommentViewModel
+    /// Implements a CommentViewModel
     /// </summary>
     public class CommentViewModel
     {
@@ -35,6 +35,9 @@ namespace Notely.Web.Models
         [JsonProperty("closed")]
         public bool Closed { get; set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public CommentViewModel()
         {
             Id = -1;

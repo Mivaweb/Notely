@@ -1,13 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Notely.Web.Models
 {
     /// <summary>
-    /// Defines a ContentPropertyViewModel
+    /// Implements a ContentPropertyViewModel
     /// </summary>
     public class ContentPropertyViewModel
     {
@@ -23,6 +19,9 @@ namespace Notely.Web.Models
         [JsonProperty("propertyTypeAlias")]
         public string PropertyTypeAlias { get; set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ContentPropertyViewModel()
         {
             ContentId = -1;

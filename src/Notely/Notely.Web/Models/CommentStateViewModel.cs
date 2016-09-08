@@ -1,13 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Notely.Web.Models
 {
     /// <summary>
-    /// Defines a CommentStateViewModel
+    /// Implements a CommentStateViewModel
     /// </summary>
     public class CommentStateViewModel
     {
@@ -17,6 +13,9 @@ namespace Notely.Web.Models
         [JsonProperty("title")]
         public string Title { get; set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public CommentStateViewModel()
         {
             Id = -1;

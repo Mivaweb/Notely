@@ -3,7 +3,7 @@
 namespace Notely.Web.Models
 {
     /// <summary>
-    /// Defines a UserViewModel
+    /// Implements a UserViewModel
     /// </summary>
     public class UserViewModel
     {
@@ -13,6 +13,9 @@ namespace Notely.Web.Models
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public UserViewModel()
         {
             Id = -1;

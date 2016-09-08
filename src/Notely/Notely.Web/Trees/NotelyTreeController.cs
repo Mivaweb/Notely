@@ -7,7 +7,7 @@ using Umbraco.Web.Trees;
 namespace Notely.Web.Trees
 {
     /// <summary>
-    /// Defines a new tree for the notely section
+    /// Implements a new tree for the notely section
     /// </summary>
     [Tree("notely", "notely", "Notely")]
     [PluginController("Notely")]

@@ -4,7 +4,7 @@ using Notely.Web.Models;
 namespace Notely.Web.Extensions
 {
     /// <summary>
-    /// Defines extension methods for the <see cref="CommentTypeViewModel"/>
+    /// Implement extension methods for the <see cref="CommentTypeViewModel"/>
     /// </summary>
     public static class CommentTypeExtensions
     {

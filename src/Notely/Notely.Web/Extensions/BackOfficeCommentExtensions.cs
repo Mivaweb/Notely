@@ -6,7 +6,7 @@ using Notely.Web.Models;
 namespace Notely.Web.Extensions
 {
     /// <summary>
-    /// Defines extension methods for the <see cref="BackOfficeComment"/> object
+    /// Implement extension methods for the <see cref="BackOfficeComment"/> object
     /// </summary>
     public static class BackOfficeCommentExtensions
     {

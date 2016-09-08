@@ -5,7 +5,7 @@ using Notely.Web.Models;
 namespace Notely.Web.Extensions
 {
     /// <summary>
-    /// Defins extension methods for the <see cref="User"/> class
+    /// Implement extension methods for the <see cref="UserViewModel"/> class
     /// </summary>
     public static class UserExtensions
     {

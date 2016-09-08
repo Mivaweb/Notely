@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace Notely.Web.Models
 {
     /// <summary>
-    /// Defines a BackOfficeComment
+    /// Implements a BackOfficeComment
     /// </summary>
     public class BackOfficeComment
     {

@@ -5,7 +5,7 @@ using Umbraco.Web.Mvc;
 namespace Notely.Web.Trees
 {
     /// <summary>
-    /// Defines a new application ( section ) for Notely
+    /// Implements a new application ( section ) for Notely
     /// </summary>
     [Application("notely", "Notely", "icon-notepad", 10)]
     [PluginController("Notely")]

@@ -18,6 +18,9 @@ using Umbraco.Web.Editors;
 
 namespace Notely.Web.Controllers
 {
+    /// <summary>
+    /// Implements a NotelyApiController
+    /// </summary>
     [IsBackOffice]
     [PluginController("Notely")]
     public class NotelyApiController : UmbracoAuthorizedJsonController

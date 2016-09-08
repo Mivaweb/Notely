@@ -1,13 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Notely.Web.Models
 {
     /// <summary>
-    /// Defines a CommentTypeViewModel
+    /// Implements a CommentTypeViewModel
     /// </summary>
     public class CommentTypeViewModel
     {
@@ -23,6 +19,9 @@ namespace Notely.Web.Models
         [JsonProperty("canAssign")]
         public bool CanAssign { get; set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public CommentTypeViewModel()
         {
             Id = -1;

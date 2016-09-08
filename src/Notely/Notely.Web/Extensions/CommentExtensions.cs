@@ -9,7 +9,7 @@ using Notely.Web.Models;
 namespace Notely.Web.Extensions
 {
     /// <summary>
-    /// Defines extension methods for the <see cref="Comment"/> and <see cref="CommentViewModel"/> classes
+    /// Implement extension methods for the <see cref="Comment"/> and <see cref="CommentViewModel"/> classes
     /// </summary>
     public static class CommentExtensions
     {
