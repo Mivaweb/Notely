@@ -107,7 +107,7 @@ namespace Notely.Core.Persistence.Repositories
         /// <returns></returns>
         public IEnumerable<Comment> GetAllByContentProp(int contentId, int propertyTypeId)
         {
-            return _dbContext.Database.Fetch<Comment, CommentState, CommentType>("SELECT nc.*, ncs.*, nct.* FROM notelyComments AS nc JOIN notelyCommentStates AS ncs ON ncs.id = nc.state JOIN notelyCommentTypes AS nct ON nct.id = nc.type WHERE nc.contentId = @p1 AND nc.propertyTypeId = @p2 ORDER BY nc.type, nc.createDate", new { p1 = contentId, p2 = propertyTypeId });
+            return _dbContext.Database.Fetch<Comment, CommentState, CommentType>("SELECT nc.*, ncs.*, nct.* FROM notelyComments AS nc LEFT JOIN notelyCommentStates AS ncs ON ncs.id = nc.state JOIN notelyCommentTypes AS nct ON nct.id = nc.type WHERE nc.contentId = @p1 AND nc.propertyTypeId = @p2 ORDER BY nc.type, nc.createDate", new { p1 = contentId, p2 = propertyTypeId });
         }
 
         /// <summary>
