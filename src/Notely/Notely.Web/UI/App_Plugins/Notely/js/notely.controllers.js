@@ -230,8 +230,6 @@ angular.module('notely').controller('Notely.PropertyEditors.AddController', [
 
     function ($scope, notelyResources, $routeParams, commentsBuilder, usersBuilder) {
 
-        $scope.loaded = false;
-
         // Reset comment window
         $scope.model.comment = commentsBuilder.createEmpty();
         $scope.model.comment.contentProperty.contentId = $routeParams.id;
@@ -245,8 +243,6 @@ angular.module('notely').controller('Notely.PropertyEditors.AddController', [
             usersPromise.then(function (data) {
                 $scope.users = usersBuilder.convert(data);
             });
-
-            $scope.loaded = true;
         };
 
         // Reset select
@@ -274,8 +270,6 @@ angular.module('notely').controller('Notely.PropertyEditors.EditController', [
 
     function ($scope, notelyResources, commentsBuilder, usersBuilder, $routeParams) {
 
-        $scope.loaded = false;
-
         // Init controller
         $scope.init = function () {
 
@@ -292,8 +286,6 @@ angular.module('notely').controller('Notely.PropertyEditors.EditController', [
             usersPromise.then(function (data) {
                 $scope.users = usersBuilder.convert(data);
             });
-
-            $scope.loaded = true;
         };
 
         // Reset select
