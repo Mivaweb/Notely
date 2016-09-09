@@ -306,9 +306,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="UI\App_Plugins\Notely\backoffice\notely\dialogs\notely.comments.add.html" />
-    <Content Include="UI\App_Plugins\Notely\backoffice\notely\dialogs\notely.comments.delete.html" />
-    <Content Include="UI\App_Plugins\Notely\backoffice\notely\dialogs\notely.comments.edit.html" />
+    <Content Include="UI\App_Plugins\Notely\backoffice\notely\dialogs\notely.notes.add.html" />
+    <Content Include="UI\App_Plugins\Notely\backoffice\notely\dialogs\notely.notes.delete.html" />
+    <Content Include="UI\App_Plugins\Notely\backoffice\notely\dialogs\notely.notes.edit.html" />
     <Content Include="UI\App_Plugins\Notely\views\notely.html" />
     <Content Include="UI\App_Plugins\Notely\views\propertyeditors\notely.datatypepicker.html" />
     <Content Include="Web.config" />

@@ -35,7 +35,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="type in commentTypes track by $index">
+                                                <tr ng-repeat="type in noteTypes track by $index">
                                                     <td><i class="icon" ng-class="type.icon"></i></td>
                                                     <td>{{type.title}}</td>
                                                     <td>
@@ -77,7 +77,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="state in commentStates track by $index">
+                                                <tr ng-repeat="state in noteStates track by $index">
                                                     <td>{{state.id}}</td>
                                                     <td>{{state.title}}</td>
                                                     <td><span class="label" ng-class="'label-' + state.title | lowercase">{{state.title}}</span></td>

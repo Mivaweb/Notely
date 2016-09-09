@@ -1,4 +1,4 @@
-﻿// Bootstrap the Commentor angular module
+﻿// Bootstrap the Notely angular module
 (function () {
     angular.module('notely', [
         'umbraco.filters',

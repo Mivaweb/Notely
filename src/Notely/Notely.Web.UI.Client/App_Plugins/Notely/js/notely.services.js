@@ -1,23 +1,23 @@
 ﻿/*
  * @ngdoc Service
- * @name commentService
+ * @name noteService
  * 
  */
-angular.module('notely.services').factory('commentService', [
+angular.module('notely.services').factory('noteService', [
 
     function () {
 
         return {
 
             // Format the description which adds the assignee if assignd to
-            formatDescription: function (comment) {
-                return comment.description + (comment.type.canAssign && comment.assignedTo ? ' <strong>[Assigned to: ' + comment.assignedTo.name + ']</strong>' : '');
+            formatDescription: function (note) {
+                return note.description + (note.type.canAssign && note.assignedTo ? ' <strong>[Assigned to: ' + note.assignedTo.name + ']</strong>' : '');
             },
 
-            // Add comment
+            // Add note
             getAddOverlay: function () {
                 return {
-                    view: "/App_Plugins/Notely/backoffice/notely/dialogs/notely.comments.add.html",
+                    view: "/App_Plugins/Notely/backoffice/notely/dialogs/notely.notes.add.html",
                     title: "Add note",
                     show: true,
                     property: {},
@@ -27,10 +27,10 @@ angular.module('notely.services').factory('commentService', [
                 };
             },
 
-            // Edit comment
+            // Edit note
             getEditOverlay: function () {
                 return {
-                    view: "/App_Plugins/Notely/backoffice/notely/dialogs/notely.comments.edit.html",
+                    view: "/App_Plugins/Notely/backoffice/notely/dialogs/notely.notes.edit.html",
                     title: "Edit note",
                     comment: {},
                     show: true,
@@ -40,10 +40,10 @@ angular.module('notely.services').factory('commentService', [
                 };
             },
 
-            // Edit comment
+            // Delete note
             getDeleteDialog: function () {
                 return {
-                    template: '/App_Plugins/Notely/backoffice/notely/dialogs/notely.comments.delete.html',
+                    template: '/App_Plugins/Notely/backoffice/notely/dialogs/notely.notes.delete.html',
                     dialogData: undefined,
                     callback: undefined
                 };

@@ -17,7 +17,7 @@
 					},
 					{
 						label: "Maximum comments",
-						description: "Set a limit of comments for this property editor.",
+						description: "Set a limit of notes for this property editor.",
 						key: "limit",
 						view: "number"
 					}

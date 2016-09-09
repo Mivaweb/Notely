@@ -646,16 +646,17 @@ angular.module('notely').controller('Notely.Backoffice.SettingsController', [
 
     '$scope',
     'notelyResources',
-    'commentTypesBuilder',
-    'commentStatesBuilder',
+    'noteTypesBuilder',
+    'noteStatesBuilder',
     'notificationsService',
     'dialogService',
 
-    function ($scope, notelyResources, commentTypesBuilder, commentStatesBuilder, notificationsService, dialogService) {
+    function ($scope, notelyResources, noteTypesBuilder, noteStatesBuilder, notificationsService, dialogService) {
 
         $scope.loaded = false;
         $scope.visibleTabs = [];
-        $scope.commentTypes = [];
+        $scope.noteTypes = [];
+        $scope.noteStates = [];
 
         // Init function
         $scope.init = function () {
@@ -674,14 +675,14 @@ angular.module('notely').controller('Notely.Backoffice.SettingsController', [
 
         // Load data
         $scope.load = function () {
-            var commentTypePromise = notelyResources.getCommentTypes();
-            commentTypePromise.then(function (data) {
-                $scope.commentTypes = commentTypesBuilder.convert(data);
+            var noteTypePromise = notelyResources.getNoteTypes();
+            noteTypePromise.then(function (data) {
+                $scope.noteTypes = noteTypesBuilder.convert(data);
             });
 
-            var commentStatePromise = notelyResources.getCommentStates();
-            commentStatePromise.then(function (data) {
-                $scope.commentStates = commentStatesBuilder.convert(data);
+            var noteStatePromise = notelyResources.getNoteStates();
+            noteStatePromise.then(function (data) {
+                $scope.noteStates = noteStatesBuilder.convert(data);
             });
         };
 
@@ -797,7 +798,7 @@ angular.module('notely').controller('Notely.Backoffice.CleanupController', [
 
         // Cleanup comments
         $scope.cleanup = function () {
-            var cleanupPromise = notelyResources.cleanupComments();
+            var cleanupPromise = notelyResources.cleanupNotes();
             cleanupPromise.then(function (data) {
                 notificationsService.success("Cleanup done", data + " notes were removed.");
             });

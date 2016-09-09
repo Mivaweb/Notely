@@ -1,0 +1,66 @@
+﻿<div ng-controller="Notely.Comments.AddController" ng-init="init()" class="notely-modal">
+
+    <p>
+        Add a new note to the property <strong>{{model.comment.contentProperty.propertyTypeAlias}}</strong>.
+        You can choose between different types of notes.
+    </p>
+
+    <h5>Properties</h5>
+
+    <div class="umb-control-group">
+        <label class="control-label">
+            Type
+        </label>
+        <div class="controls controls-row">
+            <select name="notelyType" class="umb-editor umb-dropdown" 
+                    ng-change="commentTypeChanged()" 
+                    ng-show="commentTypes"
+                    ng-model="model.comment.type"
+                    ng-options="c.title for c in commentTypes track by c.id">
+            </select>
+        </div>
+    </div>
+    <div class="umb-control-group">
+        <label class="control-label">
+            Title
+        </label>
+        <div class="controls controls-row">
+            <input name="notelyTitle" type="text" value="" ng-model="model.comment.title" placeholder="Title" class="umb-editor" />
+        </div>
+    </div>
+    <div class="umb-control-group">
+        <label class="control-label">
+            Description
+        </label>
+        <div class="controls controls-row">
+            <textarea name="notelyDescription" ng-model="model.comment.description" rows="6" class="umb-editor" placeholder="Enter short description"></textarea>
+        </div>
+    </div>
+    <div class="umb-control-group" ng-show="model.comment.type.canAssign">
+        <label class="control-label">
+            Assign to user
+        </label>
+        <div class="controls controls-row">
+            <select name="notelyUser"
+                    class="umb-editor umb-dropdown"
+                    ng-hide="!users || (model.comment.assignedTo && model.comment.assignedTo.id >= 0)"
+                    ng-model="model.comment.assignedTo"
+                    ng-options="i.name for i in users | orderBy:'name' track by i.id""></select>
+            <div class="notely-clear-select" ng-show="model.comment.assignedTo && model.comment.assignedTo.id >= 0">
+                <span>{{model.comment.assignedTo.name}}</span>
+                <i class="icon icon-delete" ng-click="resetAssigndTo()"></i>
+            </div>
+        </div>
+    </div>
+    <div class="umb-control-group" ng-show="model.comment.type.canAssign">
+        <label class="control-label">
+            State
+        </label>
+        <div class="controls controls-row">
+            <select name="notelyState" class="umb-editor umb-dropdown" 
+                    ng-model="model.comment.state"
+                    ng-show="commentStates"
+                    ng-options="c.title for c in commentStates track by c.id"></select>
+        </div>
+    </div>
+</div>
