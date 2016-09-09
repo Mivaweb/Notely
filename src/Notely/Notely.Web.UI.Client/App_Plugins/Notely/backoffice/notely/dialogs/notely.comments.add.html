@@ -1,8 +1,8 @@
 ﻿<div ng-controller="Notely.Comments.AddController" ng-init="init()" class="notely-modal">
 
     <p>
-        Add a new comment to the property <strong>{{model.property.label}}</strong>.
-        You can choose between different types of comments.
+        Add a new note to the property <strong>{{model.comment.contentProperty.propertyTypeAlias}}</strong>.
+        You can choose between different types of notes.
     </p>
 
     <h5>Properties</h5>
@@ -54,7 +54,7 @@
     </div>
     <div class="umb-control-group" ng-show="model.comment.type.canAssign">
         <label class="control-label">
-            Type
+            State
         </label>
         <div class="controls controls-row">
             <select name="notelyState" class="umb-editor umb-dropdown" 

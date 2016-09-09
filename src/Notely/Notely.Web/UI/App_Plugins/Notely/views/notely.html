@@ -11,7 +11,7 @@
         <ul class="notely-nav">
             <li class="notely-nav_expand" ng-click="expand()">
                 <i class="icon" ng-class="{'icon-navigation-right': comments.length > 0 && !showComments, 'icon-navigation-down': comments.length > 0 && showComments}"></i>
-                {{comments.length}} comments
+                {{comments.length}} notes
             </li>
             <li>
                 <button type="button" class="btn btn-success" ng-show="comments.length < model.config.limit" ng-click="addComment()"><i class="icon icon-add"></i></button>

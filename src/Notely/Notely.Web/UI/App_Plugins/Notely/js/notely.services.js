@@ -18,7 +18,7 @@ angular.module('notely.services').factory('commentService', [
             getAddOverlay: function () {
                 return {
                     view: "/App_Plugins/Notely/backoffice/notely/dialogs/notely.comments.add.html",
-                    title: "Add comment",
+                    title: "Add note",
                     show: true,
                     property: {},
                     hideSubmitButton: false,
@@ -31,7 +31,7 @@ angular.module('notely.services').factory('commentService', [
             getEditOverlay: function () {
                 return {
                     view: "/App_Plugins/Notely/backoffice/notely/dialogs/notely.comments.edit.html",
-                    title: "Edit comment",
+                    title: "Edit note",
                     comment: {},
                     show: true,
                     hideSubmitButton: false,

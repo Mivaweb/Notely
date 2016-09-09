@@ -152,7 +152,7 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
                     $scope.overlay = null;
 
                     // Show notification
-                    notificationsService.success("Comment added", "Comment is successfully added to the property editor.");
+                    notificationsService.success("Note added", "Note is successfully added to the property editor.");
                 };
 
                 $scope.overlay = _overlay;
@@ -181,7 +181,7 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
                 $scope.overlay = null;
 
                 // Show notification
-                notificationsService.success("Comment saved", "Comment is successfully saved.");
+                notificationsService.success("Note saved", "Note is successfully saved.");
             };
 
             $scope.overlay = _overlay;
@@ -196,7 +196,7 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
                     $scope.load();
 
                     // Show notification
-                    notificationsService.success("Comment removed", "Comment is successfully deleted.");
+                    notificationsService.success("Note removed", "Note is successfully deleted.");
                 });
             };
             dialogService.open(_dialog);
@@ -563,7 +563,7 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
                     $scope.overlay = null;
 
                     // Show notification
-                    notificationsService.success("Comment added", "Comment is successfully added to the property editor.");
+                    notificationsService.success("Note added", "Note is successfully added.");
                 };
 
                 $scope.overlay = _overlay;
@@ -590,7 +590,7 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
                 $scope.overlay = null;
 
                 // Show notification
-                notificationsService.success("Comment saved", "Comment is successfully saved.");
+                notificationsService.success("Note saved", "Note is successfully saved.");
             };
 
             $scope.overlay = _overlay;
@@ -605,7 +605,7 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
                     $scope.load();
 
                     // Show notification
-                    notificationsService.success("Comment removed", "Comment is successfully deleted.");
+                    notificationsService.success("Note removed", "Note is successfully deleted.");
                 });
             };
             dialogService.open(_dialog);
