@@ -47,9 +47,10 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
     '$routeParams',
     'notificationsService',
     'dialogService',
+    'commentService',
 
     function ($scope, umbPropEditorHelper, notelyResources, dataTypeBuilder, propertyBuilder,
-        commentsBuilder, contentPropertyBuilder, $routeParams, notificationsService, dialogService) {
+        commentsBuilder, contentPropertyBuilder, $routeParams, notificationsService, dialogService, commentService) {
 
         $scope.loaded = false;
 
@@ -118,7 +119,7 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
 
         // Render the comment description field
         $scope.renderDescription = function (comment) {
-            return comment.description + (comment.type.canAssign && comment.assignedTo ? ' <strong>[Assigned to: ' + comment.assignedTo.name + ']</strong>' : '');
+            return commentService.formatDescription(comment);
         };
 
         // Add a new comment
@@ -133,30 +134,28 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
                 _cp.propertyDataId = $scope.model.id;
                 _cp.propertyTypeAlias = $scope.model.alias;
 
-                $scope.overlay = {
-                    view: "/App_Plugins/Notely/backoffice/notely/dialogs/notely.comments.add.html",
-                    title: "Add comment",
-                    show: true,
-                    property: _cp,
-                    hideSubmitButton: false,
-                    close: function (oldModel) {
-                        $scope.overlay.show = false;
-                        $scope.overlay = null;
-                    },
-                    submit: function (model) {
-                        // Add comment
-                        notelyResources.addComment(model.comment).then(function () {
-                            // Get the comments
-                            $scope.load();
-                        });
-
-                        $scope.overlay.show = false;
-                        $scope.overlay = null;
-
-                        // Show notification
-                        notificationsService.success("Comment added", "Comment is successfully added to the property editor.");
-                    }
+                // Get overlay object of the service
+                var _overlay = commentService.getAddOverlay();
+                _overlay.property = _cp;
+                _overlay.close = function (oldModel) {
+                    $scope.overlay.show = false;
+                    $scope.overlay = null;
                 };
+                _overlay.submit = function (model) {
+                    // Add comment
+                    notelyResources.addComment(model.comment).then(function () {
+                        // Get the comments
+                        $scope.load();
+                    });
+
+                    $scope.overlay.show = false;
+                    $scope.overlay = null;
+
+                    // Show notification
+                    notificationsService.success("Comment added", "Comment is successfully added to the property editor.");
+                };
+
+                $scope.overlay = _overlay;
 
             }
 
@@ -167,58 +166,40 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
             // Assign the propertydataid ( model.id ) to the comment object
             comment.contentProperty.propertyDataId = $scope.model.id;
 
-            $scope.overlay = {
-                view: "/App_Plugins/Notely/backoffice/notely/dialogs/notely.comments.edit.html",
-                title: "Edit comment",
-                comment: angular.copy(comment),
-                show: true,
-                hideSubmitButton: false,
-                close: function (oldModel) {
-                    $scope.overlay.show = false;
-                    $scope.overlay = null;
-                },
-                submit: function (model) {
-                    // Update comment
-                    notelyResources.updateComment(model.comment).then(function () {
-                        // Get the comments
-                        $scope.load();
-                    });
-
-                    $scope.overlay.show = false;
-                    $scope.overlay = null;
-
-                    // Show notification
-                    notificationsService.success("Comment saved", "Comment is successfully saved.");
-                }
+            var _overlay = commentService.getEditOverlay();
+            _overlay.comment = angular.copy(comment);
+            _overlay.close = function (oldModel) {
+                $scope.overlay.show = false;
+                $scope.overlay = null;
             };
+            _overlay.submit = function (model) {
+                notelyResources.updateComment(model.comment).then(function () {
+                    $scope.load();
+                });
+
+                $scope.overlay.show = false;
+                $scope.overlay = null;
+
+                // Show notification
+                notificationsService.success("Comment saved", "Comment is successfully saved.");
+            };
+
+            $scope.overlay = _overlay;
         };
 
         // Delete a comment
         $scope.deleteComment = function (commentId) {
-            dialogService.open({
-                template: '/App_Plugins/Notely/backoffice/notely/dialogs/notely.comments.delete.html',
-                dialogData: commentId,
-                callback: function (data) {
-                    notelyResources.deleteComment(data).then(function () {
-                        // Get the comments
-                        $scope.load();
+            var _dialog = commentService.getDeleteDialog();
+            _dialog.dialogData = commentId;
+            _dialog.callback = function (data) {
+                notelyResources.deleteComment(data).then(function () {
+                    $scope.load();
 
-                        // Show notification
-                        notificationsService.success("Comment removed", "Comment is successfully deleted.");
-                    });
-                }
-            });
-        };
-
-        // Set task as done
-        $scope.taskComplete = function (commentId) {
-            notelyResources.taskComplete(commentId).then(function () {
-                // Get the comments
-                $scope.load();
-
-                // Show notification
-                notificationsService.success("Task completed", "Todo comment is set completed.");
-            });
+                    // Show notification
+                    notificationsService.success("Comment removed", "Comment is successfully deleted.");
+                });
+            };
+            dialogService.open(_dialog);
         };
 
     }
@@ -428,9 +409,10 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
     '$routeParams',
     'dialogService',
     'notificationsService',
+    'commentService',
 
     function ($scope, notelyResources, backOfficeNodesBuilder, commentsBuilder, commentTypesBuilder, commentStatesBuilder,
-        contentPropertyBuilder, userService, $routeParams, dialogService, notificationsService) {
+        contentPropertyBuilder, userService, $routeParams, dialogService, notificationsService, commentService) {
 
         $scope.loaded = false;
         $scope.expanded = false;
@@ -543,7 +525,7 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
 
         // Render the comment description field
         $scope.renderDescription = function (comment) {
-            return comment.description + (comment.type.canAssign && comment.assignedTo ? ' <strong>[Assigned to: ' + comment.assignedTo.name + ']</strong>' : '');
+            return commentService.formatDescription(comment);
         };
 
         // Changed filter option type
@@ -564,51 +546,15 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
                 _cp.propertyDataId = property.id;
                 _cp.propertyTypeAlias = property.alias;
 
-                $scope.overlay = {
-                    view: "/App_Plugins/Notely/backoffice/notely/dialogs/notely.comments.add.html",
-                    title: "Add comment",
-                    show: true,
-                    property: _cp,
-                    hideSubmitButton: false,
-                    close: function (oldModel) {
-                        $scope.overlay.show = false;
-                        $scope.overlay = null;
-                    },
-                    submit: function (model) {
-                        // Add comment
-                        notelyResources.addComment(model.comment).then(function () {
-                            // Get the comments
-                            $scope.load();
-                            $scope.expanded = false;
-                        });
-
-                        $scope.overlay.show = false;
-                        $scope.overlay = null;
-
-                        // Show notification
-                        notificationsService.success("Comment added", "Comment is successfully added to the property editor.");
-                    }
-                };
-            }
-
-        };
-
-        // Edit comment
-        $scope.editComment = function (comment) {
-            $scope.overlay = {
-                view: "/App_Plugins/Notely/backoffice/notely/dialogs/notely.comments.edit.html",
-                title: "Edit comment",
-                comment: angular.copy(comment),
-                show: true,
-                hideSubmitButton: false,
-                close: function (oldModel) {
+                // Get overlay object of the service
+                var _overlay = commentService.getAddOverlay();
+                _overlay.property = _cp;
+                _overlay.close = function (oldModel) {
                     $scope.overlay.show = false;
                     $scope.overlay = null;
-                },
-                submit: function (model) {
-                    // Update comment
-                    notelyResources.updateComment(model.comment).then(function () {
-                        // Reload
+                };
+                _overlay.submit = function (model) {
+                    notelyResources.addComment(model.comment).then(function () {
                         $scope.load();
                         $scope.expanded = false;
                     });
@@ -617,26 +563,52 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
                     $scope.overlay = null;
 
                     // Show notification
-                    notificationsService.success("Comment saved", "Comment is successfully saved.");
-                }
+                    notificationsService.success("Comment added", "Comment is successfully added to the property editor.");
+                };
+
+                $scope.overlay = _overlay;
+
+            }
+
+        };
+
+        // Edit comment
+        $scope.editComment = function (comment) {
+            var _overlay = commentService.getEditOverlay();
+            _overlay.comment = angular.copy(comment);
+            _overlay.close = function (oldModel) {
+                $scope.overlay.show = false;
+                $scope.overlay = null;
             };
+            _overlay.submit = function (model) {
+                notelyResources.updateComment(model.comment).then(function () {
+                    $scope.load();
+                    $scope.expanded = false;
+                });
+
+                $scope.overlay.show = false;
+                $scope.overlay = null;
+
+                // Show notification
+                notificationsService.success("Comment saved", "Comment is successfully saved.");
+            };
+
+            $scope.overlay = _overlay;
         };
 
         // Delete a comment
         $scope.deleteComment = function (commentId) {
-            dialogService.open({
-                template: '/App_Plugins/Notely/backoffice/notely/dialogs/notely.comments.delete.html',
-                dialogData: commentId,
-                callback: function (data) {
-                    notelyResources.deleteComment(data).then(function () {
-                        // Get the comments
-                        $scope.load();
+            var _dialog = commentService.getDeleteDialog();
+            _dialog.dialogData = commentId;
+            _dialog.callback = function (data) {
+                notelyResources.deleteComment(data).then(function () {
+                    $scope.load();
 
-                        // Show notification
-                        notificationsService.success("Comment removed", "Comment is successfully deleted.");
-                    });
-                }
-            });
+                    // Show notification
+                    notificationsService.success("Comment removed", "Comment is successfully deleted.");
+                });
+            };
+            dialogService.open(_dialog);
         };
 
         function loadDetails(_user) {
