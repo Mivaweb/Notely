@@ -253,6 +253,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Events\NotelyEvents.cs" />
+    <Compile Include="Install\PackageActions.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\CommentState.cs" />
     <Compile Include="Models\CommentType.cs" />
