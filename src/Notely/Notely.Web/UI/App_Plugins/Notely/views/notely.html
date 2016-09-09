@@ -1,7 +1,5 @@
 ﻿<div ng-controller="Notely.PropertyEditors.MainController" ng-init="init()" class="notely-container" ng-show="loaded">
 
-    <!--<notely-property view="property.view" config="property.config" value="model.value" alias="model.alias"></notely-property>-->
-
     <div ng-show="property.view" class="notely-property" ng-include="property.view"></div>
 
     <div class="notely-default" ng-show="showDefault">
