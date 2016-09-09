@@ -9,9 +9,9 @@ using Notely.Core.Persistence.Repositories.Interfaces;
 namespace Notely.Core.Persistence.Repositories
 {
     /// <summary>
-    /// Defines a CommentStatesRepository
+    /// Defines a NoteStatesRepository
     /// </summary>
-    public class CommentStatesRepository : ICommentStatesRepository
+    public class NoteStatesRepository : INoteStatesRepository
     {
         // Database context
         private DatabaseContext _dbContext;
@@ -19,27 +19,27 @@ namespace Notely.Core.Persistence.Repositories
         /// <summary>
         /// Constructor
         /// </summary>
-        public CommentStatesRepository()
+        public NoteStatesRepository()
         {
             _dbContext = ApplicationContext.Current.DatabaseContext;
         }
 
         /// <summary>
-        /// Get a list of <see cref="CommentState"/> objects
+        /// Get a list of <see cref="NoteState"/> objects
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        public IEnumerable<CommentState> GetAll(params int[] ids)
+        public IEnumerable<NoteState> GetAll(params int[] ids)
         {
-            return _dbContext.Database.Fetch<CommentState>("SELECT * FROM notelyNoteStates ORDER BY Id");
+            return _dbContext.Database.Fetch<NoteState>("SELECT * FROM notelyNoteStates ORDER BY Id");
         }
 
-        public void AddOrUpdate(CommentState entity)
+        public void AddOrUpdate(NoteState entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(CommentState entity)
+        public void Delete(NoteState entity)
         {
             throw new NotImplementedException();
         }
@@ -50,13 +50,13 @@ namespace Notely.Core.Persistence.Repositories
         }
 
         /// <summary>
-        /// Get a <see cref="CommentState"/> object
+        /// Get a <see cref="NoteState"/> object
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public CommentState Get(int id)
+        public NoteState Get(int id)
         {
-            return _dbContext.Database.Single<CommentState>(id);
+            return _dbContext.Database.Single<NoteState>(id);
         }
 
         /// <summary>

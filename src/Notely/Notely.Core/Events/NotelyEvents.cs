@@ -19,32 +19,32 @@ namespace Notely.Core.Events
             var dbContext = applicationContext.DatabaseContext;
             var db = new DatabaseSchemaHelper(dbContext.Database, applicationContext.ProfilingLogger.Logger, dbContext.SqlSyntax);
 
-            // Check if table 'notelyCommentStates' exists
+            // Check if table 'notelyNoteStates' exists
             // If it not exists create the new table and add the default records
             if (!db.TableExist("notelyNoteStates"))
             {
-                db.CreateTable<CommentState>(false);
-                dbContext.Database.Insert(new CommentState() { Id = 1, Title = "Open" });
-                dbContext.Database.Insert(new CommentState() { Id = 2, Title = "Approved" });
-                dbContext.Database.Insert(new CommentState() { Id = 3, Title = "Pending" });
-                dbContext.Database.Insert(new CommentState() { Id = 4, Title = "Done" });
+                db.CreateTable<NoteState>(false);
+                dbContext.Database.Insert(new NoteState() { Id = 1, Title = "Open" });
+                dbContext.Database.Insert(new NoteState() { Id = 2, Title = "Approved" });
+                dbContext.Database.Insert(new NoteState() { Id = 3, Title = "Pending" });
+                dbContext.Database.Insert(new NoteState() { Id = 4, Title = "Done" });
             }
 
-            // Check if table 'notelyCommentTypes' exits
+            // Check if table 'notelyNoteTypes' exits
             // If it not exists create the new table and add the default records
             if (!db.TableExist("notelyNoteTypes"))
             {
-                db.CreateTable<CommentType>(false);
-                dbContext.Database.Insert(new CommentType() { CanAssign = false, Icon = "icon-info", Id = 1, Title = "Info" });
-                dbContext.Database.Insert(new CommentType() { CanAssign = true, Icon = "icon-pushpin", Id = 2, Title = "Todo" });
-                dbContext.Database.Insert(new CommentType() { CanAssign = true, Icon = "icon-brackets", Id = 3, Title = "Development" });
-                dbContext.Database.Insert(new CommentType() { CanAssign = true, Icon = "icon-split-alt", Id = 4, Title = "Test" });
+                db.CreateTable<NoteType>(false);
+                dbContext.Database.Insert(new NoteType() { CanAssign = false, Icon = "icon-info", Id = 1, Title = "Info" });
+                dbContext.Database.Insert(new NoteType() { CanAssign = true, Icon = "icon-pushpin", Id = 2, Title = "Todo" });
+                dbContext.Database.Insert(new NoteType() { CanAssign = true, Icon = "icon-brackets", Id = 3, Title = "Development" });
+                dbContext.Database.Insert(new NoteType() { CanAssign = true, Icon = "icon-split-alt", Id = 4, Title = "Test" });
             }
 
-            // Check if table 'notelyComments' exits
+            // Check if table 'notelyNotes' exits
             // If it not exists create the new table
             if (!db.TableExist("notelyNotes"))
-                db.CreateTable<Comment>(false);
+                db.CreateTable<Note>(false);
             
             // Add events to cleanup notely comments
             ContentService.Deleted += ContentService_Deleted;
@@ -57,7 +57,7 @@ namespace Notely.Core.Events
             // Check if we are in the content recycle bin
             if(e.IsContentRecycleBin)
             {
-                using (CommentsRepository repo = new CommentsRepository())
+                using (NotesRepository repo = new NotesRepository())
                 {
                     foreach (var node in e.AllPropertyData)
                     {
@@ -70,7 +70,7 @@ namespace Notely.Core.Events
         // Events fires when deleting a node from the recycle bin
         private void ContentService_Deleted(IContentService sender, Umbraco.Core.Events.DeleteEventArgs<Umbraco.Core.Models.IContent> e)
         {
-            using (CommentsRepository repo = new CommentsRepository())
+            using (NotesRepository repo = new NotesRepository())
             {
                 foreach (var node in e.DeletedEntities)
                 {

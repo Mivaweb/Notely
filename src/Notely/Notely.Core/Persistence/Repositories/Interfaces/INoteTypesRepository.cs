@@ -5,12 +5,12 @@ using Notely.Core.Models;
 namespace Notely.Core.Persistence.Repositories.Interfaces
 {
     /// <summary>
-    /// Defines a ICommentTypesRepository
+    /// Defines a INoteTypesRepository
     /// </summary>
-    public interface ICommentTypesRepository : IRepository<int, CommentType>
+    public interface INoteTypesRepository : IRepository<int, NoteType>
     {
         /// <summary>
-        /// Delete comment type by id
+        /// Delete note type by id
         /// </summary>
         /// <param name="id"></param>
         void Delete(int id);

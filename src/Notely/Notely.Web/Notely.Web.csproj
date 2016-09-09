@@ -315,15 +315,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\NotelyApiController.cs" />
-    <Compile Include="Extensions\CommentExtensions.cs" />
-    <Compile Include="Extensions\CommentStateExtensions.cs" />
-    <Compile Include="Extensions\CommentTypeExtensions.cs" />
+    <Compile Include="Extensions\NoteExtensions.cs" />
+    <Compile Include="Extensions\NoteStateExtensions.cs" />
+    <Compile Include="Extensions\NoteTypeExtensions.cs" />
     <Compile Include="Extensions\UserExtensions.cs" />
     <Compile Include="Models\BackOfficeNode.cs" />
     <Compile Include="Models\BackOfficeProperty.cs" />
-    <Compile Include="Models\CommentStateViewModel.cs" />
-    <Compile Include="Models\CommentTypeViewModel.cs" />
-    <Compile Include="Models\CommentViewModel.cs" />
+    <Compile Include="Models\NoteStateViewModel.cs" />
+    <Compile Include="Models\NoteTypeViewModel.cs" />
+    <Compile Include="Models\NoteViewModel.cs" />
     <Compile Include="Models\ContentPropertyViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
