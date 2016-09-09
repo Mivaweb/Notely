@@ -31,7 +31,7 @@ namespace Notely.Core.Persistence.Repositories
         /// <returns></returns>
         public IEnumerable<CommentState> GetAll(params int[] ids)
         {
-            return _dbContext.Database.Fetch<CommentState>("SELECT * FROM notelyCommentStates ORDER BY Id");
+            return _dbContext.Database.Fetch<CommentState>("SELECT * FROM notelyNoteStates ORDER BY Id");
         }
 
         public void AddOrUpdate(CommentState entity)

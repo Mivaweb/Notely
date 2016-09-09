@@ -8,7 +8,7 @@ namespace Notely.Core.Models
     /// <summary>
     /// Implement the CommentState DTO
     /// </summary>
-    [TableName("notelyCommentStates")]
+    [TableName("notelyNoteStates")]
     [PrimaryKey("id", autoIncrement = true)]
     public class CommentState
     {

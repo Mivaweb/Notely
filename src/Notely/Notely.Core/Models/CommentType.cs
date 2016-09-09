@@ -8,7 +8,7 @@ namespace Notely.Core.Models
     /// <summary>
     /// Implment the CommentType DTO
     /// </summary>
-    [TableName("notelyCommentTypes")]
+    [TableName("notelyNoteTypes")]
     [PrimaryKey("id", autoIncrement = true)]
     public class CommentType
     {

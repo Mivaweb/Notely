@@ -21,7 +21,7 @@ namespace Notely.Core.Events
 
             // Check if table 'notelyCommentStates' exists
             // If it not exists create the new table and add the default records
-            if (!db.TableExist("notelyCommentStates"))
+            if (!db.TableExist("notelyNoteStates"))
             {
                 db.CreateTable<CommentState>(false);
                 dbContext.Database.Insert(new CommentState() { Id = 1, Title = "Open" });
@@ -32,7 +32,7 @@ namespace Notely.Core.Events
 
             // Check if table 'notelyCommentTypes' exits
             // If it not exists create the new table and add the default records
-            if (!db.TableExist("notelyCommentTypes"))
+            if (!db.TableExist("notelyNoteTypes"))
             {
                 db.CreateTable<CommentType>(false);
                 dbContext.Database.Insert(new CommentType() { CanAssign = false, Icon = "icon-info", Id = 1, Title = "Info" });
@@ -43,7 +43,7 @@ namespace Notely.Core.Events
 
             // Check if table 'notelyComments' exits
             // If it not exists create the new table
-            if (!db.TableExist("notelyComments"))
+            if (!db.TableExist("notelyNotes"))
                 db.CreateTable<Comment>(false);
             
             // Add events to cleanup notely comments
