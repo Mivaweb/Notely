@@ -4,7 +4,7 @@
         <umb-header tabs="visibleTabs">
             <div class="span7">
                 <div class="umb-headline-editor-wrapper">
-                    <h1>All Comments</h1>
+                    <h1>All notes</h1>
                 </div>
             </div>
             <div class="span5"></div>
@@ -40,7 +40,7 @@
                             <div class="span6">
                                 <div class="umb-editor umb-boolean">
                                     <input type="checkbox" value="" id="notelyHide" ng-model="options.hiding" />
-                                    <label for="notelyHide">Hide content properties without comments</label>
+                                    <label for="notelyHide">Hide content properties without notes</label>
                                 </div>
                             </div>
                         </div>
@@ -108,17 +108,17 @@
                                                                 </td>
                                                             </tr>
                                                             <tr class="notely-default-row" ng-if="filteredComments.length == 0">
-                                                                <td colspan="5">No comments to display for this property based on the filtering.</td>
+                                                                <td colspan="5">No notes to display for this property based on the filtering.</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
                                                     
                                                     <div ng-if="treeNode == 0 && property.comments.length == 0" class="notely-backoffice-default">
-                                                        No comments are added to the property <strong>{{property.name}}</strong>. Click the add button to add your first comment.
+                                                        No notes are added to the property <strong>{{property.name}}</strong>. Click the add button to add your first comment.
                                                     </div>
 
                                                     <div ng-if="treeNode == 1 && property.comments.length == 0" class="notely-backoffice-default">
-                                                        You have no assigned comments to the property <strong>{{property.name}}</strong>.
+                                                        You have no assigned tasks to the property <strong>{{property.name}}</strong>.
                                                     </div>
 
                                                     <button ng-if="treeNode == 0" type="button"

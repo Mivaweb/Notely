@@ -437,7 +437,7 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
             // Setup tabs
             $scope.visibleTabs.push({
                 id: 1,
-                label: 'Comments Listing'
+                label: 'Notes Listing'
             });
 
             // Get all the options
@@ -708,7 +708,7 @@ angular.module('notely').controller('Notely.Backoffice.SettingsController', [
                     $scope.overlay = null;
 
                     // Show notification
-                    notificationsService.success("Comment Type added", "Comment Type is successfully added.");
+                    notificationsService.success("Type added", "Type is successfully added.");
                 }
             };
 
@@ -738,7 +738,7 @@ angular.module('notely').controller('Notely.Backoffice.SettingsController', [
                     $scope.overlay = null;
 
                     // Show notification
-                    notificationsService.success("Comment type saved", "Comment Type is successfully saved.");
+                    notificationsService.success("Type saved", "Type is successfully saved.");
                 }
             };
 
@@ -755,7 +755,7 @@ angular.module('notely').controller('Notely.Backoffice.SettingsController', [
                         $scope.load();
 
                         // Show notification
-                        notificationsService.success("Comment Type removed", "Comment Type is successfully deleted.");
+                        notificationsService.success("Type removed", "Type is successfully deleted.");
                     });
                 }
             });
@@ -788,7 +788,7 @@ angular.module('notely').controller('Notely.Backoffice.CleanupController', [
             // Setup tabs
             $scope.visibleTabs.push({
                 id: 1,
-                label: 'Cleanup Comments'
+                label: 'Cleanup Notes'
             });
 
             $scope.loaded = true;
@@ -799,7 +799,7 @@ angular.module('notely').controller('Notely.Backoffice.CleanupController', [
         $scope.cleanup = function () {
             var cleanupPromise = notelyResources.cleanupComments();
             cleanupPromise.then(function (data) {
-                notificationsService.success("Cleanup done", data + " unnecessary comments were removed.");
+                notificationsService.success("Cleanup done", data + " notes were removed.");
             });
         };
 

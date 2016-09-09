@@ -1,0 +1,155 @@
+﻿<form ng-controller="Notely.Backoffice.CommentsController" ng-init="init()" val-form-manager class="notely-backoffice">
+    <umb-panel>
+
+        <umb-header tabs="visibleTabs">
+            <div class="span7">
+                <div class="umb-headline-editor-wrapper">
+                    <h1>All notes</h1>
+                </div>
+            </div>
+            <div class="span5"></div>
+        </umb-header>
+
+        <umb-tab-view>
+            <umb-tab id="tab1" ng-show="loaded">
+
+                <div class="umb-pane">
+
+                    <!-- Begin .notely-backoffice-options -->
+                    <div class="notely-backoffice-options">
+
+                        <div class="row">
+                            <div class="span3">
+                                <select name="notelyType" class="umb-editor umb-dropdown"
+                                        ng-show="commentTypes"
+                                        ng-model="options.type"
+                                        ng-change="changedType()"
+                                        ng-options="c.title for c in commentTypes track by c.id">
+                                    <option value="">Select type</option>
+                                </select>
+                            </div>
+                            <div class="span3">
+                                <select name="notelyState" class="umb-editor umb-dropdown"
+                                        ng-show="commentStates"
+                                        ng-model="options.state"
+                                        ng-disabled="options.type.id > 0 && !options.type.canAssign"
+                                        ng-options="c.title for c in commentStates track by c.id">
+                                    <option value="">Select state</option>
+                                </select>
+                            </div>
+                            <div class="span6">
+                                <div class="umb-editor umb-boolean">
+                                    <input type="checkbox" value="" id="notelyHide" ng-model="options.hiding" />
+                                    <label for="notelyHide">Hide content properties without notes</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="span6">
+                                <button type="button" class="btn btn-success" ng-click="reset()">Reset</button>
+                                <a href class="notely-reload" ng-click="reload()"><i class="icon icon-refresh"></i><span>Reload</span></a>
+                            </div>
+                        </div>
+
+                    </div><!-- End .notely-backoffice-options -->
+
+                    <a href class="notely-link" ng-if="!expanded" ng-click="toggleContentNodes()">Expand all content nodes</a>
+                    <a href class="notely-link" ng-if="expanded" ng-click="toggleContentNodes()">Collapse all content nodes</a>
+
+                    <!-- Begin .notely-backoffice-list -->
+                    <div class="notely-backoffice-list">
+
+                        <!-- Begin .notely-backoffice-item -->
+                        <div ng-repeat="content in backOfficeDetails | orderByContentId track by $index" 
+                             class="notely-backoffice-item" 
+                             ng-class="{'notely-collapsed': !content.showDetails}" 
+                             ng-show="content.properties.length > 0">
+
+                            <h4>
+                                <i class="icon"
+                                   ng-class="{'icon-navigation-right': !content.showDetails, 'icon-navigation-down': content.showDetails}"
+                                   ng-click="expandContent($index)"></i>
+                                {{content.contentName}}
+                            </h4>
+
+                            <div class="notely-backoffice-item_body" ng-show="content.showDetails">
+                                <div ng-repeat="property in content.properties" class="umb-property" ng-hide="filteredComments.length == 0 && options.hiding">
+                                    <ng-form name="propertyForm">
+                                        <div class="control-group umb-control-group notely-control-group">
+                                            <label class="control-label">
+                                                {{property.name}} ({{filteredComments.length}})
+                                                <small>Property alias: '<strong>{{property.alias}}</strong>'</small>
+                                            </label>
+                                            <div class="controls">
+                                                <div class="umb-property-editor">
+                                                    
+                                                    <table class="notely-table notely-table-bordered" ng-if="property.comments.length > 0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="notely-table-width-commenttype"></th>
+                                                                <th class="notely-table-width-commenttitle">Title</th>
+                                                                <th class="notely-table-width-commentdesc">Description</th>
+                                                                <th class="notely-table-width-commentstate">State</th>
+                                                                <th class="notely-table-width-commentactions"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="comment in $parent.filteredComments = (property.comments | filterType: options.type | filterState: options.state)">
+                                                                <td class="notely-table-width-commenttype">
+                                                                    <i title="{{comment.type.title}}" class="icon" ng-class="comment.type.icon"></i>
+                                                                </td>
+                                                                <td class="notely-table-width-commenttitle"><a href ng-click="editComment(comment)">{{comment.title}}</a></td>
+                                                                <td class="notely-table-width-commentdesc" ng-bind-html-unsafe="renderDescription(comment)"></td>
+                                                                <td class="notely-table-width-commentstate"><span ng-show="comment.type.canAssign" class="label" ng-class="'label-' + comment.state.title | lowercase">{{comment.state.title}}</span></td>
+                                                                <td class="notely-table-width-commentactions">
+                                                                    <a href class="btn btn-default notely-btn-round" ng-click="editComment(comment)"><i class="icon icon-edit"></i></a>
+                                                                    <a href class="btn btn-default notely-btn-round" ng-click="deleteComment(comment.id)"><i class="icon icon-delete"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="notely-default-row" ng-if="filteredComments.length == 0">
+                                                                <td colspan="5">No notes to display for this property based on the filtering.</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    
+                                                    <div ng-if="treeNode == 0 && property.comments.length == 0" class="notely-backoffice-default">
+                                                        No notes are added to the property <strong>{{property.name}}</strong>. Click the add button to add your first comment.
+                                                    </div>
+
+                                                    <div ng-if="treeNode == 1 && property.comments.length == 0" class="notely-backoffice-default">
+                                                        You have no assigned tasks to the property <strong>{{property.name}}</strong>.
+                                                    </div>
+
+                                                    <button ng-if="treeNode == 0" type="button"
+                                                            class="btn btn-success notely-btn-round"
+                                                            ng-click="addComment(content.contentId, property)"
+                                                            ng-show="property.comments.length < property.limit">
+                                                        <i class="icon icon-add"></i>
+                                                    </button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-form>
+                                </div>
+                            </div>
+
+                        </div><!-- End .notely-backoffice-item -->
+
+                    </div><!-- End .notely-backoffice-list -->
+
+                </div>
+
+            </umb-tab>
+        </umb-tab-view>
+
+    </umb-panel>
+
+    <!-- Overlay -->
+    <umb-overlay ng-if="overlay.show"
+                 model="overlay"
+                 view="overlay.view"
+                 position="right">
+    </umb-overlay>
+</form>
