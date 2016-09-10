@@ -16,7 +16,7 @@
 						view: "~/App_Plugins/Notely/views/propertyeditors/notely.datatypepicker.html"
 					},
 					{
-						label: "Maximum comments",
+						label: "Maximum notes",
 						description: "Set a limit of notes for this property editor.",
 						key: "limit",
 						view: "number"

@@ -147,11 +147,11 @@ namespace Notely.Core.Persistence.Repositories
         /// <summary>
         /// Get a list of <see cref="Note"/> objects based on a note type
         /// </summary>
-        /// <param name="commentTypeId"></param>
+        /// <param name="noteTypeId"></param>
         /// <returns></returns>
-        public IEnumerable<Note> GetAllByType(int commentTypeId)
+        public IEnumerable<Note> GetAllByType(int noteTypeId)
         {
-            return _dbContext.Database.Fetch<Note>("SELECT * FROM notelyNotes WHERE type = @p1", new { p1 = commentTypeId });
+            return _dbContext.Database.Fetch<Note>("SELECT * FROM notelyNotes WHERE type = @p1", new { p1 = noteTypeId });
         }
 
         /// <summary>

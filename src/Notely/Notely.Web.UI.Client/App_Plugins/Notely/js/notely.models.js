@@ -45,7 +45,7 @@ angular.module('notely.models').constant('Property', Property);
  * @ngdoc model
  * @name ContentProperty
  * @function
- * Used to link comments to the right content node and property type
+ * Used to link notes to the correct content node and property type
  * 
  * @description
  * Represents the js version of the Notely's PropertyViewModel

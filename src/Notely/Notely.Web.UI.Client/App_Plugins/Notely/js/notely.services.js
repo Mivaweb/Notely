@@ -21,9 +21,7 @@ angular.module('notely.services').factory('noteService', [
                     title: "Add note",
                     show: true,
                     property: {},
-                    hideSubmitButton: false,
-                    close: undefined,
-                    submit: undefined
+                    hideSubmitButton: false
                 };
             },
 
@@ -32,20 +30,16 @@ angular.module('notely.services').factory('noteService', [
                 return {
                     view: "/App_Plugins/Notely/backoffice/notely/dialogs/notely.notes.edit.html",
                     title: "Edit note",
-                    comment: {},
+                    note: {},
                     show: true,
-                    hideSubmitButton: false,
-                    close: undefined,
-                    submit: undefined
+                    hideSubmitButton: false
                 };
             },
 
             // Delete note
             getDeleteDialog: function () {
                 return {
-                    template: '/App_Plugins/Notely/backoffice/notely/dialogs/notely.notes.delete.html',
-                    dialogData: undefined,
-                    callback: undefined
+                    template: '/App_Plugins/Notely/backoffice/notely/dialogs/notely.notes.delete.html'
                 };
             }
 

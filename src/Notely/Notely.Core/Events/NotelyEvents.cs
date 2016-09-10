@@ -46,7 +46,7 @@ namespace Notely.Core.Events
             if (!db.TableExist("notelyNotes"))
                 db.CreateTable<Note>(false);
             
-            // Add events to cleanup notely comments
+            // Add events to cleanup notely notes
             ContentService.Deleted += ContentService_Deleted;
             ContentService.EmptiedRecycleBin += ContentService_EmptiedRecycleBin;
         }
@@ -57,7 +57,7 @@ namespace Notely.Core.Events
             // Check if we are in the content recycle bin
             if(e.IsContentRecycleBin)
             {
-                using (NotesRepository repo = new NotesRepository())
+                using (var repo = new NotesRepository())
                 {
                     foreach (var node in e.AllPropertyData)
                     {
@@ -70,7 +70,7 @@ namespace Notely.Core.Events
         // Events fires when deleting a node from the recycle bin
         private void ContentService_Deleted(IContentService sender, Umbraco.Core.Events.DeleteEventArgs<Umbraco.Core.Models.IContent> e)
         {
-            using (NotesRepository repo = new NotesRepository())
+            using (var repo = new NotesRepository())
             {
                 foreach (var node in e.DeletedEntities)
                 {

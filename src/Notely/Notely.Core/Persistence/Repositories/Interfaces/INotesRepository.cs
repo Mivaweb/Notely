@@ -55,10 +55,10 @@ namespace Notely.Core.Persistence.Repositories.Interfaces
         IEnumerable<int> GetUniqueContentNodes(int userId);
 
         /// <summary>
-        /// Get all notes based on the comment type id
+        /// Get all notes based on the note type id
         /// </summary>
-        /// <param name="commentTypeId"></param>
+        /// <param name="noteTypeId"></param>
         /// <returns></returns>
-        IEnumerable<Note> GetAllByType(int commentTypeId);
+        IEnumerable<Note> GetAllByType(int noteTypeId);
     }
 }

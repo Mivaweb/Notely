@@ -1,4 +1,4 @@
-﻿<form ng-controller="Notely.Backoffice.CommentsController" ng-init="init()" val-form-manager class="notely-backoffice">
+﻿<form ng-controller="Notely.Backoffice.NotesController" ng-init="init()" val-form-manager class="notely-backoffice">
     <umb-panel>
 
         <umb-header tabs="visibleTabs">
@@ -21,19 +21,19 @@
                         <div class="row">
                             <div class="span3">
                                 <select name="notelyType" class="umb-editor umb-dropdown"
-                                        ng-show="commentTypes"
+                                        ng-show="noteTypes"
                                         ng-model="options.type"
                                         ng-change="changedType()"
-                                        ng-options="c.title for c in commentTypes track by c.id">
+                                        ng-options="c.title for c in noteTypes track by c.id">
                                     <option value="">Select type</option>
                                 </select>
                             </div>
                             <div class="span3">
                                 <select name="notelyState" class="umb-editor umb-dropdown"
-                                        ng-show="commentStates"
+                                        ng-show="noteStates"
                                         ng-model="options.state"
                                         ng-disabled="options.type.id > 0 && !options.type.canAssign"
-                                        ng-options="c.title for c in commentStates track by c.id">
+                                        ng-options="c.title for c in noteStates track by c.id">
                                     <option value="">Select state</option>
                                 </select>
                             </div>
@@ -74,57 +74,67 @@
                             </h4>
 
                             <div class="notely-backoffice-item_body" ng-show="content.showDetails">
-                                <div ng-repeat="property in content.properties" class="umb-property" ng-hide="filteredComments.length == 0 && options.hiding">
+                                <div ng-repeat="property in content.properties" class="umb-property" 
+                                     ng-hide="filteredNotes.length == 0 && options.hiding">
                                     <ng-form name="propertyForm">
                                         <div class="control-group umb-control-group notely-control-group">
                                             <label class="control-label">
-                                                {{property.name}} ({{filteredComments.length}})
+                                                {{property.name}} ({{filteredNotes.length}})
                                                 <small>Property alias: '<strong>{{property.alias}}</strong>'</small>
                                             </label>
                                             <div class="controls">
                                                 <div class="umb-property-editor">
                                                     
-                                                    <table class="notely-table notely-table-bordered" ng-if="property.comments.length > 0">
+                                                    <table class="notely-table notely-table-bordered" 
+                                                           ng-if="property.notes.length > 0">
                                                         <thead>
                                                             <tr>
-                                                                <th class="notely-table-width-commenttype"></th>
-                                                                <th class="notely-table-width-commenttitle">Title</th>
-                                                                <th class="notely-table-width-commentdesc">Description</th>
-                                                                <th class="notely-table-width-commentstate">State</th>
-                                                                <th class="notely-table-width-commentactions"></th>
+                                                                <th class="notely-table-width-notetype"></th>
+                                                                <th class="notely-table-width-notetitle">Title</th>
+                                                                <th class="notely-table-width-notedesc">Description</th>
+                                                                <th class="notely-table-width-notestate">State</th>
+                                                                <th class="notely-table-width-noteactions"></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr ng-repeat="comment in $parent.filteredComments = (property.comments | filterType: options.type | filterState: options.state)">
-                                                                <td class="notely-table-width-commenttype">
-                                                                    <i title="{{comment.type.title}}" class="icon" ng-class="comment.type.icon"></i>
+                                                            <tr ng-repeat="note in $parent.filteredNotes = (property.notes | filterType: options.type | filterState: options.state)">
+                                                                <td class="notely-table-width-notetype">
+                                                                    <i title="{{note.type.title}}" class="icon" ng-class="note.type.icon"></i>
                                                                 </td>
-                                                                <td class="notely-table-width-commenttitle"><a href ng-click="editComment(comment)">{{comment.title}}</a></td>
-                                                                <td class="notely-table-width-commentdesc" ng-bind-html-unsafe="renderDescription(comment)"></td>
-                                                                <td class="notely-table-width-commentstate"><span ng-show="comment.type.canAssign" class="label" ng-class="'label-' + comment.state.title | lowercase">{{comment.state.title}}</span></td>
-                                                                <td class="notely-table-width-commentactions">
-                                                                    <a href class="btn btn-default notely-btn-round" ng-click="editComment(comment)"><i class="icon icon-edit"></i></a>
-                                                                    <a href class="btn btn-default notely-btn-round" ng-click="deleteComment(comment.id)"><i class="icon icon-delete"></i></a>
+                                                                <td class="notely-table-width-notetitle">
+                                                                    <a href ng-click="editNote(note)">{{note.title}}</a>
+                                                                </td>
+                                                                <td class="notely-table-width-notedesc" 
+                                                                    ng-bind-html-unsafe="renderDescription(note)"></td>
+                                                                <td class="notely-table-width-notestate">
+                                                                    <span ng-show="note.type.canAssign" class="label" 
+                                                                          ng-class="'label-' + note.state.title | lowercase">{{note.state.title}}</span>
+                                                                </td>
+                                                                <td class="notely-table-width-noteactions">
+                                                                    <a href class="btn btn-default notely-btn-round" 
+                                                                       ng-click="editNote(note)"><i class="icon icon-edit"></i></a>
+                                                                    <a href class="btn btn-default notely-btn-round" 
+                                                                       ng-click="deleteNote(note.id)"><i class="icon icon-delete"></i></a>
                                                                 </td>
                                                             </tr>
-                                                            <tr class="notely-default-row" ng-if="filteredComments.length == 0">
+                                                            <tr class="notely-default-row" ng-if="filteredNotes.length == 0">
                                                                 <td colspan="5">No notes to display for this property based on the filtering.</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
                                                     
-                                                    <div ng-if="treeNode == 0 && property.comments.length == 0" class="notely-backoffice-default">
-                                                        No notes are added to the property <strong>{{property.name}}</strong>. Click the add button to add your first comment.
+                                                    <div ng-if="treeNode == 0 && property.notes.length == 0" class="notely-backoffice-default">
+                                                        No notes are added to the property <strong>{{property.name}}</strong>. Click the add button to add your first note.
                                                     </div>
 
-                                                    <div ng-if="treeNode == 1 && property.comments.length == 0" class="notely-backoffice-default">
+                                                    <div ng-if="treeNode == 1 && property.notes.length == 0" class="notely-backoffice-default">
                                                         You have no assigned tasks to the property <strong>{{property.name}}</strong>.
                                                     </div>
 
                                                     <button ng-if="treeNode == 0" type="button"
                                                             class="btn btn-success notely-btn-round"
-                                                            ng-click="addComment(content.contentId, property)"
-                                                            ng-show="property.comments.length < property.limit">
+                                                            ng-click="addNote(content.contentId, property)"
+                                                            ng-show="property.notes.length < property.limit">
                                                         <i class="icon icon-add"></i>
                                                     </button>
 
