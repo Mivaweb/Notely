@@ -45,7 +45,7 @@ angular.module('notely.models').constant('Property', Property);
  * @ngdoc model
  * @name ContentProperty
  * @function
- * Used to link comments to the right content node and property type
+ * Used to link notes to the correct content node and property type
  * 
  * @description
  * Represents the js version of the Notely's PropertyViewModel
@@ -65,15 +65,15 @@ angular.module('notely.models').constant('ContentProperty', ContentProperty);
 
 /*
  * @ngdoc model
- * @name CommentType
+ * @name NoteType
  * @function
  * 
  * @description
- * Represents the js version of the Notely's CommentType object
+ * Represents the js version of the Notely's NoteType object
  * 
  */
 
-var CommentType = function () {
+var NoteType = function () {
     var self = this;
 
     self.id = -1;
@@ -82,20 +82,20 @@ var CommentType = function () {
     self.canAssign = false;
 };
 
-angular.module('notely.models').constant('CommentType', CommentType);
+angular.module('notely.models').constant('NoteType', NoteType);
 
 
 /*
  * @ngdoc model
- * @name CommentState
+ * @name NoteState
  * @function
  * 
  * @description
- * Represents the js version of the Notely's CommentState object
+ * Represents the js version of the Notely's NoteState object
  * 
  */
 
-var CommentState = function () {
+var NoteState = function () {
     var self = this;
 
     self.id = -1;
@@ -103,20 +103,20 @@ var CommentState = function () {
     self.color = '';
 };
 
-angular.module('notely.models').constant('CommentState', CommentState);
+angular.module('notely.models').constant('NoteState', NoteState);
 
 
 /*
  * @ngdoc model
- * @name Comment
+ * @name Note
  * @function
  * 
  * @description
- * Represents the js version of the Notely's CommentViewModel
+ * Represents the js version of the Notely's NoteViewModel
  * 
  */
 
-var Comment = function () {
+var Note = function () {
     var self = this;
 
     self.id = -1;
@@ -129,7 +129,7 @@ var Comment = function () {
     self.closed = false;
 };
 
-angular.module('notely.models').constant('Comment', Comment);
+angular.module('notely.models').constant('Note', Note);
 
 
 
@@ -192,7 +192,7 @@ var BackOfficeProperty = function () {
     self.alias = '';
     self.name = '';
     self.limit = 1;
-    self.comments = [];
+    self.notes = [];
 };
 
 angular.module('notely.models').constant('BackOfficeProperty', BackOfficeProperty);
@@ -333,20 +333,20 @@ angular.module('notely.models').factory('contentPropertyBuilder', [
 
 /*
  * @ngdoc service
- * @name commentTypeBuilder
+ * @name noteTypeBuilder
  * 
  * @decription
- * Modelsbuilder for the CommentType model
+ * Modelsbuilder for the NoteType model
  * 
  */
-angular.module('notely.models').factory('commentTypesBuilder', [
+angular.module('notely.models').factory('noteTypesBuilder', [
 
     'modelsBuilder',
-    'CommentType',
+    'NoteType',
 
-    function (modelsBuilder, CommentType) {
+    function (modelsBuilder, NoteType) {
 
-        var Constructor = CommentType;
+        var Constructor = NoteType;
 
         return {
             createEmpty: function () {
@@ -364,20 +364,20 @@ angular.module('notely.models').factory('commentTypesBuilder', [
 
 /*
  * @ngdoc service
- * @name commentStateBuilder
+ * @name noteStateBuilder
  * 
  * @decription
- * Modelsbuilder for the CommentState model
+ * Modelsbuilder for the NoteState model
  * 
  */
-angular.module('notely.models').factory('commentStatesBuilder', [
+angular.module('notely.models').factory('noteStatesBuilder', [
 
     'modelsBuilder',
-    'CommentState',
+    'NoteState',
 
-    function (modelsBuilder, CommentState) {
+    function (modelsBuilder, NoteState) {
 
-        var Constructor = CommentState;
+        var Constructor = NoteState;
 
         return {
             createEmpty: function () {
@@ -395,30 +395,30 @@ angular.module('notely.models').factory('commentStatesBuilder', [
 
 /*
  * @ngdoc service
- * @name commentsBuilder
+ * @name notesBuilder
  * 
  * @decription
- * Modelsbuilder for the Comment model
+ * Modelsbuilder for the Note model
  * 
  */
-angular.module('notely.models').factory('commentsBuilder', [
+angular.module('notely.models').factory('notesBuilder', [
 
     'modelsBuilder',
-    'Comment',
+    'Note',
     'contentPropertyBuilder',
-    'commentTypesBuilder',
-    'commentStatesBuilder',
+    'noteTypesBuilder',
+    'noteStatesBuilder',
 
-    function (modelsBuilder, Comment, contentPropertyBuilder, commentTypesBuilder, commentStatesBuilder) {
+    function (modelsBuilder, Note, contentPropertyBuilder, noteTypesBuilder, noteStatesBuilder) {
 
-        var Constructor = Comment;
+        var Constructor = Note;
 
         return {
             createEmpty: function () {
                 var _c = new Constructor();
                 _c.contentProperty = contentPropertyBuilder.createEmpty();
-                _c.type = commentTypesBuilder.createEmpty();
-                _c.state = commentStatesBuilder.createEmpty();
+                _c.type = noteTypesBuilder.createEmpty();
+                _c.state = noteStatesBuilder.createEmpty();
                 return _c;
             },
             convert: function (jsonResult) {

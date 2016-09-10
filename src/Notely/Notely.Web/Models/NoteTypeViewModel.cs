@@ -3,9 +3,9 @@
 namespace Notely.Web.Models
 {
     /// <summary>
-    /// Implements a CommentStateViewModel
+    /// Implements a NoteTypeViewModel
     /// </summary>
-    public class CommentStateViewModel
+    public class NoteTypeViewModel
     {
         [JsonProperty("id")]
         public int Id { get; set; }
@@ -13,13 +13,20 @@ namespace Notely.Web.Models
         [JsonProperty("title")]
         public string Title { get; set; }
 
+        [JsonProperty("icon")]
+        public string Icon { get; set; }
+
+        [JsonProperty("canAssign")]
+        public bool CanAssign { get; set; }
+
         /// <summary>
         /// Constructor
         /// </summary>
-        public CommentStateViewModel()
+        public NoteTypeViewModel()
         {
             Id = -1;
-            Title = "";
+            Title = Icon = "";
+            CanAssign = false;
         }
     }
 }

@@ -6,11 +6,11 @@ using Umbraco.Core.Persistence.DatabaseAnnotations;
 namespace Notely.Core.Models
 {
     /// <summary>
-    /// Implement the CommentState DTO
+    /// Implment the NoteType DTO
     /// </summary>
-    [TableName("notelyCommentStates")]
+    [TableName("notelyNoteTypes")]
     [PrimaryKey("id", autoIncrement = true)]
-    public class CommentState
+    public class NoteType
     {
         [Column("id")]
         [PrimaryKeyColumn(AutoIncrement = true)]
@@ -18,5 +18,11 @@ namespace Notely.Core.Models
 
         [Column("title")]
         public string Title { get; set; }
+
+        [Column("icon")]
+        public string Icon { get; set; }
+
+        [Column("canAssign")]
+        public bool CanAssign { get; set; }
     }
 }

@@ -64,7 +64,7 @@
     font-weight: 400;
 }
 
-.notely-comments {
+.notely-notes {
     margin-bottom: 15px;
 }
 
@@ -89,10 +89,6 @@ table.notely-table {
 
     table.notely-table.notely-table-striped > tbody > tr:nth-of-type(odd) {
         background-color: #fbfbfb;
-    }
-
-    table.notely-table tbody tr.notely-comments_done td.notely-comments_text {
-        text-decoration: line-through;
     }
 
     table.notely-table.notely-table-bordered > tbody > tr > td {
@@ -125,23 +121,23 @@ table.notely-table {
         background-color: #8ECF7F;
     }
 
-    table.notely-table td.notely-table-width-commenttype {
+    table.notely-table td.notely-table-width-notetype {
         width: 10%;
     }
 
-    table.notely-table td.notely-table-width-commenttitle {
+    table.notely-table td.notely-table-width-notetitle {
         width: 20%;
     }
 
-    table.notely-table td.notely-table-width-commentdesc {
+    table.notely-table td.notely-table-width-notedesc {
         width: 40%;
     }
 
-    table.notely-table td.notely-table-width-commentstate {
+    table.notely-table td.notely-table-width-notestate {
         width: 15%;
     }
 
-    table.notely-table td.notely-table-width-commentactions {
+    table.notely-table td.notely-table-width-noteactions {
         width: 15%;
         text-align: right;
     }

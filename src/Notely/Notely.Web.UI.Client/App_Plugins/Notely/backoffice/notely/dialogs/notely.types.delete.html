@@ -8,13 +8,13 @@
         <div class="umb-dialog umb-pane">
             <div class="umb-dialog-body">
 
-                <p>This action will also remove all the comments of this type!</p>
-                <p class="umb-abstract">Are you sure you want to delete <strong>{{model.type.title}}</strong>?</p>
+                <p>This action will also remove all the notes of this type!</p>
+                <p class="umb-abstract">Are you sure you want to delete type <strong>{{model.type.title}}</strong>?</p>
 
                 <div class="umb-pane btn-toolbar umb-btn-toolbar">
                     <div class="control-group umb-control-group">
                         <a href ng-click="close()" class="btn btn-link">Cancel</a>
-                        <a href ng-click="deleteCommentType(model.type.id)" class="btn btn-primary">OK</a>
+                        <a href ng-click="deleteNoteType(model.type.id)" class="btn btn-primary">OK</a>
                     </div>
                 </div>
             </div>

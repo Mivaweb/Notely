@@ -82,42 +82,42 @@ namespace Notely.Web.Controllers
         }
 
         /// <summary>
-        /// Get comment
+        /// Get note
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>A <see cref="CommentViewModel"/> object</returns>
+        /// <returns>A <see cref="NoteViewModel"/> object</returns>
         [HttpGet]
-        public CommentViewModel GetComment(int id)
+        public NoteViewModel GetNote(int id)
         {
-            using (CommentsRepository repo = new CommentsRepository())
+            using (var repo = new NotesRepository())
             {
-                var commentVm = new CommentViewModel();
-                return commentVm.Convert(repo.Get(id));
+                var noteVm = new NoteViewModel();
+                return noteVm.Convert(repo.Get(id));
             }
         }
 
         /// <summary>
-        /// Get a list of <see cref="CommentViewModel"/> objects of a content node property
+        /// Get a list of <see cref="NoteViewModel"/> objects of a content node property
         /// </summary>
         /// <param name="contentId"></param>
         /// <param name="propertyDataId"></param>
         /// <param name="propertyTypeAlias"></param>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<CommentViewModel> GetComments(int contentId, int propertyDataId, string propertyTypeAlias)
+        public IEnumerable<NoteViewModel> GetNotes(int contentId, int propertyDataId, string propertyTypeAlias)
         {
-            ContentPropertyViewModel _propertyVM = new ContentPropertyViewModel()
+            var _propertyVM = new ContentPropertyViewModel()
             {
                 ContentId = contentId,
                 PropertyDataId = propertyDataId,
                 PropertyTypeAlias = propertyTypeAlias
             };
 
-            var commenVm = new CommentViewModel();
+            var noteVm = new NoteViewModel();
 
             if (_propertyVM.ContentId > 0 && _propertyVM.PropertyDataId > 0)
             {
-                using (CommentsRepository repo = new CommentsRepository())
+                using (var repo = new NotesRepository())
                 {
                     var _content = Services.ContentService.GetById(_propertyVM.ContentId);
                     var _property = _content.Properties.FirstOrDefault(
@@ -126,7 +126,7 @@ namespace Notely.Web.Controllers
 
                     return repo.GetAllByContentProp(
                             _propertyVM.ContentId, _property != null ? _property.PropertyType.Id : -1)
-                            .Select(c => commenVm.Convert(c)
+                            .Select(c => noteVm.Convert(c)
                         );
                 }
             }
@@ -137,102 +137,102 @@ namespace Notely.Web.Controllers
         }
 
         /// <summary>
-        /// Get a list of <see cref="CommentViewModel"/>
+        /// Get a list of <see cref="NoteViewModel"/>
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<CommentViewModel> GetAllComments()
+        public IEnumerable<NoteViewModel> GetAllNotes()
         {
-            var commenVm = new CommentViewModel();
+            var noteVm = new NoteViewModel();
 
-            using (CommentsRepository repo = new CommentsRepository())
+            using (var repo = new NotesRepository())
             {
-                return repo.GetAll().Select(c => commenVm.Convert(c));
+                return repo.GetAll().Select(c => noteVm.Convert(c));
             }
         }
 
         /// <summary>
-        /// Get a list of <see cref="CommentViewModel"/>
+        /// Get a list of <see cref="NoteViewModel"/> objects
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<CommentViewModel> GetMyComments(int userId)
+        public IEnumerable<NoteViewModel> GetMyTasks(int userId)
         {
-            var commenVm = new CommentViewModel();
+            var noteVm = new NoteViewModel();
 
-            using (CommentsRepository repo = new CommentsRepository())
+            using (var repo = new NotesRepository())
             {
-                return repo.GetAllByAssignee(userId).Select(c => commenVm.Convert(c));
+                return repo.GetAllByAssignee(userId).Select(c => noteVm.Convert(c));
             }
         }
 
         /// <summary>
-        /// Add a new comment
+        /// Add a new note
         /// </summary>
-        /// <param name="comment">A <see cref="CommentViewModel"/> object</param>
+        /// <param name="noteVm">A <see cref="NoteViewModel"/> object</param>
         [HttpPost]
-        public void AddComment(object commentVm)
+        public void AddNote(object noteVm)
         {
-            var comment = new Comment();
+            var note = new Note();
 
-            CommentViewModel commentDto = JsonConvert.DeserializeObject<CommentViewModel>(commentVm.ToString());
-            commentDto.CreateDate = DateTime.Now;
+            NoteViewModel noteDto = JsonConvert.DeserializeObject<NoteViewModel>(noteVm.ToString());
+            noteDto.CreateDate = DateTime.Now;
 
-            DoAddOrUpdate(comment.Convert(commentDto));
+            DoAddOrUpdate(note.Convert(noteDto));
         }
 
         /// <summary>
-        /// Update a comment
+        /// Update a note
         /// </summary>
-        /// <param name="comment">A <see cref="CommentViewModel"/> object</param>
+        /// <param name="noteVm">A <see cref="NoteViewModel"/> object</param>
         [HttpPut]
-        public void UpdateComment(object commentVm)
+        public void UpdateNote(object noteVm)
         {
-            var comment = new Comment();
+            var note = new Note();
 
-            CommentViewModel commentDto = JsonConvert.DeserializeObject<CommentViewModel>(commentVm.ToString());
+            NoteViewModel noteDto = JsonConvert.DeserializeObject<NoteViewModel>(noteVm.ToString());
 
-            DoAddOrUpdate(comment.Convert(commentDto));
+            DoAddOrUpdate(note.Convert(noteDto));
         }
 
         /// <summary>
-        /// Delete a comment
+        /// Delete a note
         /// </summary>
         /// <param name="id"></param>
         [HttpDelete]
-        public void DeleteComment(int id)
+        public void DeleteNote(int id)
         {
-            using (CommentsRepository repo = new CommentsRepository())
+            using (var repo = new NotesRepository())
             {
                 repo.Delete(id);
             }
         }
 
         /// <summary>
-        /// Cleanup comments
+        /// Cleanup notes
         /// </summary>
-        /// <returns>Count of comments that were deleted</returns>
+        /// <returns>Count of notes that were deleted</returns>
         [HttpDelete]
-        public int CleanupComments()
+        public int CleanupNotes()
         {
             int result = 0;
 
-            using (CommentsRepository repo = new CommentsRepository())
+            using (var repo = new NotesRepository())
             {
-                var comments = repo.GetAll();
-                foreach(var comment in comments)
+                var notes = repo.GetAll();
+                foreach(var note in notes)
                 {
                     bool delete = false;
 
                     // Check if the content exists
-                    var _content = Services.ContentService.GetById(comment.ContentId);
+                    var _content = Services.ContentService.GetById(note.ContentId);
 
                     if(_content != null)
                     {
                         // Check if property exists
                         var _property = _content.Properties.FirstOrDefault(
-                            p => p.PropertyType.Id == comment.PropertyTypeId
+                            p => p.PropertyType.Id == note.PropertyTypeId
                         );
 
                         if (_property == null) delete = true;
@@ -244,7 +244,7 @@ namespace Notely.Web.Controllers
 
                     if(delete)
                     {
-                        repo.Delete(comment);
+                        repo.Delete(note);
                         result++;
                     }
 
@@ -255,62 +255,44 @@ namespace Notely.Web.Controllers
         }
 
         /// <summary>
-        /// Set comment completed
+        /// Get a list of <see cref="NoteType"/> objects
         /// </summary>
-        /// <param name="id"></param>
-        [HttpPost]
-        public void TaskComplete(object id)
+        /// <returns></returns>
+        [HttpGet]
+        public IEnumerable<NoteTypeViewModel> GetNoteTypes()
         {
-            using (CommentsRepository repo = new CommentsRepository())
+            var _noteType = new NoteTypeViewModel();
+
+            using (var repo = new NoteTypesRepository())
             {
-                var comment = repo.Get(Convert.ToInt32(id));
-                if (comment.Type > 0)
-                {
-                    comment.State = 3;
-                    repo.AddOrUpdate(comment);
-                }
+                return repo.GetAll().Select(c => _noteType.Convert(c));
             }
         }
 
         /// <summary>
-        /// Get a list of <see cref="CommentType"/> objects
+        /// Get a list of <see cref="NoteStateViewModel"/> objects
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<CommentTypeViewModel> GetCommentTypes()
+        public IEnumerable<NoteStateViewModel> GetNoteStates()
         {
-            var _commentType = new CommentTypeViewModel();
+            var _noteState = new NoteStateViewModel();
 
-            using (var repo = new CommentTypesRepository())
+            using (var repo = new NoteStatesRepository())
             {
-                return repo.GetAll().Select(c => _commentType.Convert(c));
-            }
-        }
-
-        /// <summary>
-        /// Get a list of <see cref="CommentStateViewModel"/> objects
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public IEnumerable<CommentStateViewModel> GetCommentStates()
-        {
-            var _commentState = new CommentStateViewModel();
-
-            using (var repo = new CommentStatesRepository())
-            {
-                return repo.GetAll().Select(c => _commentState.Convert(c));
+                return repo.GetAll().Select(c => _noteState.Convert(c));
             }
         }
         
         /// <summary>
-        /// Get a list of unique content id's that has comments
+        /// Get a list of unique content id's that has notes
         /// </summary>
         /// <param name="userId">For a certain user ( assignedTo )</param>
         /// <returns></returns>
         [HttpGet]
         public IEnumerable<int> GetUniqueContentNodes(int userId)
         {
-            using(var repo = new CommentsRepository())
+            using(var repo = new NotesRepository())
             {
                 var result = repo.GetUniqueContentNodes(userId);
                 return result;
@@ -326,9 +308,9 @@ namespace Notely.Web.Controllers
         public BackOfficeNode GetBackOfficeNodeDetails(int contentId, int userId)
         {
             var _result = new BackOfficeNode();
-            var _comment = new CommentViewModel();
+            var _note = new NoteViewModel();
 
-            using (var repo = new CommentsRepository())
+            using (var repo = new NotesRepository())
             {
                 // Step 1: Get the content node details
                 var _content = Services.ContentService.GetById(contentId);
@@ -341,22 +323,23 @@ namespace Notely.Web.Controllers
                 
                 foreach(var prop in _content.Properties.Where(p => p.PropertyType.PropertyEditorAlias == "Notely"))
                 {
-                    var dataTypeDef = Services.DataTypeService.GetDataTypeDefinitionById(prop.PropertyType.DataTypeDefinitionId);
+                    var dataTypeDef = Services.DataTypeService.GetDataTypeDefinitionById(
+                        prop.PropertyType.DataTypeDefinitionId);
                     var limitValue = int.Parse(GetPreValues(dataTypeDef)["limit"].ToString());
 
-                    // Step 2: Add properties and comments
+                    // Step 2: Add properties and notes
                     _result.Properties.Add(new BackOfficeProperty() {
 
                         Alias = prop.Alias,
                         Id = prop.PropertyType.Id,
                         Name = prop.PropertyType.Name,
                         Limit = limitValue,
-                        Comments = userId >= 0 ? repo.GetAllByContentProp(
+                        Notes = userId >= 0 ? repo.GetAllByContentProp(
                             _content.Id, prop.PropertyType.Id, userId)
-                            .Select(c => _comment.Convert(c)).ToList() :
+                            .Select(c => _note.Convert(c)).ToList() :
                             repo.GetAllByContentProp(
                             _content.Id, prop.PropertyType.Id)
-                            .Select(c => _comment.Convert(c)).ToList()
+                            .Select(c => _note.Convert(c)).ToList()
 
                     });
                 }
@@ -367,58 +350,58 @@ namespace Notely.Web.Controllers
         }
 
         /// <summary>
-        /// Get comment type
+        /// Get note type
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>A <see cref="CommentTypeViewModel"/> object</returns>
+        /// <returns>A <see cref="NoteTypeViewModel"/> object</returns>
         [HttpGet]
-        public CommentTypeViewModel GetCommentType(int id)
+        public NoteTypeViewModel GetNoteType(int id)
         {
-            using (CommentTypesRepository repo = new CommentTypesRepository())
+            using (var repo = new NoteTypesRepository())
             {
-                var commentTypeVm = new CommentTypeViewModel();
-                return commentTypeVm.Convert(repo.Get(id));
+                var noteTypeVm = new NoteTypeViewModel();
+                return noteTypeVm.Convert(repo.Get(id));
             }
         }
 
         /// <summary>
-        /// Add a new Comment Type
+        /// Add a new note Type
         /// </summary>
-        /// <param name="commentType"></param>
+        /// <param name="noteType"></param>
         [HttpPost]
-        public void AddCommentType(object commentType)
+        public void AddNoteType(object noteType)
         {
-            var _commentType = new CommentType();
+            var _noteType = new NoteType();
 
-            CommentTypeViewModel commentTypeDto = JsonConvert.DeserializeObject<CommentTypeViewModel>(commentType.ToString());
+            var noteTypeDto = JsonConvert.DeserializeObject<NoteTypeViewModel>(noteType.ToString());
 
-            DoAddOrUpdate(_commentType.Convert(commentTypeDto));
+            DoAddOrUpdate(_noteType.Convert(noteTypeDto));
         }
 
         /// <summary>
-        /// Update an existing Comment Type
+        /// Update an existing Note Type
         /// </summary>
-        /// <param name="commentType"></param>
+        /// <param name="noteType"></param>
         [HttpPut]
-        public void UpdateCommentType(object commentType)
+        public void UpdateNoteType(object noteType)
         {
-            var _commentType = new CommentType();
+            var _noteType = new NoteType();
 
-            CommentTypeViewModel commentTypeDto = JsonConvert.DeserializeObject<CommentTypeViewModel>(commentType.ToString());
+            var noteTypeDto = JsonConvert.DeserializeObject<NoteTypeViewModel>(noteType.ToString());
 
-            DoAddOrUpdate(_commentType.Convert(commentTypeDto));
+            DoAddOrUpdate(_noteType.Convert(noteTypeDto));
         }
 
         /// <summary>
-        /// Delete a comment type
+        /// Delete a note type
         /// </summary>
         /// <param name="id"></param>
         [HttpDelete]
-        public void DeleteCommentType(int id)
+        public void DeleteNoteType(int id)
         {
-            DeleteCommentsByType(id);
+            DeleteNotesByType(id);
 
-            using (CommentTypesRepository repo = new CommentTypesRepository())
+            using (var repo = new NoteTypesRepository())
             {
                 repo.Delete(id);
             }
@@ -448,43 +431,43 @@ namespace Notely.Web.Controllers
         }
 
         /// <summary>
-        /// Add or update a comment
+        /// Add or update a note
         /// </summary>
-        /// <param name="comment">A <see cref="Comment"/> object</param>
-        private void DoAddOrUpdate(Comment comment)
+        /// <param name="note">A <see cref="Note"/> object</param>
+        private void DoAddOrUpdate(Note note)
         {
-            using (CommentsRepository repo = new CommentsRepository())
+            using (var repo = new NotesRepository())
             {
-                if (!(comment.ContentId > 0)) throw new ArgumentException("Content node not found");
-                if (!(comment.PropertyTypeId > 0)) throw new ArgumentException("PropertyType not found");
+                if (!(note.ContentId > 0)) throw new ArgumentException("Content node not found");
+                if (!(note.PropertyTypeId > 0)) throw new ArgumentException("PropertyType not found");
 
-                repo.AddOrUpdate(comment);
+                repo.AddOrUpdate(note);
             }
         }
 
         /// <summary>
-        /// Add or update a comment type
+        /// Add or update a note type
         /// </summary>
-        /// <param name="commentType">A <see cref="CommentType"/> object</param>
-        private void DoAddOrUpdate(CommentType commentType)
+        /// <param name="noteType">A <see cref="NoteType"/> object</param>
+        private void DoAddOrUpdate(NoteType noteType)
         {
-            using (CommentTypesRepository repo = new CommentTypesRepository())
+            using (var repo = new NoteTypesRepository())
             {
-                repo.AddOrUpdate(commentType);
+                repo.AddOrUpdate(noteType);
             }
         }
 
         /// <summary>
-        /// Delete all comments based on a comment type
+        /// Delete all notes based on a note type
         /// </summary>
-        /// <param name="commentTypeId"></param>
-        private void DeleteCommentsByType(int commentTypeId)
+        /// <param name="noteTypeId"></param>
+        private void DeleteNotesByType(int noteTypeId)
         {
-            using (CommentsRepository repo = new CommentsRepository())
+            using (var repo = new NotesRepository())
             {
-                foreach(var comment in repo.GetAllByType(commentTypeId))
+                foreach(var note in repo.GetAllByType(noteTypeId))
                 {
-                    repo.Delete(comment);
+                    repo.Delete(note);
                 }
             }
         }

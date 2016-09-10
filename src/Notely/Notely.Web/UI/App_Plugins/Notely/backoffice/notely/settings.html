@@ -19,8 +19,8 @@
                         <ng-form name="propertyForm">
                             <div class="control-group umb-control-group notely-control-group">
                                 <label class="control-label">
-                                    Comment Types
-                                    <small>You can activate/deactive comment types</small>
+                                    Types
+                                    <small>You can activate/deactive types</small>
                                 </label>
                                 <div class="controls">
                                     <div class="umb-property-editor">
@@ -29,13 +29,13 @@
                                             <thead>
                                                 <tr>
                                                     <th>Icon</th>
-                                                    <th>Comment Type</th>
+                                                    <th>Type</th>
                                                     <th>Can Assign?</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="type in commentTypes track by $index">
+                                                <tr ng-repeat="type in noteTypes track by $index">
                                                     <td><i class="icon" ng-class="type.icon"></i></td>
                                                     <td>{{type.title}}</td>
                                                     <td>
@@ -62,8 +62,11 @@
                         <ng-form name="propertyForm">
                             <div class="control-group umb-control-group notely-control-group">
                                 <label class="control-label">
-                                    Comment States
-                                    <small>You can view the different comment states</small>
+                                    States
+                                    <small>
+                                        You can view the different states of a note when it has the option
+                                        to be assigned to someone.
+                                    </small>
                                 </label>
                                 <div class="controls">
                                     <div class="umb-property-editor">
@@ -77,7 +80,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="state in commentStates track by $index">
+                                                <tr ng-repeat="state in noteStates track by $index">
                                                     <td>{{state.id}}</td>
                                                     <td>{{state.title}}</td>
                                                     <td><span class="label" ng-class="'label-' + state.title | lowercase">{{state.title}}</span></td>

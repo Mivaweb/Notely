@@ -3,26 +3,26 @@
  * @name filterType
  * 
  * @description
- * Filter comments based on the comment type
+ * Filter notes based on the note type
  * 
  */
 angular.module('notely.filters').filter('filterType',
 
     function () {
-        return function (comments, type) {
+        return function (notes, type) {
             var filtered = [];
 
             if (type && type.id > 0) {
-                angular.forEach(comments, function (comment) {
+                angular.forEach(notes, function (note) {
 
-                    if (comment.type.id == type.id) {
-                        filtered.push(comment);
+                    if (note.type.id == type.id) {
+                        filtered.push(note);
                     }
 
                 });
 
             } else {
-                return comments;
+                return notes;
             }
 
             return filtered;
@@ -36,26 +36,26 @@ angular.module('notely.filters').filter('filterType',
  * @name filterState
  * 
  * @description
- * Filter comments based on the comment state
+ * Filter notes based on the note state
  * 
  */
 angular.module('notely.filters').filter('filterState',
 
     function () {
-        return function (comments, state) {
+        return function (notes, state) {
             var filtered = [];
 
             if (state && state.id > 0) {
-                angular.forEach(comments, function (comment) {
+                angular.forEach(notes, function (note) {
 
-                    if (comment.state.id == state.id) {
-                        filtered.push(comment);
+                    if (note.state.id == state.id) {
+                        filtered.push(note);
                     }
 
                 });
 
             } else {
-                return comments;
+                return notes;
             }
 
             return filtered;
@@ -69,7 +69,7 @@ angular.module('notely.filters').filter('filterState',
  * @name orderByContentId
  * 
  * @description
- * Sort comments based on the content id
+ * Sort notes based on the content id
  * 
  */
 angular.module('notely.filters').filter('orderByContentId',

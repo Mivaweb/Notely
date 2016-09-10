@@ -254,17 +254,17 @@
   <ItemGroup>
     <Compile Include="Events\NotelyEvents.cs" />
     <Compile Include="Install\PackageActions.cs" />
-    <Compile Include="Models\Comment.cs" />
-    <Compile Include="Models\CommentState.cs" />
-    <Compile Include="Models\CommentType.cs" />
+    <Compile Include="Models\Note.cs" />
+    <Compile Include="Models\NoteState.cs" />
+    <Compile Include="Models\NoteType.cs" />
     <Compile Include="Models\DataType.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="Persistence\Repositories\CommentsRepository.cs" />
-    <Compile Include="Persistence\Repositories\CommentStatesRepository.cs" />
-    <Compile Include="Persistence\Repositories\CommentTypesRepository.cs" />
-    <Compile Include="Persistence\Repositories\Interfaces\ICommentsRepository.cs" />
-    <Compile Include="Persistence\Repositories\Interfaces\ICommentStatesRepository.cs" />
-    <Compile Include="Persistence\Repositories\Interfaces\ICommentTypesRepository.cs" />
+    <Compile Include="Persistence\Repositories\NotesRepository.cs" />
+    <Compile Include="Persistence\Repositories\NoteStatesRepository.cs" />
+    <Compile Include="Persistence\Repositories\NoteTypesRepository.cs" />
+    <Compile Include="Persistence\Repositories\Interfaces\INotesRepository.cs" />
+    <Compile Include="Persistence\Repositories\Interfaces\INoteStatesRepository.cs" />
+    <Compile Include="Persistence\Repositories\Interfaces\INoteTypesRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
