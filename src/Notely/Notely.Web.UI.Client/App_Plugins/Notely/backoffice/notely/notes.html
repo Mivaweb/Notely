@@ -61,9 +61,9 @@
                     <div class="notely-backoffice-list">
 
                         <!-- Begin .notely-backoffice-item -->
-                        <div ng-repeat="content in backOfficeDetails | orderByContentId track by $index" 
-                             class="notely-backoffice-item" 
-                             ng-class="{'notely-collapsed': !content.showDetails}" 
+                        <div ng-repeat="content in backOfficeDetails | orderByContentId track by $index"
+                             class="notely-backoffice-item"
+                             ng-class="{'notely-collapsed': !content.showDetails}"
                              ng-show="content.properties.length > 0">
 
                             <h4>
@@ -74,7 +74,13 @@
                             </h4>
 
                             <div class="notely-backoffice-item_body" ng-show="content.showDetails">
-                                <div ng-repeat="property in content.properties" class="umb-property" 
+
+                                <div class="notely-content-edit">
+                                    <a href="#/content/content/edit/{{content.contentId}}"
+                                       target="_blank" class="notely-link">Go to the edit page</a>
+                                </div>
+
+                                <div ng-repeat="property in content.properties" class="umb-property"
                                      ng-hide="filteredNotes.length == 0 && options.hiding">
                                     <ng-form name="propertyForm">
                                         <div class="control-group umb-control-group notely-control-group">
@@ -84,8 +90,8 @@
                                             </label>
                                             <div class="controls">
                                                 <div class="umb-property-editor">
-                                                    
-                                                    <table class="notely-table notely-table-bordered" 
+
+                                                    <table class="notely-table notely-table-bordered"
                                                            ng-if="property.notes.length > 0">
                                                         <thead>
                                                             <tr>
@@ -104,16 +110,16 @@
                                                                 <td class="notely-table-width-notetitle">
                                                                     <a href ng-click="editNote(note)">{{note.title}}</a>
                                                                 </td>
-                                                                <td class="notely-table-width-notedesc" 
+                                                                <td class="notely-table-width-notedesc"
                                                                     ng-bind-html-unsafe="renderDescription(note)"></td>
                                                                 <td class="notely-table-width-notestate">
-                                                                    <span ng-show="note.type.canAssign" class="label" 
+                                                                    <span ng-show="note.type.canAssign" class="label"
                                                                           ng-class="'label-' + note.state.title | lowercase">{{note.state.title}}</span>
                                                                 </td>
                                                                 <td class="notely-table-width-noteactions">
-                                                                    <a href class="btn btn-default notely-btn-round" 
+                                                                    <a href class="btn btn-default notely-btn-round"
                                                                        ng-click="editNote(note)"><i class="icon icon-edit"></i></a>
-                                                                    <a href class="btn btn-default notely-btn-round" 
+                                                                    <a href class="btn btn-default notely-btn-round"
                                                                        ng-click="deleteNote(note.id)"><i class="icon icon-trash"></i></a>
                                                                 </td>
                                                             </tr>
@@ -122,7 +128,7 @@
                                                             </tr>
                                                         </tbody>
                                                     </table>
-                                                    
+
                                                     <div ng-if="treeNode == 0 && property.notes.length == 0" class="notely-backoffice-default">
                                                         No notes are added to the property <strong>{{property.name}}</strong>. Click the add button to add your first note.
                                                     </div>
@@ -145,6 +151,7 @@
                                         </div>
                                     </ng-form>
                                 </div>
+
                             </div>
 
                         </div><!-- End .notely-backoffice-item -->
