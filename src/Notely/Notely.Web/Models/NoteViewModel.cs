@@ -4,15 +4,15 @@ using System;
 namespace Notely.Web.Models
 {
     /// <summary>
-    /// Implements a CommentViewModel
+    /// Implements a NoteViewModel
     /// </summary>
-    public class CommentViewModel
+    public class NoteViewModel
     {
         [JsonProperty("id")]
         public int Id { get; set; }
 
         [JsonProperty("type")]
-        public CommentTypeViewModel Type { get; set; }
+        public NoteTypeViewModel Type { get; set; }
 
         [JsonProperty("title")]
         public string Title { get; set; }
@@ -24,7 +24,7 @@ namespace Notely.Web.Models
         public UserViewModel AssignedTo { get; set; }
 
         [JsonProperty("state")]
-        public CommentStateViewModel State { get; set; }
+        public NoteStateViewModel State { get; set; }
 
         [JsonProperty("createDate")]
         public DateTime CreateDate { get; set; }
@@ -32,13 +32,10 @@ namespace Notely.Web.Models
         [JsonProperty("contentProperty")]
         public ContentPropertyViewModel ContentProperty { get; set; }
 
-        [JsonProperty("closed")]
-        public bool Closed { get; set; }
-
         /// <summary>
         /// Constructor
         /// </summary>
-        public CommentViewModel()
+        public NoteViewModel()
         {
             Id = -1;
             Type = null;
@@ -47,7 +44,6 @@ namespace Notely.Web.Models
             State = null;
             CreateDate = DateTime.Now;
             ContentProperty = null;
-            Closed = false;
         }
     }
 }

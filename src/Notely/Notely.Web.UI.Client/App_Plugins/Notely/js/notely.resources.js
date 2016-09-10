@@ -34,24 +34,24 @@ angular.module('notely.resources').factory('notelyResources',
                 );
             },
 
-            // Get the comment types
-            getCommentTypes: function () {
+            // Get the note types
+            getNoteTypes: function () {
                 return umbRequestHelper.resourcePromise(
-                    $http.get("backoffice/notely/notelyapi/getcommenttypes"),
-                    'Unable to retreive the comment types!'
+                    $http.get("backoffice/notely/notelyapi/getnotetypes"),
+                    'Unable to retreive the note types!'
                 );
             },
 
-            // Get the comment states
-            getCommentStates: function () {
+            // Get the note states
+            getNoteStates: function () {
                 return umbRequestHelper.resourcePromise(
-                    $http.get("backoffice/notely/notelyapi/getcommentstates"),
-                    'Unable to retreive the comment states!'
+                    $http.get("backoffice/notely/notelyapi/getnotestates"),
+                    'Unable to retreive the note states!'
                 );
             },
 
-            // Get the comments of a given content node and property
-            getComments: function (property) {
+            // Get the notes of a given content node and property
+            getNotes: function (property) {
 
                 var config = {
                     params: property,
@@ -59,76 +59,68 @@ angular.module('notely.resources').factory('notelyResources',
                 };
 
                 return umbRequestHelper.resourcePromise(
-                    $http.get("backoffice/notely/notelyapi/getcomments", config),
-                    "Unable to retreive the comments!"
+                    $http.get("backoffice/notely/notelyapi/getnotes", config),
+                    "Unable to retreive the notes!"
                 );
             },
 
-            // Get all comments
-            getAllComments: function () {
+            // Get all notes
+            getAllNotes: function () {
                 return umbRequestHelper.resourcePromise(
-                    $http.get("backoffice/notely/notelyapi/getallcomments"),
-                    "Unable to retreive the comments!"
+                    $http.get("backoffice/notely/notelyapi/getallnotes"),
+                    "Unable to retreive the notes!"
                 );
             },
 
-            // Get my comments
-            getMyComments: function (user) {
+            // Get my tasks
+            getMyTasks: function (user) {
                 return umbRequestHelper.resourcePromise(
-                    $http.get("backoffice/notely/notelyapi/getmycomments", { params: { userId: user.id } }),
-                    "Unable to retreive the comments!"
+                    $http.get("backoffice/notely/notelyapi/getmytasks", { params: { userId: user.id } }),
+                    "Unable to retreive the tasks of the loggedin user!"
                 );
             },
 
-            // Get the comment object
-            getComment: function (id) {
+            // Get the note object
+            getNote: function (id) {
                 return umbRequestHelper.resourcePromise(
-                    $http.get("backoffice/notely/notelyapi/getcomment", { params: { id: id } }),
-                    "Unable to retreive the comment!"
+                    $http.get("backoffice/notely/notelyapi/getnote", { params: { id: id } }),
+                    "Unable to retreive the note!"
                 );
             },
 
-            // Add a new comment
-            addComment: function (comment) {
+            // Add a new note
+            addNote: function (note) {
                 return umbRequestHelper.resourcePromise(
-                    $http.post("backoffice/notely/notelyapi/addcomment", comment),
-                    "Unable to add the comment!"
+                    $http.post("backoffice/notely/notelyapi/addnote", note),
+                    "Unable to add the note!"
                 );
             },
 
-            // Update an existing comment
-            updateComment: function (comment) {
+            // Update an existing note
+            updateNote: function (note) {
                 return umbRequestHelper.resourcePromise(
-                    $http.put("backoffice/notely/notelyapi/updatecomment", comment),
-                    "Unable to update the comment!"
+                    $http.put("backoffice/notely/notelyapi/updatenote", note),
+                    "Unable to update the note!"
                 );
             },
 
-            // Delete comment
-            deleteComment: function (id) {
+            // Delete a note
+            deleteNote: function (id) {
                 return umbRequestHelper.resourcePromise(
-                    $http.delete("backoffice/notely/notelyapi/deletecomment", { params: { id: id } }),
-                    "Unable to delete the comment!"
+                    $http.delete("backoffice/notely/notelyapi/deletenote", { params: { id: id } }),
+                    "Unable to delete the note!"
                 );
             },
 
-            // Set task completed
-            taskComplete: function (id) {
+            // Cleanup notes
+            cleanupNotes: function () {
                 return umbRequestHelper.resourcePromise(
-                    $http.post("backoffice/notely/notelyapi/taskcomplete", id),
-                    "Unable to set task as completed!"
+                    $http.delete("backoffice/notely/notelyapi/cleanupnotes"),
+                    "Unable to cleanup the notes!"
                 );
             },
 
-            // Cleanup comments
-            cleanupComments: function () {
-                return umbRequestHelper.resourcePromise(
-                    $http.delete("backoffice/notely/notelyapi/cleanupcomments"),
-                    "Unable to set task as completed!"
-                );
-            },
-
-            // Get unique content node id's with comments
+            // Get unique content node id's with notes
             getUniqueContentNodes: function (userId, type, state) {
                 return umbRequestHelper.resourcePromise(
                     $http.get("backoffice/notely/notelyapi/getuniquecontentnodes", { params: { userId: userId, type: type, state: state } }),
@@ -144,35 +136,35 @@ angular.module('notely.resources').factory('notelyResources',
                 );
             },
 
-            // Get the comment type object
-            getCommentType: function (id) {
+            // Get the note type object
+            getNoteType: function (id) {
                 return umbRequestHelper.resourcePromise(
-                    $http.get("backoffice/notely/notelyapi/getcommenttype", { params: { id: id } }),
-                    "Unable to retreive the comment type!"
+                    $http.get("backoffice/notely/notelyapi/getnotetype", { params: { id: id } }),
+                    "Unable to retreive the note type!"
                 );
             },
 
-            // Add a new comment type
-            addCommentType: function(commentType) {
+            // Add a new note type
+            addNoteType: function(noteType) {
                 return umbRequestHelper.resourcePromise(
-                    $http.post("backoffice/notely/notelyapi/addcommenttype", commentType),
-                    "Unable to add the comment type!"
+                    $http.post("backoffice/notely/notelyapi/addnotetype", noteType),
+                    "Unable to add the note type!"
                 );
             },
 
-            // Update an existing comment type
-            updateCommentType: function (commentType) {
+            // Update an existing note type
+            updateNoteType: function (noteType) {
                 return umbRequestHelper.resourcePromise(
-                    $http.put("backoffice/notely/notelyapi/updatecommenttype", commentType),
-                    "Unable to update the comment type!"
+                    $http.put("backoffice/notely/notelyapi/updatenotetype", noteType),
+                    "Unable to update the note type!"
                 );
             },
 
-            // Delete comment type
-            deleteCommentType: function (id) {
+            // Delete note type
+            deleteNoteType: function (id) {
                 return umbRequestHelper.resourcePromise(
-                    $http.delete("backoffice/notely/notelyapi/deletecommenttype", { params: { id: id } }),
-                    "Unable to delete the comment type!"
+                    $http.delete("backoffice/notely/notelyapi/deletenotetype", { params: { id: id } }),
+                    "Unable to delete the note type!"
                 );
             }
         };

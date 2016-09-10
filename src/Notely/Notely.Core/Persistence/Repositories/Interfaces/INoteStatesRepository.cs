@@ -5,9 +5,9 @@ using Notely.Core.Models;
 namespace Notely.Core.Persistence.Repositories.Interfaces
 {
     /// <summary>
-    /// Defines a ICommentStatesRepository
+    /// Defines a INoteStatesRepository
     /// </summary>
-    public interface ICommentStatesRepository : IRepository<int, CommentState>
+    public interface INoteStatesRepository : IRepository<int, NoteState>
     {
     }
 }

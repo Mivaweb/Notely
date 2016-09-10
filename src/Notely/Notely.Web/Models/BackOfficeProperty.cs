@@ -34,10 +34,10 @@ namespace Notely.Web.Models
         public int Limit { get; set; }
 
         /// <summary>
-        /// List of comments
+        /// List of notes
         /// </summary>
-        [JsonProperty("comments")]
-        public List<CommentViewModel> Comments { get; set; }
+        [JsonProperty("notes")]
+        public List<NoteViewModel> Notes { get; set; }
 
         /// <summary>
         /// Constructor
@@ -48,7 +48,7 @@ namespace Notely.Web.Models
             Limit = 1;
             Alias = "";
             Name = "";
-            Comments = new List<CommentViewModel>();
+            Notes = new List<NoteViewModel>();
         }
     }
 }
