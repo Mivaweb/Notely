@@ -15,21 +15,14 @@
                 <i class="icon" 
                    ng-class="{'icon-navigation-right': notes.length > 0 && !showNotes, 'icon-navigation-down': notes.length > 0 && showNotes}">
                 </i>
-                {{notes.length}} notes
-            </li>
-            <li>
-                <button type="button" class="btn btn-success"
-                        ng-show="notes.length < model.config.limit"
-                        ng-click="addNote()">
-                    <i class="icon icon-add"></i>
-                </button>
+                Notely notes: <strong>{{notes.length}}</strong>
             </li>
         </ul><!-- End .notely-nav -->
 
         <!-- Begin .notely-notes -->
         <div class="notely-notes" ng-show="showNotes && notes.length > 0">
 
-            <table class="notely-table" ng-if="notes.length > 0">
+            <table class="notely-table notely-table-bordered" ng-if="notes.length > 0">
                 <thead>
                     <tr>
                         <th class="notely-table-width-notetype"></th>
@@ -54,16 +47,26 @@
                                   ng-class="'label-' + note.state.title | lowercase">{{note.state.title}}</span>
                         </td>
                         <td class="notely-table-width-noteactions">
-                            <a href class="btn btn-default notely-btn-round" 
+                            <a href class="notely-btn-round" 
                                ng-click="editNote(note)"><i class="icon icon-edit"></i></a>
-                            <a href class="btn btn-default notely-btn-round" 
-                               ng-click="deleteNote(note.id)"><i class="icon icon-delete"></i></a>
+                            <a href class="notely-btn-round" 
+                               ng-click="deleteNote(note.id)"><i class="icon icon-trash"></i></a>
                         </td>
                     </tr>
                 </tbody>
             </table>
 
         </div><!-- End .notely-notes -->
+
+        <!-- Begin .notely-action -->
+        <div class="notely-action">
+            <a href class="notely-btn-round"
+               ng-show="notes.length < model.config.limit"
+               ng-click="addNote()">
+                <i class="icon icon-add"></i>
+            </a>
+        </div><!-- End .notely-action -->
+
     </div>
 
     <!-- Overlay -->

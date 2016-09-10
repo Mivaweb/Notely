@@ -114,7 +114,7 @@
                                                                     <a href class="btn btn-default notely-btn-round" 
                                                                        ng-click="editNote(note)"><i class="icon icon-edit"></i></a>
                                                                     <a href class="btn btn-default notely-btn-round" 
-                                                                       ng-click="deleteNote(note.id)"><i class="icon icon-delete"></i></a>
+                                                                       ng-click="deleteNote(note.id)"><i class="icon icon-trash"></i></a>
                                                                 </td>
                                                             </tr>
                                                             <tr class="notely-default-row" ng-if="filteredNotes.length == 0">
@@ -131,12 +131,14 @@
                                                         You have no assigned tasks to the property <strong>{{property.name}}</strong>.
                                                     </div>
 
-                                                    <button ng-if="treeNode == 0" type="button"
-                                                            class="btn btn-success notely-btn-round"
-                                                            ng-click="addNote(content.contentId, property)"
-                                                            ng-show="property.notes.length < property.limit">
-                                                        <i class="icon icon-add"></i>
-                                                    </button>
+                                                    <!-- Begin .notely-action -->
+                                                    <div ng-if="treeNode == 0" class="notely-action">
+                                                        <a href class="notely-btn-round"
+                                                           ng-show="property.notes.length < property.limit"
+                                                           ng-click="addNote(content.contentId, property)">
+                                                            <i class="icon icon-add"></i>
+                                                        </a>
+                                                    </div><!-- End .notely-action -->
 
                                                 </div>
                                             </div>
