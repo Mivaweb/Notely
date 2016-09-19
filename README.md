@@ -1,2 +1,2 @@
 # Notely
-Notely is a plugin for Umbraco to manage notes and tasks
+Notely is a backoffice extension plugin for Umbraco to manage notes and tasks.
