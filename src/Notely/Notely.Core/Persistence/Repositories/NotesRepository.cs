@@ -96,7 +96,7 @@ namespace Notely.Core.Persistence.Repositories
         /// <returns></returns>
         public IEnumerable<Note> GetAll(params int[] ids)
         {
-            return _dbContext.Database.Fetch<Note, NoteState, NoteType>("SELECT nc.*, ncs.*, nct.* FROM notelyNotes AS nc JOIN notelyNoteStates AS ncs ON ncs.id = nc.state JOIN notelyNoteTypes AS nct ON nct.id = nc.type ORDER BY nc.contentId, nc.propertyTypeId, nc.type, nc.createDate");
+            return _dbContext.Database.Fetch<Note, NoteState, NoteType>("SELECT nc.*, ncs.*, nct.* FROM notelyNotes AS nc LEFT JOIN notelyNoteStates AS ncs ON ncs.id = nc.state JOIN notelyNoteTypes AS nct ON nct.id = nc.type ORDER BY nc.contentId, nc.propertyTypeId, nc.type, nc.createDate");
         }
 
         /// <summary>
