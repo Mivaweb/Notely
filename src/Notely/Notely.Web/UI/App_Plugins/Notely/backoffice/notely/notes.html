@@ -54,11 +54,15 @@
 
                     </div><!-- End .notely-backoffice-options -->
 
-                    <a href class="notely-link" ng-if="!expanded" ng-click="toggleContentNodes()">Expand all content nodes</a>
-                    <a href class="notely-link" ng-if="expanded" ng-click="toggleContentNodes()">Collapse all content nodes</a>
+                    <a href class="notely-link" ng-if="!expanded && backOfficeDetails.length > 0" ng-click="toggleContentNodes()">Expand all content nodes</a>
+                    <a href class="notely-link" ng-if="expanded && backOfficeDetails.length > 0" ng-click="toggleContentNodes()">Collapse all content nodes</a>
+
+                    <div ng-if="backOfficeDetails.length == 0" class="notely-backoffice-default">
+                        No notes are added to any of the content properties.
+                    </div>
 
                     <!-- Begin .notely-backoffice-list -->
-                    <div class="notely-backoffice-list">
+                    <div class="notely-backoffice-list" ng-show="backOfficeDetails.length > 0">
 
                         <!-- Begin .notely-backoffice-item -->
                         <div ng-repeat="content in backOfficeDetails | orderByContentId track by $index"
