@@ -20,7 +20,7 @@ namespace Notely.Core.Events
             var db = new DatabaseSchemaHelper(dbContext.Database, applicationContext.ProfilingLogger.Logger, dbContext.SqlSyntax);
 
             // Check if table 'notelyNoteStates' exists
-            // If it not exists create the new table and add the default records
+            // If it doesn't exists create the new table and add the default records
             if (!db.TableExist("notelyNoteStates"))
             {
                 db.CreateTable<NoteState>(false);
@@ -31,7 +31,7 @@ namespace Notely.Core.Events
             }
 
             // Check if table 'notelyNoteTypes' exits
-            // If it not exists create the new table and add the default records
+            // If it doesn't exists create the new table and add the default records
             if (!db.TableExist("notelyNoteTypes"))
             {
                 db.CreateTable<NoteType>(false);
@@ -40,6 +40,11 @@ namespace Notely.Core.Events
                 dbContext.Database.Insert(new NoteType() { CanAssign = true, Icon = "icon-brackets", Id = 3, Title = "Development" });
                 dbContext.Database.Insert(new NoteType() { CanAssign = true, Icon = "icon-split-alt", Id = 4, Title = "Test" });
             }
+
+            // Check if table 'notelyNoteComments' exists
+            // If it doesn't exists create the new table
+            if (!db.TableExist("notelyNoteComments"))
+                db.CreateTable<NoteComment>(false);
 
             // Check if table 'notelyNotes' exits
             // If it not exists create the new table

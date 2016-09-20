@@ -9,12 +9,14 @@ using Umbraco.Web.Mvc;
 using Umbraco.Web.WebApi;
 using Umbraco.Core.PropertyEditors;
 using Umbraco.Core.Models;
+using Umbraco.Web.Editors;
 
 using Notely.Core.Models;
 using Notely.Web.Models;
 using Notely.Web.Extensions;
 using Notely.Core.Persistence.Repositories;
-using Umbraco.Web.Editors;
+using Notely.Core.Services;
+using Notely.Core.Enum;
 
 namespace Notely.Web.Controllers
 {
@@ -179,7 +181,14 @@ namespace Notely.Web.Controllers
             NoteViewModel noteDto = JsonConvert.DeserializeObject<NoteViewModel>(noteVm.ToString());
             noteDto.CreateDate = DateTime.Now;
 
-            DoAddOrUpdate(note.Convert(noteDto));
+            int noteId = DoAddOrUpdate(note.Convert(noteDto));
+
+            // Add log comment
+            NoteCommentServices.Add(
+                noteId, 
+                GetCurrentUserId(), 
+                NoteCommentType.New, 
+                "Note %" + noteDto.Title + "% was created.");
         }
 
         /// <summary>
@@ -193,7 +202,36 @@ namespace Notely.Web.Controllers
 
             NoteViewModel noteDto = JsonConvert.DeserializeObject<NoteViewModel>(noteVm.ToString());
 
-            DoAddOrUpdate(note.Convert(noteDto));
+            NoteViewModel _oldNote = GetNote(noteDto.Id);
+
+            int noteId = DoAddOrUpdate(note.Convert(noteDto));
+
+            // Add log comment
+            NoteCommentServices.Add(
+                noteId,
+                GetCurrentUserId(),
+                NoteCommentType.Save,
+                "Note %" + noteDto.Title + "% was saved.");
+
+            // Check if type is changed
+            if (_oldNote.Type.Id != noteDto.Type.Id)
+            {
+                NoteCommentServices.Add(
+                    noteId,
+                    GetCurrentUserId(),
+                    NoteCommentType.Save,
+                    "Note %" + noteDto.Title + "% type changed from " + _oldNote.Type.Title + " to " + noteDto.Type.Title + ".");
+            }
+
+            // Check if state is changed
+            if (_oldNote.State.Id > 0 && noteDto.State.Id > 0 && (_oldNote.State.Id != noteDto.State.Id))
+            {
+                NoteCommentServices.Add(
+                    noteId,
+                    GetCurrentUserId(),
+                    NoteCommentType.Save,
+                    "Note %" + noteDto.Title + "% state changed from " + _oldNote.State.Title + " to " + noteDto.State.Title + ".");
+            }
         }
 
         /// <summary>
@@ -203,6 +241,8 @@ namespace Notely.Web.Controllers
         [HttpDelete]
         public void DeleteNote(int id)
         {
+            DeleteNoteCommentsByNote(id);
+
             using (var repo = new NotesRepository())
             {
                 repo.Delete(id);
@@ -434,14 +474,17 @@ namespace Notely.Web.Controllers
         /// Add or update a note
         /// </summary>
         /// <param name="note">A <see cref="Note"/> object</param>
-        private void DoAddOrUpdate(Note note)
+        private int DoAddOrUpdate(Note note)
         {
+            int noteId = -1;
             using (var repo = new NotesRepository())
             {
                 if (!(note.ContentId > 0)) throw new ArgumentException("Content node not found");
                 if (!(note.PropertyTypeId > 0)) throw new ArgumentException("PropertyType not found");
 
-                repo.AddOrUpdate(note);
+                repo.AddOrUpdate(note, out noteId);
+
+                return noteId;
             }
         }
 
@@ -470,6 +513,25 @@ namespace Notely.Web.Controllers
                     repo.Delete(note);
                 }
             }
+        }
+
+        /// <summary>
+        /// Get current userid
+        /// </summary>
+        /// <returns></returns>
+        private int GetCurrentUserId()
+        {
+            var userService = Services.UserService;
+            return userService.GetByUsername(UmbracoContext.Security.CurrentUser.Username).Id;
+        }
+
+        /// <summary>
+        /// Delete note comments by note
+        /// </summary>
+        /// <param name="noteId"></param>
+        private void DeleteNoteCommentsByNote(int noteId)
+        {
+            NoteCommentServices.DeleteByNote(noteId);
         }
 
         #endregion
