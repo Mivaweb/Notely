@@ -188,7 +188,7 @@ namespace Notely.Web.Controllers
                 noteId, 
                 GetCurrentUserId(), 
                 NoteCommentType.New, 
-                "Note %" + noteDto.Title + "% was created.");
+                "Note %1%" + noteDto.Title + "%2% was created");
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace Notely.Web.Controllers
                 noteId,
                 GetCurrentUserId(),
                 NoteCommentType.Save,
-                "Note %" + noteDto.Title + "% was saved.");
+                "Note %1%" + noteDto.Title + "%2% was saved");
 
             // Check if type is changed
             if (_oldNote.Type.Id != noteDto.Type.Id)
@@ -220,7 +220,7 @@ namespace Notely.Web.Controllers
                     noteId,
                     GetCurrentUserId(),
                     NoteCommentType.Save,
-                    "Note %" + noteDto.Title + "% type changed from " + _oldNote.Type.Title + " to " + noteDto.Type.Title + ".");
+                    "Note %1%" + noteDto.Title + "%2% type changed from %1%" + _oldNote.Type.Title + "%2% to %1%" + noteDto.Type.Title + "%2%");
             }
 
             // Check if state is changed
@@ -230,7 +230,7 @@ namespace Notely.Web.Controllers
                     noteId,
                     GetCurrentUserId(),
                     NoteCommentType.Save,
-                    "Note %" + noteDto.Title + "% state changed from " + _oldNote.State.Title + " to " + noteDto.State.Title + ".");
+                    "Note %1%" + noteDto.Title + "%2% state changed from %1%" + _oldNote.State.Title + "%2% to %1%" + noteDto.State.Title + "%2%");
             }
         }
 
@@ -324,6 +324,48 @@ namespace Notely.Web.Controllers
             }
         }
         
+        /// <summary>
+        /// Get a list of <see cref="NoteCommentViewModel"/> objects
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IEnumerable<NoteCommentViewModel> GetNoteComments(int noteId)
+        {
+            var commentVm = new NoteCommentViewModel();
+
+            using (var repo = new NoteCommentRepository())
+            {
+                return repo.GetAllByNote(noteId).Select(c => commentVm.Convert(c));
+            }
+        }
+
+        /// <summary>
+        /// Add comment to note
+        /// </summary>
+        /// <param name="noteCommentVm"></param>
+        [HttpPost]
+        public void AddNoteComment(object noteCommentVm)
+        {
+            var noteComment = new NoteComment();
+
+            NoteCommentViewModel noteCommentDto = JsonConvert.DeserializeObject<NoteCommentViewModel>(noteCommentVm.ToString());
+
+            DoAddOrUpdate(noteComment.Convert(noteCommentDto));
+        }
+
+        /// <summary>
+        /// Delete comment from note
+        /// </summary>
+        /// <param name="commentId"></param>
+        [HttpDelete]
+        public void DeleteNoteComment(int commentId)
+        {
+            using (var repo = new NoteCommentRepository())
+            {
+                repo.Delete(commentId);
+            }
+        }
+
         /// <summary>
         /// Get a list of unique content id's that has notes
         /// </summary>
@@ -500,6 +542,18 @@ namespace Notely.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Add or update a note comment
+        /// </summary>
+        /// <param name="noteComment">A <see cref="NoteComment"/> object</param>
+        private void DoAddOrUpdate(NoteComment noteComment)
+        {
+            using (var repo = new NoteCommentRepository())
+            {
+                repo.AddOrUpdate(noteComment);
+            }
+        }
+        
         /// <summary>
         /// Delete all notes based on a note type
         /// </summary>

@@ -85,3 +85,22 @@ angular.module('notely.filters').filter('orderByContentId',
     }
 
 );
+
+
+/*
+ * @ngdoc filter
+ * @name setbold
+ * 
+ * @description
+ * Replace % by strong to set text bold
+ * 
+ */
+angular.module('notely.filters').filter('setbold',
+
+    function () {
+        return function (text) {
+            return text.replace(/%1%/g, '<strong>').replace(/%2%/g, '</strong>');
+        };
+    }
+
+);

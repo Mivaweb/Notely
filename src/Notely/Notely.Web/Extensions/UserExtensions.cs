@@ -1,6 +1,7 @@
 ﻿using Umbraco.Core.Models.Membership;
 
 using Notely.Web.Models;
+using Notely.Web.Avatar;
 
 namespace Notely.Web.Extensions
 {
@@ -25,7 +26,8 @@ namespace Notely.Web.Extensions
             return new UserViewModel()
             {
                 Id = iuser.Id,
-                Name = iuser.Name
+                Name = iuser.Name,
+                AvatarUrl = UserAvatarProvider.GetAvatarUrl(iuser)
             };
         }
     }

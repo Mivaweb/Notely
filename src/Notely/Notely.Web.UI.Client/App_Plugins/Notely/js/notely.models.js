@@ -108,6 +108,30 @@ angular.module('notely.models').constant('NoteState', NoteState);
 
 /*
  * @ngdoc model
+ * @name NoteComment
+ * @function
+ * 
+ * @description
+ * Represents the js version of the Notely's NoteComment
+ * 
+ */
+
+var NoteComment = function () {
+    var self = this;
+
+    self.id = -1;
+    self.user = null;
+    self.noteId = -1;
+    self.datestamp = new Date();
+    self.logType = '';
+    self.logComment = '';
+};
+
+angular.module('notely.models').constant('NoteComment', NoteComment);
+
+
+/*
+ * @ngdoc model
  * @name Note
  * @function
  * 
@@ -148,6 +172,7 @@ var User = function () {
 
     self.id = -1;
     self.name = '';
+    self.avatarUrl = "";
 };
 
 angular.module('notely.models').constant('User', User);
@@ -391,6 +416,38 @@ angular.module('notely.models').factory('noteStatesBuilder', [
     }
 
 ]);
+
+
+/*
+ * @ngdoc service
+ * @name noteCommentsBuilder
+ * 
+ * @decription
+ * Modelsbuilder for the NoteComment model
+ * 
+ */
+angular.module('notely.models').factory('noteCommentsBuilder', [
+
+    'modelsBuilder',
+    'NoteComment',
+
+    function (modelsBuilder, NoteComment) {
+
+        var Constructor = NoteComment;
+
+        return {
+            createEmpty: function () {
+                return new Constructor();
+            },
+            convert: function (jsonResult) {
+                return modelsBuilder.convert(jsonResult, Constructor);
+            }
+        };
+
+    }
+
+]);
+
 
 
 /*

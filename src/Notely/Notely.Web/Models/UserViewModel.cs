@@ -13,6 +13,9 @@ namespace Notely.Web.Models
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        [JsonProperty("avatarUrl")]
+        public string AvatarUrl { get; set; }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -20,6 +23,7 @@ namespace Notely.Web.Models
         {
             Id = -1;
             Name = "";
+            AvatarUrl = "";
         }
     }
 }

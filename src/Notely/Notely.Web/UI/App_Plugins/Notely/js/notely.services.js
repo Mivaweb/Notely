@@ -41,6 +41,13 @@ angular.module('notely.services').factory('noteService', [
                 return {
                     template: '/App_Plugins/Notely/backoffice/notely/dialogs/notely.notes.delete.html'
                 };
+            },
+
+            // View comments
+            getViewCommentsDialog: function () {
+                return {
+                    template: '/App_Plugins/Notely/backoffice/notely/dialogs/notely.notes.comments.html'
+                };
             }
 
         };

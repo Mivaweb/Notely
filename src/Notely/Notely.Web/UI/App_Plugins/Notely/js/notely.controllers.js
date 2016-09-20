@@ -200,6 +200,12 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
             dialogService.open(_dialog);
         };
 
+        // View comments from a note
+        $scope.viewComments = function (noteId) {
+            var _dialog = noteService.getViewCommentsDialog();
+            _dialog.dialogData = noteId;
+            dialogService.open(_dialog);
+        };
     }
 
 ]);
@@ -355,6 +361,88 @@ angular.module('notely').controller('Notely.Notes.DeleteController', [
         // Delete note
         $scope.deleteNote = function (noteId) {
             $scope.submit(noteId);
+        };
+
+    }
+
+]);
+
+/*
+ * @ngdoc Controller
+ * @name Notely.Notes.CommentsController
+ */
+angular.module('notely').controller('Notely.Notes.CommentsController', [
+
+    '$scope',
+    'notelyResources',
+    'notesBuilder',
+    'noteCommentsBuilder',
+    '$filter',
+    'userService',
+
+    function ($scope, notelyResources, notesBuilder, noteCommentsBuilder, $filter, userService) {
+
+        // Init model object
+        $scope.model = {};
+        
+        $scope.currentUser = {
+            id: -1,
+            name: ''
+        };
+
+        // Init controller
+        $scope.init = function (noteId) {
+            // Get note by id
+            notelyResources.getNote(noteId).then(function (data) {
+                $scope.model.note = notesBuilder.convert(data);
+
+                // Get comments
+                notelyResources.getComments(noteId).then(function (data) {
+                    $scope.model.note.comments = noteCommentsBuilder.convert(data);
+                });
+            });
+
+            // Get current logged in user
+            userService.getCurrentUser().then(function (user) {
+                $scope.currentUser.id = user.id;
+                $scope.currentUser.name = user.name;
+            });
+        };
+
+        // Render comment description
+        $scope.renderDescription = function (comment) {
+            if (comment.logType === 'Info')
+                return '<strong>' + comment.user.name + '</strong> ' + comment.logComment;
+            else
+                return $filter('setbold')(comment.logComment) + ' by ' + '<strong>' + comment.user.name + '</strong>';
+        };
+
+        // Add comment
+        $scope.addComment = function () {
+            var noteComment = noteCommentsBuilder.createEmpty();
+            noteComment.logType = 'Info';
+            noteComment.logComment = $scope.newcomment;
+            noteComment.noteId = $scope.model.note.id;
+            noteComment.user = $scope.currentUser;
+
+            notelyResources.addComment(noteComment).then(function (data) {
+                $scope.newcomment = '';
+
+                // Reload comments
+                notelyResources.getComments(noteComment.noteId).then(function (data) {
+                    $scope.model.note.comments = noteCommentsBuilder.convert(data);
+                });
+            });
+        }
+
+        // Delete comment
+        $scope.deleteComment = function (noteId, commentId) {
+            notelyResources.deleteComment(commentId).then(function (data) {
+                // Reload comments
+                notelyResources.getComments(noteId).then(function (data) {
+                    $scope.model.note.comments = noteCommentsBuilder.convert(data);
+                });
+            });
         };
 
     }

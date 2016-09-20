@@ -54,7 +54,7 @@ namespace Notely.Core.Persistence.Repositories
         /// <param name="noteId"></param>
         public void DeleteByNote(int noteId)
         {
-            _dbContext.Database.Delete<NoteComment>("DELETE FROM notelyNoteComments WHERE noteId = @p1", new { p1 = noteId });
+            _dbContext.Database.Delete<NoteComment>("WHERE noteId = @p1", new { p1 = noteId });
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Notely.Core.Persistence.Repositories
         /// <returns></returns>
         public IEnumerable<NoteComment> GetAllByNote(int noteId)
         {
-            return _dbContext.Database.Fetch<NoteComment>("SELECT * FROM notelyNoteComments WHERE noteId = @p1 ORDER BY datestamp");
+            return _dbContext.Database.Fetch<NoteComment>("SELECT * FROM notelyNoteComments WHERE noteId = @p1 ORDER BY datestamp DESC", new { p1 = noteId });
         }
 
         /// <summary>
