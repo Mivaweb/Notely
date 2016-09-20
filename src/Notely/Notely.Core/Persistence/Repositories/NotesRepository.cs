@@ -122,6 +122,16 @@ namespace Notely.Core.Persistence.Repositories
         }
 
         /// <summary>
+        /// Get a list of <see cref="Note"/> objects of a content
+        /// </summary>
+        /// <param name="contentId"></param>
+        /// <returns></returns>
+        public IEnumerable<Note> GetAllByContent(int contentId)
+        {
+            return _dbContext.Database.Fetch<Note, NoteState, NoteType>("SELECT nc.*, ncs.*, nct.* FROM notelyNotes AS nc LEFT JOIN notelyNoteStates AS ncs ON ncs.id = nc.state JOIN notelyNoteTypes AS nct ON nct.id = nc.type WHERE nc.contentId = @p1 ORDER BY nc.type, nc.createDate", new { p1 = contentId });
+        }
+
+        /// <summary>
         /// Get a list of <see cref="Note"/> objects of a content node and property
         /// </summary>
         /// <param name="contentId"></param>

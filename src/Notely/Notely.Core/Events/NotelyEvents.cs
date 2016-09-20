@@ -4,6 +4,7 @@ using Umbraco.Core.Services;
 
 using Notely.Core.Models;
 using Notely.Core.Persistence.Repositories;
+using Notely.Core.Services;
 
 namespace Notely.Core.Events
 {
@@ -66,7 +67,14 @@ namespace Notely.Core.Events
                 {
                     foreach (var node in e.AllPropertyData)
                     {
-                        repo.DeleteByContent(node.Key);
+                        var notes = repo.GetAllByContent(node.Key);
+
+                        foreach(var note in notes)
+                        {
+                            NoteCommentServices.DeleteByNote(note.Id);
+
+                            repo.Delete(note.Id);
+                        }
                     }
                 }
             }
@@ -79,7 +87,14 @@ namespace Notely.Core.Events
             {
                 foreach (var node in e.DeletedEntities)
                 {
-                    repo.DeleteByContent(node.Id);
+                    var notes = repo.GetAllByContent(node.Id);
+
+                    foreach (var note in notes)
+                    {
+                        NoteCommentServices.DeleteByNote(note.Id);
+
+                        repo.Delete(note.Id);
+                    }
                 }
             }
         }
