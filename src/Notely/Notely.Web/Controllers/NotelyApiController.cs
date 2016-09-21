@@ -329,6 +329,21 @@ namespace Notely.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        public IEnumerable<NoteCommentViewModel> GetAllNoteComments()
+        {
+            var commentVm = new NoteCommentViewModel();
+
+            using (var repo = new NoteCommentRepository())
+            {
+                return repo.GetAll().Select(c => commentVm.Convert(c));
+            }
+        }
+
+        /// <summary>
+        /// Get a list of <see cref="NoteCommentViewModel"/> objects
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
         public IEnumerable<NoteCommentViewModel> GetNoteComments(int noteId)
         {
             var commentVm = new NoteCommentViewModel();

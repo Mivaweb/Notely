@@ -18,7 +18,7 @@ namespace Notely.Web.Models
         public int NoteId { get; set; }
 
         [JsonProperty("datestamp")]
-        public DateTime Datestamp { get; set; }
+        public string Datestamp { get; set; }
 
         [JsonProperty("logType")]
         public string LogType { get; set; }
@@ -34,7 +34,7 @@ namespace Notely.Web.Models
             Id = -1;
             User = null;
             NoteId = -1;
-            Datestamp = DateTime.Now;
+            Datestamp = umbraco.library.FormatDateTime(DateTime.Now.ToString(), "dd MMM yyyy HH:mm:ss");
             LogType = "";
             LogComment = "";
         }

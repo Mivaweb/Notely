@@ -202,8 +202,12 @@ angular.module('notely').controller('Notely.PropertyEditors.MainController', [
 
         // View comments from a note
         $scope.viewComments = function (noteId) {
+            var _data = {
+                note: noteId
+            };
+
             var _dialog = noteService.getViewCommentsDialog();
-            _dialog.dialogData = noteId;
+            _dialog.dialogData = _data;
             dialogService.open(_dialog);
         };
     }
@@ -384,6 +388,8 @@ angular.module('notely').controller('Notely.Notes.CommentsController', [
 
         // Init model object
         $scope.model = {};
+
+        $scope.selectComment = -1;
         
         $scope.currentUser = {
             id: -1,
@@ -391,13 +397,15 @@ angular.module('notely').controller('Notely.Notes.CommentsController', [
         };
 
         // Init controller
-        $scope.init = function (noteId) {
+        $scope.init = function (settings) {
+            $scope.selectComment = settings.comment;
+
             // Get note by id
-            notelyResources.getNote(noteId).then(function (data) {
+            notelyResources.getNote(settings.note).then(function (data) {
                 $scope.model.note = notesBuilder.convert(data);
 
                 // Get comments
-                notelyResources.getComments(noteId).then(function (data) {
+                notelyResources.getComments(settings.note).then(function (data) {
                     $scope.model.note.comments = noteCommentsBuilder.convert(data);
                 });
             });
@@ -589,6 +597,8 @@ angular.module('notely').controller('Notely.Backoffice.NotesController', [
 
         // Reload
         $scope.reload = function () {
+            $scope.loaded = false;
+
             $scope.loadOptions();
             $scope.load();
             $scope.reset();
@@ -699,8 +709,12 @@ angular.module('notely').controller('Notely.Backoffice.NotesController', [
 
         // View comments from a note
         $scope.viewComments = function (noteId) {
+            var _data = {
+                note: noteId
+            };
+
             var _dialog = noteService.getViewCommentsDialog();
-            _dialog.dialogData = noteId;
+            _dialog.dialogData = _data;
             dialogService.open(_dialog);
         };
 
@@ -891,6 +905,90 @@ angular.module('notely').controller('Notely.Backoffice.CleanupController', [
             cleanupPromise.then(function (data) {
                 notificationsService.success("Cleanup done", data + " notes were removed.");
             });
+        };
+
+    }
+
+]);
+
+/*
+ * @ngdoc Controller
+ * @name Notely.Backoffice.CommentsController
+ * 
+ */
+angular.module('notely').controller('Notely.Backoffice.CommentsController', [
+
+    '$scope',
+    'notelyResources',
+    'noteCommentsBuilder',
+    '$filter',
+    'noteService',
+    'dialogService',
+
+    function ($scope, notelyResources, noteCommentsBuilder, $filter, noteService, dialogService) {
+
+        $scope.loaded = false;
+
+        $scope.visibleTabs = [];
+        $scope.comments = [];
+        $scope.filteredComments = [];
+
+        $scope.options = {
+            type: ""
+        };
+
+        // Init function
+        $scope.init = function () {
+
+            // Setup tabs
+            $scope.visibleTabs.push({
+                id: 1,
+                label: 'Comments Listing'
+            });
+
+            // Load comments
+            $scope.load();
+
+        };
+
+        // Load
+        $scope.load = function () {
+            // Get all comments
+            notelyResources.getAllComments().then(function (data) {
+                $scope.comments = noteCommentsBuilder.convert(data);
+
+                $scope.loaded = true;
+            });
+        };
+
+        // Render comment description
+        $scope.renderDescription = function (comment) {
+            return $filter('setbold')(comment.logComment);
+        };
+
+        // Reset
+        $scope.reset = function () {
+            $scope.options.type = "";
+        };
+
+        // Reload
+        $scope.reload = function () {
+            $scope.loaded = false;
+
+            $scope.reset();
+            $scope.load();
+        };
+
+        // View comments from a note
+        $scope.viewComments = function (noteId, commentId) {
+            var _data = {
+                note: noteId,
+                comment: commentId
+            };
+
+            var _dialog = noteService.getViewCommentsDialog();
+            _dialog.dialogData = _data;
+            dialogService.open(_dialog);
         };
 
     }

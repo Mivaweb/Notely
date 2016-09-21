@@ -11,7 +11,8 @@
                 <p>Show the comments history for note <strong>{{model.note.title}}</strong>.</p>
 
                 <div class="notely-comments" ng-show="model.note.comments.length > 0">
-                    <div class="notely-comments_item" ng-repeat="comment in model.note.comments">
+                    <div class="notely-comments_item" ng-repeat="comment in model.note.comments"
+                         ng-class="{'notely-selected': comment.id == selectComment}">
                         <a href ng-click="deleteComment(model.note.id, comment.id)"
                            class="notely-delete" ng-if="comment.logType === 'Info' && comment.user.id == currentUser.id">
                             <i class="icon icon-delete"></i>
@@ -20,7 +21,7 @@
                             <img ng-src="{{comment.user.avatarUrl}}">
                         </div>
                         <div class="notely-comment_body">
-                            <span>{{comment.datestamp | date: 'medium'}}</span>
+                            <span>{{comment.datestamp}}</span>
                             <p ng-bind-html-unsafe="renderDescription(comment)"></p>
                         </div>
                     </div>

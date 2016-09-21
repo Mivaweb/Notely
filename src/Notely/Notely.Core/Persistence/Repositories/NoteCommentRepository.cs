@@ -93,7 +93,7 @@ namespace Notely.Core.Persistence.Repositories
         /// <returns></returns>
         public IEnumerable<NoteComment> GetAll(params int[] ids)
         {
-            return _dbContext.Database.Fetch<NoteComment>("SELECT * FROM notelyNoteComments ORDER BY datestamp");
+            return _dbContext.Database.Fetch<NoteComment>("SELECT * FROM notelyNoteComments ORDER BY datestamp DESC");
         }
 
         /// <summary>

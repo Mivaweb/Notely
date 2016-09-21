@@ -168,6 +168,14 @@ angular.module('notely.resources').factory('notelyResources',
                 );
             },
 
+            // Get all comments
+            getAllComments: function () {
+                return umbRequestHelper.resourcePromise(
+                    $http.get("backoffice/notely/notelyapi/getallnotecomments"),
+                    "Unable to get all the comments!"
+                );
+            },
+
             // Get comments of note
             getComments: function (noteId) {
                 return umbRequestHelper.resourcePromise(

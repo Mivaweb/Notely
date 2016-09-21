@@ -1,0 +1,86 @@
+﻿<form ng-controller="Notely.Backoffice.CommentsController" ng-init="init()" val-form-manager class="notely-backoffice">
+    <umb-panel>
+
+        <umb-header tabs="visibleTabs">
+            <div class="span7">
+                <div class="umb-headline-editor-wrapper">
+                    <h1>Comments</h1>
+                </div>
+            </div>
+            <div class="span5"></div>
+        </umb-header>
+
+        <umb-tab-view>
+            <umb-tab id="tab1" ng-show="loaded">
+
+                <div class="umb-pane">
+
+                    <!-- Begin .notely-backoffice-options -->
+                    <div class="notely-backoffice-options">
+
+                        <div class="row">
+                            <div class="span3">
+                                <select name="notelyLogType" class="umb-editor umb-dropdown"
+                                        ng-model="options.type">
+                                    <option value="">Select type</option>
+                                    <option value="New">New</option>
+                                    <option value="Save">Save</option>
+                                    <option value="Info">Info</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="span6">
+                                <button type="button" class="btn btn-success" ng-click="reset()">Reset</button>
+                                <a href class="notely-reload" ng-click="reload()"><i class="icon icon-refresh"></i><span>Reload</span></a>
+                            </div>
+                        </div>
+
+                    </div><!-- End .notely-backoffice-options -->
+
+                    <!-- Begin .notely-backoffice-list -->
+                    <div class="notely-backoffice-list" ng-show="comments.length > 0">
+                        
+                        <table class="notely-table notely-table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="notely-table-width-notetype"></th>
+                                    <th class="notely-table-width-notetitle">User</th>
+                                    <th class="notely-table-width-notedesc">Comment</th>
+                                    <th class="notely-table-width-notestate">Datestamp</th>
+                                    <th class="notely-table-width-noteactions"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="comment in $parent.filteredComments = ( comments | filterLogType: options.type )">
+                                    <td class="notely-table-width-notetype">
+                                        <i title="{{comment.logType}}" ng-if="comment.logType == 'New'" class="icon icon-wand"></i>
+                                        <i title="{{comment.logType}}" ng-if="comment.logType == 'Save'" class="icon icon-save"></i>
+                                        <i title="{{comment.logType}}" ng-if="comment.logType == 'Info'" class="icon icon-info"></i>
+                                    </td>
+                                    <td class="notely-table-width-notetitle">
+                                        {{comment.user.name}}
+                                    </td>
+                                    <td class="notely-table-width-notedesc"
+                                        ng-bind-html-unsafe="renderDescription(comment)"></td>
+                                    <td class="notely-table-width-notestate">
+                                        {{comment.datestamp}}
+                                    </td>
+                                    <td class="notely-table-width-noteactions">
+                                        <a href class="btn btn-default notely-btn-round"
+                                           ng-click="viewComments(comment.noteId, comment.id)"><i class="icon icon-chat"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div><!-- End .notely-backoffice-list -->
+
+                </div>
+
+            </umb-tab>
+        </umb-tab-view>
+
+    </umb-panel>
+</form>

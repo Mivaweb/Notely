@@ -46,7 +46,7 @@ namespace Notely.Web.Extensions
 
             var result = new NoteCommentViewModel() {
                 Id = comment.Id,
-                Datestamp = comment.Datestamp,
+                Datestamp = umbraco.library.FormatDateTime(comment.Datestamp.ToString(), "dd MMM yyyy HH:mm:ss"),
                 LogComment = comment.LogComment,
                 LogType = comment.LogType,
                 NoteId = comment.NoteId,

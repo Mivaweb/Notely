@@ -104,3 +104,36 @@ angular.module('notely.filters').filter('setbold',
     }
 
 );
+
+/*
+ * @ngdoc filter
+ * @name filterLogType
+ * 
+ * @description
+ * Filter note comments based on the log type
+ * 
+ */
+angular.module('notely.filters').filter('filterLogType',
+
+    function () {
+        return function (comments, type) {
+            var filtered = [];
+
+            if (type) {
+                angular.forEach(comments, function (comment) {
+
+                    if (comment.logType == type) {
+                        filtered.push(comment);
+                    }
+
+                });
+
+            } else {
+                return comments;
+            }
+
+            return filtered;
+        };
+    }
+
+);
