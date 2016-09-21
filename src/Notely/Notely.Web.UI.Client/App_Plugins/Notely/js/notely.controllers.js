@@ -697,6 +697,13 @@ angular.module('notely').controller('Notely.Backoffice.NotesController', [
             dialogService.open(_dialog);
         };
 
+        // View comments from a note
+        $scope.viewComments = function (noteId) {
+            var _dialog = noteService.getViewCommentsDialog();
+            _dialog.dialogData = noteId;
+            dialogService.open(_dialog);
+        };
+
         function loadDetails(_user) {
             notelyResources.getUniqueContentNodes(_user).then(function (data) {
 

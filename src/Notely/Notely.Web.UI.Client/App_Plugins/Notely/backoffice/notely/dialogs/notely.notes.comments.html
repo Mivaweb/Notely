@@ -20,7 +20,7 @@
                             <img ng-src="{{comment.user.avatarUrl}}">
                         </div>
                         <div class="notely-comment_body">
-                            <span>{{comment.datestamp | date : 'dd MMM yyyy HH:mm:ss'}}</span>
+                            <span>{{comment.datestamp | date: 'medium'}}</span>
                             <p ng-bind-html-unsafe="renderDescription(comment)"></p>
                         </div>
                     </div>
