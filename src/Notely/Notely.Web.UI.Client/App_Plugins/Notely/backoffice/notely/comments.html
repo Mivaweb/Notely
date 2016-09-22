@@ -40,7 +40,7 @@
                     </div><!-- End .notely-backoffice-options -->
 
                     <!-- Begin .notely-backoffice-list -->
-                    <div class="notely-backoffice-list" ng-show="comments.length > 0">
+                    <div class="notely-backoffice-list" ng-show="filteredComments.length > 0">
                         
                         <table class="notely-table notely-table-bordered">
                             <thead>
@@ -53,7 +53,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="comment in $parent.filteredComments = ( comments | filterLogType: options.type )">
+                                <tr ng-repeat="comment in $parent.filteredComments = (comments | pagination: pagination)">
                                     <td class="notely-table-width-notetype">
                                         <i title="{{comment.logType}}" ng-if="comment.logType == 'New'" class="icon icon-wand"></i>
                                         <i title="{{comment.logType}}" ng-if="comment.logType == 'Save'" class="icon icon-save"></i>
@@ -74,6 +74,14 @@
                                 </tr>
                             </tbody>
                         </table>
+                        
+                        <!-- Begin umb-pagination -->
+                        <umb-pagination page-number="pagination.current"
+                                        total-pages="pagination.total"
+                                        on-next="next"
+                                        on-prev="prev"
+                                        on-go-to-page="goto">
+                        </umb-pagination><!-- End umb-pagination -->
 
                     </div><!-- End .notely-backoffice-list -->
 

@@ -937,6 +937,12 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
             type: ""
         };
 
+        $scope.pagination = {
+            current: 0,
+            limit: 10,
+            total: 1
+        };
+
         // Init function
         $scope.init = function () {
 
@@ -948,18 +954,27 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
 
             // Load comments
             $scope.load();
-
         };
 
         // Load
         $scope.load = function () {
             // Get all comments
-            notelyResources.getAllComments().then(function (data) {
+            notelyResources.getAllComments($scope.options.type).then(function (data) {
                 $scope.comments = noteCommentsBuilder.convert(data);
+
+                $scope.pagination.total = Math.ceil($scope.comments.length / $scope.pagination.limit);
+                $scope.pagination.current = 1;
 
                 $scope.loaded = true;
             });
         };
+
+        // Watch logType changes and then reload the table
+        $scope.$watch('options.type', function (term) {
+            $scope.loaded = false;
+            $scope.pagination.current = 0;
+            $scope.load();
+        });
 
         // Render comment description
         $scope.renderDescription = function (comment) {
@@ -970,7 +985,7 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
         $scope.reset = function () {
             $scope.options.type = "";
         };
-
+        
         // Reload
         $scope.reload = function () {
             $scope.loaded = false;
@@ -991,6 +1006,20 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
             dialogService.open(_dialog);
         };
 
+        // Pagination: previous
+        $scope.prev = function (page) {
+            $scope.pagination.current = page;
+        };
+
+        // Pagination: next
+        $scope.next = function (page) {
+            $scope.pagination.current = page;
+        };
+
+        // Pagination: goto page
+        $scope.goto = function (page) {
+            $scope.pagination.current = page;
+        };
     }
 
 ]);

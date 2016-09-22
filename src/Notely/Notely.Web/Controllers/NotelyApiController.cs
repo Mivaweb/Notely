@@ -77,7 +77,8 @@ namespace Notely.Web.Controllers
             return Services.UserService.GetAll(0, 50, out totalUsers)
                 .Where(u => u.IsApproved)
                 .OrderBy(u => u.Name)
-                .Select(u => new User() {
+                .Select(u => new User()
+                {
                     Name = u.Name,
                     Id = u.Id
                 });
@@ -185,9 +186,9 @@ namespace Notely.Web.Controllers
 
             // Add log comment
             NoteCommentServices.Add(
-                noteId, 
-                GetCurrentUserId(), 
-                NoteCommentType.New, 
+                noteId,
+                GetCurrentUserId(),
+                NoteCommentType.New,
                 "Note %1%" + noteDto.Title + "%2% was created");
         }
 
@@ -261,14 +262,14 @@ namespace Notely.Web.Controllers
             using (var repo = new NotesRepository())
             {
                 var notes = repo.GetAll();
-                foreach(var note in notes)
+                foreach (var note in notes)
                 {
                     bool delete = false;
 
                     // Check if the content exists
                     var _content = Services.ContentService.GetById(note.ContentId);
 
-                    if(_content != null)
+                    if (_content != null)
                     {
                         // Check if property exists
                         var _property = _content.Properties.FirstOrDefault(
@@ -282,7 +283,7 @@ namespace Notely.Web.Controllers
                         delete = true;
                     }
 
-                    if(delete)
+                    if (delete)
                     {
                         repo.Delete(note);
                         result++;
@@ -323,19 +324,22 @@ namespace Notely.Web.Controllers
                 return repo.GetAll().Select(c => _noteState.Convert(c));
             }
         }
-        
+
         /// <summary>
         /// Get a list of <see cref="NoteCommentViewModel"/> objects
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<NoteCommentViewModel> GetAllNoteComments()
+        public IEnumerable<NoteCommentViewModel> GetAllNoteComments(string logType)
         {
             var commentVm = new NoteCommentViewModel();
 
             using (var repo = new NoteCommentRepository())
             {
-                return repo.GetAll().Select(c => commentVm.Convert(c));
+                if (string.IsNullOrEmpty(logType))
+                    return repo.GetAll().Select(c => commentVm.Convert(c));
+                else
+                    return repo.GetAll(logType).Select(c => commentVm.Convert(c));
             }
         }
 
@@ -389,7 +393,7 @@ namespace Notely.Web.Controllers
         [HttpGet]
         public IEnumerable<int> GetUniqueContentNodes(int userId)
         {
-            using(var repo = new NotesRepository())
+            using (var repo = new NotesRepository())
             {
                 var result = repo.GetUniqueContentNodes(userId);
                 return result;
@@ -417,15 +421,16 @@ namespace Notely.Web.Controllers
 
                 _result.ContentId = contentId;
                 _result.ContentName = _content.Name;
-                
-                foreach(var prop in _content.Properties.Where(p => p.PropertyType.PropertyEditorAlias == "Notely"))
+
+                foreach (var prop in _content.Properties.Where(p => p.PropertyType.PropertyEditorAlias == "Notely"))
                 {
                     var dataTypeDef = Services.DataTypeService.GetDataTypeDefinitionById(
                         prop.PropertyType.DataTypeDefinitionId);
                     var limitValue = int.Parse(GetPreValues(dataTypeDef)["limit"].ToString());
 
                     // Step 2: Add properties and notes
-                    _result.Properties.Add(new BackOfficeProperty() {
+                    _result.Properties.Add(new BackOfficeProperty()
+                    {
 
                         Alias = prop.Alias,
                         Id = prop.PropertyType.Id,
@@ -568,7 +573,7 @@ namespace Notely.Web.Controllers
                 repo.AddOrUpdate(noteComment);
             }
         }
-        
+
         /// <summary>
         /// Delete all notes based on a note type
         /// </summary>
@@ -577,7 +582,7 @@ namespace Notely.Web.Controllers
         {
             using (var repo = new NotesRepository())
             {
-                foreach(var note in repo.GetAllByType(noteTypeId))
+                foreach (var note in repo.GetAllByType(noteTypeId))
                 {
                     repo.Delete(note);
                 }

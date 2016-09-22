@@ -169,9 +169,9 @@ angular.module('notely.resources').factory('notelyResources',
             },
 
             // Get all comments
-            getAllComments: function () {
+            getAllComments: function (logType) {
                 return umbRequestHelper.resourcePromise(
-                    $http.get("backoffice/notely/notelyapi/getallnotecomments"),
+                    $http.get("backoffice/notely/notelyapi/getallnotecomments", { params: { logType: logType } }),
                     "Unable to get all the comments!"
                 );
             },

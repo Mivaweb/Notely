@@ -19,6 +19,13 @@ namespace Notely.Core.Persistence.Repositories.Interfaces
         IEnumerable<NoteComment> GetAllByNote(int noteId);
 
         /// <summary>
+        /// Get a list of <see cref="NoteComment"/> objects for a given logtype
+        /// </summary>
+        /// <param name="logType"></param>
+        /// <returns></returns>
+        IEnumerable<NoteComment> GetAll(string logType);
+
+        /// <summary>
         /// Delete <see cref="NoteComment"/> object based on id
         /// </summary>
         /// <param name="id"></param>

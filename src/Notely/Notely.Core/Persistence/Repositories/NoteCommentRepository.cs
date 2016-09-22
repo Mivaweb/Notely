@@ -107,6 +107,16 @@ namespace Notely.Core.Persistence.Repositories
         }
 
         /// <summary>
+        /// Get a list of <see cref="NoteComment"/> objects for a given logtype
+        /// </summary>
+        /// <param name="logType"></param>
+        /// <returns></returns>
+        public IEnumerable<NoteComment> GetAll(string logType)
+        {
+            return _dbContext.Database.Fetch<NoteComment>("SELECT * FROM notelyNoteComments WHERE logType = @p1 ORDER BY datestamp DESC", new { p1 = logType });
+        }
+
+        /// <summary>
         /// Dispose
         /// </summary>
         public void Dispose() { }

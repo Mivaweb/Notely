@@ -137,3 +137,41 @@ angular.module('notely.filters').filter('filterLogType',
     }
 
 );
+
+/*
+ * @ngdoc filter
+ * @name pagination
+ * 
+ * @description
+ * Filter results with pagination
+ * 
+ */
+angular.module('notely.filters').filter('pagination',
+
+    function () {
+        return function (elements, pagination) {
+            var filtered = [];
+
+            if (pagination) {
+
+                var begin, end, index;
+
+                begin = (pagination.current - 1) * pagination.limit;
+                end = begin + pagination.limit;
+                
+                angular.forEach(elements, function (element) {
+                    index = elements.indexOf(element);
+
+                    if (begin <= index && index < end)
+                        filtered.push(element);
+                });
+
+            } else {
+                return elements;
+            }
+
+            return filtered;
+        };
+    }
+
+);

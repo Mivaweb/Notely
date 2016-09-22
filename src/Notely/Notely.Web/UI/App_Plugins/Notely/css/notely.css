@@ -214,6 +214,39 @@ table.notely-table {
     margin-top: 20px;
 }
 
+.notely-backoffice-list .pagination {
+    text-align: center;
+}
+
+.notely-backoffice-list .pagination ul {
+    box-shadow: none;
+}
+
+.notely-backoffice-list .pagination > ul > li > a {
+    border: 0;
+    color: #d9d9d9;
+}
+
+.notely-backoffice-list .pagination ul > .active > a {
+    color: #000;
+    background-color: #fff;
+}
+
+.notely-backoffice-list .pagination ul > li > a:hover, 
+.notely-backoffice-list .pagination ul > li > a:focus {
+    background-color: #fff;
+    color: #000;
+}
+
+.notely-backoffice-list .pagination ul > .disabled > span, 
+.notely-backoffice-list .pagination ul > .disabled > a, 
+.notely-backoffice-list .pagination ul > .disabled > a:hover, 
+.notely-backoffice-list .pagination ul > .disabled > a:focus {
+    color: #d9d9d9;
+    cursor: default;
+    background-color: transparent;
+}
+
 .notely-backoffice-item {
     margin-bottom: 15px;
     border: 2px solid transparent;
