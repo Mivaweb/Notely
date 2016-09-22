@@ -584,6 +584,7 @@ namespace Notely.Web.Controllers
             {
                 foreach (var note in repo.GetAllByType(noteTypeId))
                 {
+                    DeleteNoteCommentsByNote(note.Id);
                     repo.Delete(note);
                 }
             }
