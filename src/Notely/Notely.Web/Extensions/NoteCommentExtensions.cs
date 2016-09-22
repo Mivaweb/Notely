@@ -5,6 +5,7 @@ using Umbraco.Web;
 
 using Notely.Core.Models;
 using Notely.Web.Models;
+using Notely.Core.Services;
 
 namespace Notely.Web.Extensions
 {
@@ -44,12 +45,15 @@ namespace Notely.Web.Extensions
         {
             var userVm = new UserViewModel();
 
+            var _note = NoteService.GetById(comment.NoteId);
+
             var result = new NoteCommentViewModel() {
                 Id = comment.Id,
                 Datestamp = umbraco.library.FormatDateTime(comment.Datestamp.ToString(), "dd MMM yyyy HH:mm:ss"),
                 LogComment = comment.LogComment,
                 LogType = comment.LogType,
                 NoteId = comment.NoteId,
+                NoteName = _note.Title,
                 User = userVm.Convert(
                         UmbracoContext.Current.Application.Services.UserService.GetUserById(comment.UserId)
                     )

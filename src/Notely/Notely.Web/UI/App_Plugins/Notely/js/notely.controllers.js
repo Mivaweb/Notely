@@ -427,20 +427,24 @@ angular.module('notely').controller('Notely.Notes.CommentsController', [
 
         // Add comment
         $scope.addComment = function () {
-            var noteComment = noteCommentsBuilder.createEmpty();
-            noteComment.logType = 'Info';
-            noteComment.logComment = $scope.newcomment;
-            noteComment.noteId = $scope.model.note.id;
-            noteComment.user = $scope.currentUser;
+            if ($scope.newcomment && $scope.newcomment.length > 0) {
+                var noteComment = noteCommentsBuilder.createEmpty();
+                noteComment.logType = 'Info';
+                noteComment.logComment = $scope.newcomment;
+                noteComment.noteId = $scope.model.note.id;
+                noteComment.user = $scope.currentUser;
 
-            notelyResources.addComment(noteComment).then(function (data) {
-                $scope.newcomment = '';
+                notelyResources.addComment(noteComment).then(function (data) {
+                    $scope.newcomment = '';
 
-                // Reload comments
-                notelyResources.getComments(noteComment.noteId).then(function (data) {
-                    $scope.model.note.comments = noteCommentsBuilder.convert(data);
+                    // Reload comments
+                    notelyResources.getComments(noteComment.noteId).then(function (data) {
+                        $scope.model.note.comments = noteCommentsBuilder.convert(data);
+                    });
                 });
-            });
+            } else {
+                alert('Please enter a comment!');
+            }
         }
 
         // Delete comment
@@ -939,7 +943,7 @@ angular.module('notely').controller('Notely.Backoffice.CommentsController', [
 
         $scope.pagination = {
             current: 0,
-            limit: 10,
+            limit: 100,
             total: 1
         };
 

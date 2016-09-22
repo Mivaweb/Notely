@@ -45,29 +45,32 @@
                         <table class="notely-table notely-table-bordered">
                             <thead>
                                 <tr>
-                                    <th class="notely-table-width-notetype"></th>
-                                    <th class="notely-table-width-notetitle">User</th>
-                                    <th class="notely-table-width-notedesc">Comment</th>
-                                    <th class="notely-table-width-notestate">Datestamp</th>
-                                    <th class="notely-table-width-noteactions"></th>
+                                    <th></th>
+                                    <th>Note</th>
+                                    <th>User</th>
+                                    <th>Comment</th>
+                                    <th>Datestamp</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="comment in $parent.filteredComments = (comments | pagination: pagination)">
-                                    <td class="notely-table-width-notetype">
+                                    <td>
                                         <i title="{{comment.logType}}" ng-if="comment.logType == 'New'" class="icon icon-wand"></i>
                                         <i title="{{comment.logType}}" ng-if="comment.logType == 'Save'" class="icon icon-save"></i>
                                         <i title="{{comment.logType}}" ng-if="comment.logType == 'Info'" class="icon icon-info"></i>
                                     </td>
-                                    <td class="notely-table-width-notetitle">
+                                    <td>
+                                        {{comment.noteName}}
+                                    </td>
+                                    <td>
                                         {{comment.user.name}}
                                     </td>
-                                    <td class="notely-table-width-notedesc"
-                                        ng-bind-html-unsafe="renderDescription(comment)"></td>
-                                    <td class="notely-table-width-notestate">
+                                    <td ng-bind-html-unsafe="renderDescription(comment)"></td>
+                                    <td>
                                         {{comment.datestamp}}
                                     </td>
-                                    <td class="notely-table-width-noteactions">
+                                    <td>
                                         <a href class="btn btn-default notely-btn-round"
                                            ng-click="viewComments(comment.noteId, comment.id)"><i class="icon icon-chat"></i></a>
                                     </td>

@@ -122,6 +122,7 @@ var NoteComment = function () {
     self.id = -1;
     self.user = null;
     self.noteId = -1;
+    self.noteName = "";
     self.datestamp = new Date();
     self.logType = '';
     self.logComment = '';

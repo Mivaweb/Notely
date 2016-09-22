@@ -17,6 +17,9 @@ namespace Notely.Web.Models
         [JsonProperty("noteId")]
         public int NoteId { get; set; }
 
+        [JsonProperty("noteName")]
+        public string NoteName { get; set; }
+
         [JsonProperty("datestamp")]
         public string Datestamp { get; set; }
 

@@ -270,7 +270,8 @@
     <Compile Include="Persistence\Repositories\Interfaces\INoteStatesRepository.cs" />
     <Compile Include="Persistence\Repositories\Interfaces\INoteTypesRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\NoteCommentServices.cs" />
+    <Compile Include="Services\NoteCommentService.cs" />
+    <Compile Include="Services\NoteService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

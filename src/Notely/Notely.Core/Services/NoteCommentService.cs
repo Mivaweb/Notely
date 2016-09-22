@@ -7,9 +7,9 @@ using Notely.Core.Persistence.Repositories;
 namespace Notely.Core.Services
 {
     /// <summary>
-    /// Defines a NoteCommentServices
+    /// Defines a NoteCommentService
     /// </summary>
-    public static class NoteCommentServices
+    public static class NoteCommentService
     {
         /// <summary>
         /// Add a new NoteComment

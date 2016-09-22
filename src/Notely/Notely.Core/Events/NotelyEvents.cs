@@ -71,7 +71,7 @@ namespace Notely.Core.Events
 
                         foreach(var note in notes)
                         {
-                            NoteCommentServices.DeleteByNote(note.Id);
+                            NoteCommentService.DeleteByNote(note.Id);
 
                             repo.Delete(note.Id);
                         }
@@ -91,7 +91,7 @@ namespace Notely.Core.Events
 
                     foreach (var note in notes)
                     {
-                        NoteCommentServices.DeleteByNote(note.Id);
+                        NoteCommentService.DeleteByNote(note.Id);
 
                         repo.Delete(note.Id);
                     }

@@ -185,7 +185,7 @@ namespace Notely.Web.Controllers
             int noteId = DoAddOrUpdate(note.Convert(noteDto));
 
             // Add log comment
-            NoteCommentServices.Add(
+            NoteCommentService.Add(
                 noteId,
                 GetCurrentUserId(),
                 NoteCommentType.New,
@@ -208,7 +208,7 @@ namespace Notely.Web.Controllers
             int noteId = DoAddOrUpdate(note.Convert(noteDto));
 
             // Add log comment
-            NoteCommentServices.Add(
+            NoteCommentService.Add(
                 noteId,
                 GetCurrentUserId(),
                 NoteCommentType.Save,
@@ -217,7 +217,7 @@ namespace Notely.Web.Controllers
             // Check if type is changed
             if (_oldNote.Type.Id != noteDto.Type.Id)
             {
-                NoteCommentServices.Add(
+                NoteCommentService.Add(
                     noteId,
                     GetCurrentUserId(),
                     NoteCommentType.Save,
@@ -227,7 +227,7 @@ namespace Notely.Web.Controllers
             // Check if state is changed
             if (_oldNote.State.Id > 0 && noteDto.State.Id > 0 && (_oldNote.State.Id != noteDto.State.Id))
             {
-                NoteCommentServices.Add(
+                NoteCommentService.Add(
                     noteId,
                     GetCurrentUserId(),
                     NoteCommentType.Save,
@@ -605,7 +605,7 @@ namespace Notely.Web.Controllers
         /// <param name="noteId"></param>
         private void DeleteNoteCommentsByNote(int noteId)
         {
-            NoteCommentServices.DeleteByNote(noteId);
+            NoteCommentService.DeleteByNote(noteId);
         }
 
         #endregion
