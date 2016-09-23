@@ -77,5 +77,12 @@ namespace Notely.Core.Services
         /// <param name="noteTypeId"></param>
         /// <returns></returns>
         IEnumerable<Note> GetAllByType(int noteTypeId);
+
+        /// <summary>
+        /// Get notes by content node
+        /// </summary>
+        /// <param name="contentId"></param>
+        /// <returns></returns>
+        IEnumerable<Note> GetAllByContent(int contentId);
     }
 }

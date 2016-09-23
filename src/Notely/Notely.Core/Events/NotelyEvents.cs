@@ -3,8 +3,6 @@ using Umbraco.Core.Persistence;
 using Umbraco.Core.Services;
 
 using Notely.Core.Models;
-using Notely.Core.Persistence.Repositories;
-using Notely.Core.Services;
 
 namespace Notely.Core.Events
 {
@@ -60,22 +58,22 @@ namespace Notely.Core.Events
         // Event fires when clicking on Empty recycle bin
         private void ContentService_EmptiedRecycleBin(IContentService sender, Umbraco.Core.Events.RecycleBinEventArgs e)
         {
+            Notely.Core.Services.ServiceContext Services = new Core.Services.ServiceContext();
+
             // Check if we are in the content recycle bin
             if(e.IsContentRecycleBin)
             {
-                using (var repo = new NotesRepository())
+                foreach(var node in e.AllPropertyData)
                 {
-                    foreach (var node in e.AllPropertyData)
+                    var notes = Services.NoteService.GetAllByContent(node.Key);
+
+                    foreach (var note in notes)
                     {
-                        var notes = repo.GetAllByContent(node.Key);
+                        // Delete comments
+                        Services.NoteCommentService.DeleteByNoteId(note.Id);
 
-                        foreach(var note in notes)
-                        {
-                            
-                            //NoteCommentService.DeleteByNote(note.Id);
-
-                            //repo.Delete(note.Id);
-                        }
+                        // Delete note
+                        Services.NoteService.Delete(note.Id);
                     }
                 }
             }
@@ -84,18 +82,19 @@ namespace Notely.Core.Events
         // Events fires when deleting a node from the recycle bin
         private void ContentService_Deleted(IContentService sender, Umbraco.Core.Events.DeleteEventArgs<Umbraco.Core.Models.IContent> e)
         {
-            using (var repo = new NotesRepository())
+            Notely.Core.Services.ServiceContext Services = new Core.Services.ServiceContext();
+
+            foreach (var node in e.DeletedEntities)
             {
-                foreach (var node in e.DeletedEntities)
+                var notes = Services.NoteService.GetAllByContent(node.Id);
+
+                foreach (var note in notes)
                 {
-                    var notes = repo.GetAllByContent(node.Id);
+                    // Delete comments
+                    Services.NoteCommentService.DeleteByNoteId(note.Id);
 
-                    foreach (var note in notes)
-                    {
-                        //NoteCommentService.DeleteByNote(note.Id);
-
-                        //repo.Delete(note.Id);
-                    }
+                    // Delete note
+                    Services.NoteService.Delete(note.Id);
                 }
             }
         }

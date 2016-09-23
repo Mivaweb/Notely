@@ -141,5 +141,18 @@ namespace Notely.Core.Services
                 return repo.GetAllByType(noteTypeId);
             }
         }
+
+        /// <summary>
+        /// Get a lis of <see cref="Note"/> objects of a given content node
+        /// </summary>
+        /// <param name="contentId"></param>
+        /// <returns></returns>
+        public IEnumerable<Note> GetAllByContent(int contentId)
+        {
+            using (var repo = new NotesRepository())
+            {
+                return repo.GetAllByContent(contentId);
+            }
+        }
     }
 }
