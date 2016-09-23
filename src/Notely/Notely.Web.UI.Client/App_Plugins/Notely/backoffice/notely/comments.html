@@ -39,6 +39,10 @@
 
                     </div><!-- End .notely-backoffice-options -->
 
+                    <div ng-if="filteredComments.length == 0" class="notely-backoffice-default">
+                        No comments to display.
+                    </div>
+
                     <!-- Begin .notely-backoffice-list -->
                     <div class="notely-backoffice-list" ng-show="filteredComments.length > 0">
                         

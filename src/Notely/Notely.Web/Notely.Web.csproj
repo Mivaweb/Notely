@@ -332,6 +332,8 @@
     <Compile Include="Models\NoteViewModel.cs" />
     <Compile Include="Models\ContentPropertyViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
+    <Compile Include="NotelyContext.cs" />
+    <Compile Include="NotelyModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Trees\NotelyApp.cs" />
     <Compile Include="Trees\NotelyTreeController.cs" />

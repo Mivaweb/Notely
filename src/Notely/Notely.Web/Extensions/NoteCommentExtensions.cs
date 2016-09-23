@@ -45,7 +45,7 @@ namespace Notely.Web.Extensions
         {
             var userVm = new UserViewModel();
 
-            var _note = NoteService.GetById(comment.NoteId);
+            var _note = NotelyContext.Current.Services.NoteService.GetById(comment.NoteId);
 
             var result = new NoteCommentViewModel() {
                 Id = comment.Id,
