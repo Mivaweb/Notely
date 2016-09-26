@@ -229,6 +229,16 @@ namespace Notely.Web.Controllers
                     NoteCommentType.Save,
                     "Note %1%" + noteDto.Title + "%2% state changed from %1%" + _oldNote.State.Title + "%2% to %1%" + noteDto.State.Title + "%2%");
             }
+
+            // Check if priority is changed
+            if(_oldNote.Priority != noteDto.Priority)
+            {
+                NotelyContext.Current.Services.NoteCommentService.Add(
+                    noteId,
+                    GetCurrentUserId(),
+                    NoteCommentType.Save,
+                    "Note %1%" + noteDto.Title + "%2% priority changed from %1%" + (NotePriority)_oldNote.Priority + "%2% to %1%" + (NotePriority)noteDto.Priority + "%2%");
+            }
         }
 
         /// <summary>

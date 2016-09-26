@@ -66,6 +66,39 @@ angular.module('notely.filters').filter('filterState',
 
 /*
  * @ngdoc filter
+ * @name filterPriority
+ * 
+ * @description
+ * Filter notes based on the note priority
+ * 
+ */
+angular.module('notely.filters').filter('filterPriority',
+
+    function () {
+        return function (notes, priority) {
+            var filtered = [];
+
+            if (priority) {
+                angular.forEach(notes, function (note) {
+
+                    if (note.priority == priority) {
+                        filtered.push(note);
+                    }
+
+                });
+
+            } else {
+                return notes;
+            }
+
+            return filtered;
+        };
+    }
+
+);
+
+/*
+ * @ngdoc filter
  * @name orderByContentId
  * 
  * @description

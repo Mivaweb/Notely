@@ -37,10 +37,19 @@
                                     <option value="">Select state</option>
                                 </select>
                             </div>
-                            <div class="span6">
+                            <div class="span3">
+                                <select name="notelyPriority" class="umb-editor umb-dropdown"
+                                        ng-model="options.priority">
+                                    <option value="">Select priority</option>
+                                    <option value="1">Low</option>
+                                    <option value="2">Medium</option>
+                                    <option value="3">High</option>
+                                </select>
+                            </div>
+                            <div class="span3">
                                 <div class="umb-editor umb-boolean">
                                     <input type="checkbox" value="" id="notelyHide" ng-model="options.hiding" />
-                                    <label for="notelyHide">Hide content properties without notes</label>
+                                    <label for="notelyHide">Hide properties without notes</label>
                                 </div>
                             </div>
                         </div>
@@ -107,9 +116,11 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr ng-repeat="note in $parent.filteredNotes = (property.notes | filterType: options.type | filterState: options.state)">
+                                                            <tr ng-repeat="note in $parent.filteredNotes = (property.notes | filterType: options.type | filterState: options.state | filterPriority: options.priority)">
                                                                 <td class="notely-table-width-notetype">
                                                                     <i title="{{note.type.title}}" class="icon" ng-class="note.type.icon"></i>
+                                                                    <i ng-if="note.priority == 2" title="Medium priority" class="icon icon-flag notely-color-warning"></i>
+                                                                    <i ng-if="note.priority == 3" title="High priority" class="icon icon-flag notely-color-danger"></i>
                                                                 </td>
                                                                 <td class="notely-table-width-notetitle">
                                                                     <a href ng-click="editNote(note)">{{note.title}}</a>

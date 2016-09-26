@@ -36,9 +36,13 @@
                     <tr ng-repeat="note in notes track by $index">
                         <td class="notely-table-width-notetype">
                             <i title="{{note.type.title}}" class="icon" ng-class="note.type.icon"></i>
+                            <i ng-if="note.priority == 2" title="Medium priority" class="icon icon-flag notely-color-warning"></i>
+                            <i ng-if="note.priority == 3" title="High priority" class="icon icon-flag notely-color-danger"></i>
                         </td>
                         <td class="notely-table-width-notetitle">
-                            <a href ng-click="editNote(note)">{{note.title}}</a>
+                            <a href ng-click="editNote(note)">
+                                {{note.title}}
+                            </a>
                         </td>
                         <td class="notely-table-width-notedesc" 
                             ng-bind-html-unsafe="renderDescription(note)"></td>

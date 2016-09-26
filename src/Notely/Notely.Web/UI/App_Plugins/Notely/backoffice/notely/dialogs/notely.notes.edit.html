@@ -66,5 +66,17 @@
                     ng-options="c.title for c in noteStates track by c.id"></select>
         </div>
     </div>
-
+    <div class="umb-control-group" ng-show="model.note.type.canAssign">
+        <label class="control-label">
+            Priority
+        </label>
+        <div class="controls controls-row">
+            <select name="notelyPriority" class="umb-editor umb-dropdown"
+                    ng-model="model.note.priority">
+                <option value="1">Low</option>
+                <option value="2">Medium</option>
+                <option value="3">High</option>
+            </select>
+        </div>
+    </div>
 </div>

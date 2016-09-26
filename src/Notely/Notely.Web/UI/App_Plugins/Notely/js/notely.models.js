@@ -152,6 +152,7 @@ var Note = function () {
     self.state = null;
     self.contentProperty = null;
     self.closed = false;
+    self.priority = 1;
 };
 
 angular.module('notely.models').constant('Note', Note);

@@ -2,7 +2,6 @@
 
     <p>
         Add a new note to the property <strong>{{model.note.contentProperty.propertyTypeAlias}}</strong>.
-        You can choose between different types of notes.
     </p>
 
     <h5>Properties</h5>
@@ -48,7 +47,7 @@
                     class="umb-editor umb-dropdown"
                     ng-hide="!users || (model.note.assignedTo && model.note.assignedTo.id >= 0)"
                     ng-model="model.note.assignedTo"
-                    ng-options="i.name for i in users | orderBy:'name' track by i.id""></select>
+                    ng-options="i.name for i in users | orderBy:'name' track by i.id"></select>
             <div class="notely-clear-select" ng-show="model.note.assignedTo && model.note.assignedTo.id >= 0">
                 <span>{{model.note.assignedTo.name}}</span>
                 <i class="icon icon-delete" ng-click="resetAssigndTo()"></i>
@@ -64,6 +63,19 @@
                     ng-model="model.note.state"
                     ng-show="noteStates"
                     ng-options="c.title for c in noteStates track by c.id"></select>
+        </div>
+    </div>
+    <div class="umb-control-group" ng-show="model.note.type.canAssign">
+        <label class="control-label">
+            Priority
+        </label>
+        <div class="controls controls-row">
+            <select name="notelyPriority" class="umb-editor umb-dropdown"
+                    ng-model="model.note.priority">
+                <option value="1">Low</option>
+                <option value="2">Medium</option>
+                <option value="3">High</option>
+            </select>
         </div>
     </div>
 </div>

@@ -1,8 +1,16 @@
-﻿using Umbraco.Core;
+﻿using System;
+using System.Linq;
+using Semver;
+
+using Umbraco.Core;
+using Umbraco.Core.Logging;
+using Umbraco.Core.Persistence.Migrations;
 using Umbraco.Core.Persistence;
 using Umbraco.Core.Services;
+using Umbraco.Web;
 
 using Notely.Core.Models;
+
 
 namespace Notely.Core.Events
 {
@@ -13,6 +21,20 @@ namespace Notely.Core.Events
     {
         // Fired when application is started
         protected override void ApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
+        {
+            // Install notely table
+            InstallTables(applicationContext);            
+
+            // Handle migrations
+            HandleV20Migrations();
+
+            // Add events to cleanup notely notes
+            ContentService.Deleted += ContentService_Deleted;
+            ContentService.EmptiedRecycleBin += ContentService_EmptiedRecycleBin;
+        }
+
+        // Install notely database tables
+        private static void InstallTables(ApplicationContext applicationContext)
         {
             // Get database context
             var dbContext = applicationContext.DatabaseContext;
@@ -49,10 +71,44 @@ namespace Notely.Core.Events
             // If it not exists create the new table
             if (!db.TableExist("notelyNotes"))
                 db.CreateTable<Note>(false);
-            
-            // Add events to cleanup notely notes
-            ContentService.Deleted += ContentService_Deleted;
-            ContentService.EmptiedRecycleBin += ContentService_EmptiedRecycleBin;
+        }
+
+        // Handle migrations to version 2.0
+        private static void HandleV20Migrations()
+        {
+            const string productName = "Notely";
+            var currentVersion = new SemVersion(0, 0, 0);
+
+            // Get all migrations
+            var migrations = ApplicationContext.Current.Services.MigrationEntryService.GetAll(productName);
+
+            // Get the latest migration
+            var latestMigration = migrations.OrderByDescending(x => x.Version).FirstOrDefault();
+
+            if (latestMigration != null)
+                currentVersion = latestMigration.Version;
+
+            var targetVersion = new SemVersion(2, 0);
+
+            if (targetVersion == currentVersion)
+                return;
+
+            var migrationsRunner = new MigrationRunner(
+                    ApplicationContext.Current.Services.MigrationEntryService,
+                    ApplicationContext.Current.ProfilingLogger.Logger,
+                    currentVersion,
+                    targetVersion,
+                    productName
+                );
+
+            try
+            {
+                migrationsRunner.Execute(UmbracoContext.Current.Application.DatabaseContext.Database);
+            }
+            catch (Exception e)
+            {
+                LogHelper.Error<MigrationRunner>("Error running Notely migrations", e);
+            }
         }
 
         // Event fires when clicking on Empty recycle bin

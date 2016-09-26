@@ -253,9 +253,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enum\NoteCommentType.cs" />
+    <Compile Include="Enum\NotePriority.cs" />
     <Compile Include="Events\NotelyEvents.cs" />
     <Compile Include="INotelyBootManager.cs" />
     <Compile Include="Install\PackageActions.cs" />
+    <Compile Include="Migrations\MigrateV20.cs" />
     <Compile Include="Models\Note.cs" />
     <Compile Include="Models\NoteComment.cs" />
     <Compile Include="Models\NoteState.cs" />

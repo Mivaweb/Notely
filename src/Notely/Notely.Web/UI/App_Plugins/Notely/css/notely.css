@@ -448,6 +448,14 @@ table.notely-table {
     background-color: #f9f9f9;
 }
 
+.notely-color-warning {
+    color: #F9AF82;
+}
+
+.notely-color-danger {
+    color: #9d261d;
+}
+
 @media (max-width: 767px) {
     .notely-control-group .controls {
         margin-left: 0;

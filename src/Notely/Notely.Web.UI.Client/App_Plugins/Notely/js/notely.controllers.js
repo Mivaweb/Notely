@@ -518,6 +518,7 @@ angular.module('notely').controller('Notely.Backoffice.NotesController', [
         $scope.options = {
             type: {},
             state: {},
+            priority: "",
             hiding: false
         };
         $scope.noteTypes = [];
