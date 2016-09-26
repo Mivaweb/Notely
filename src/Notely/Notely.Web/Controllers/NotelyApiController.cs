@@ -289,7 +289,7 @@ namespace Notely.Web.Controllers
 
                 if (delete)
                 {
-                    NotelyContext.Current.Services.NoteService.Delete(note);
+                    DeleteNote(note.Id);
                     result++;
                 }
             }
