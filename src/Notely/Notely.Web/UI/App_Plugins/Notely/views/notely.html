@@ -1,74 +1,86 @@
-﻿<div ng-controller="Notely.PropertyEditors.MainController" ng-init="init()" class="notely-container" ng-show="loaded">
+﻿<div ng-controller="Notely.PropertyEditors.MainController as vm" ng-init="vm.init()" class="notely-container" ng-show="vm.loaded">
 
-    <div ng-show="property.view" class="notely-property" ng-include="property.view"></div>
+    <div ng-show="vm.property.view" class="notely-property" ng-include="vm.property.view"></div>
 
-    <div class="notely-default" ng-show="showDefault">
+    <div class="notely-default" ng-show="vm.showDefault">
         To add notes to this property you first need to
         <strong>add a value and hit save</strong> or hit <strong>Save and Publish</strong>
         and refresh the page.
     </div>
 
-    <div class="notely-item" ng-show="hasProperty">
+    <div class="notely-item" ng-show="vm.hasProperty">
         <!-- Begin .notely-nav -->
         <ul class="notely-nav">
-            <li class="notely-nav_expand" ng-click="expand()">
+            <li class="notely-nav_expand" ng-click="vm.expand()">
                 <i class="icon" 
-                   ng-class="{'icon-navigation-right': notes.length > 0 && !showNotes, 'icon-navigation-down': notes.length > 0 && showNotes}">
+                   ng-class="{'icon-navigation-right': vm.notes.length > 0 && !vm.showNotes, 'icon-navigation-down': vm.notes.length > 0 && vm.showNotes}">
                 </i>
-                Notely notes: <strong>{{notes.length}}</strong>
+                Notely notes: <strong>{{vm.notes.length}}</strong>
             </li>
         </ul><!-- End .notely-nav -->
 
         <!-- Begin .notely-notes -->
-        <div class="notely-notes" ng-show="showNotes && notes.length > 0">
-
-            <table class="notely-table notely-table-bordered" ng-if="notes.length > 0">
-                <thead>
-                    <tr>
-                        <th class="notely-table-width-notetype"></th>
-                        <th class="notely-table-width-notetitle">Title</th>
-                        <th class="notely-table-width-notedesc">Description</th>
-                        <th class="notely-table-width-notestate">State</th>
-                        <th class="notely-table-width-noteactions"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="note in notes track by $index">
-                        <td class="notely-table-width-notetype">
-                            <i title="{{note.type.title}}" class="icon" ng-class="note.type.icon"></i>
-                            <i ng-if="note.priority == 2" title="Medium priority" class="icon icon-flag notely-color-warning"></i>
-                            <i ng-if="note.priority == 3" title="High priority" class="icon icon-flag notely-color-danger"></i>
-                        </td>
-                        <td class="notely-table-width-notetitle">
-                            <a href ng-click="editNote(note)">
-                                {{note.title}}
-                            </a>
-                        </td>
-                        <td class="notely-table-width-notedesc" 
-                            ng-bind-html-unsafe="renderDescription(note)"></td>
-                        <td class="notely-table-width-notestate">
-                            <span ng-show="note.type.canAssign" class="label" 
-                                  ng-class="'label-' + note.state.title | lowercase">{{note.state.title}}</span>
-                        </td>
-                        <td class="notely-table-width-noteactions">
-                            <a href class="notely-btn-round" 
-                               ng-click="editNote(note)"><i class="icon icon-edit"></i></a>
-                            <a href class="notely-btn-round"
-                               ng-click="viewComments(note.id)"><i class="icon icon-chat"></i></a>
-                            <a href class="notely-btn-round" 
-                               ng-click="deleteNote(note.id)"><i class="icon icon-trash"></i></a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-        </div><!-- End .notely-notes -->
+        <umb-box class="notely-notes" ng-show="vm.showNotes && vm.notes.length > 0">
+            <umb-box-header title="Notes"></umb-box-header>
+            <umb-box-content>
+                <div >
+                    <umb-node-preview ng-repeat="note in vm.notes track by $index" style="max-width: 100%; margin-bottom: 20px;"
+                        name="note.title"
+                        description="vm.renderDescription(note)"
+                        sortable="false"
+                        allow-edit="true"
+                        allow-remove="true"
+                        on-edit="vm.editNote(note)"
+                        on-remove="vm.deleteNote(note.id)">
+                    </umb-node-preview>
+                </div>
+                <!--<table class="notely-table notely-table-bordered" ng-if="vm.notes.length > 0">
+                    <thead>
+                        <tr>
+                            <th class="notely-table-width-notetype"></th>
+                            <th class="notely-table-width-notetitle">Title</th>
+                            <th class="notely-table-width-notedesc">Description</th>
+                            <th class="notely-table-width-notestate">State</th>
+                            <th class="notely-table-width-noteactions"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="note in vm.notes track by $index">
+                            <td class="notely-table-width-notetype">
+                                <i title="{{note.type.title}}" class="icon" ng-class="note.type.icon"></i>
+                                <i ng-if="note.priority == 2" title="Medium priority" class="icon icon-flag notely-color-warning"></i>
+                                <i ng-if="note.priority == 3" title="High priority" class="icon icon-flag notely-color-danger"></i>
+                            </td>
+                            <td class="notely-table-width-notetitle">
+                                <a href="" ng-click="vm.editNote(note)">
+                                    {{note.title}}
+                                </a>
+                            </td>
+                            <td class="notely-table-width-notedesc"
+                                ng-bind-html-unsafe="vm.renderDescription(note)"></td>
+                            <td class="notely-table-width-notestate">
+                                <span ng-show="note.type.canAssign" class="label"
+                                      ng-class="'label-' + note.state.title | lowercase">{{note.state.title}}</span>
+                            </td>
+                            <td class="notely-table-width-noteactions">
+                                <a href="" class="notely-btn-round"
+                                   ng-click="vm.editNote(note)"><i class="icon icon-edit"></i></a>
+                                <a href="" class="notely-btn-round"
+                                   ng-click="vm.viewComments(note.id)"><i class="icon icon-chat"></i></a>
+                                <a href="" class="notely-btn-round"
+                                   ng-click="vm.deleteNote(note.id)"><i class="icon icon-trash"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>-->
+            </umb-box-content>
+        </umb-box><!-- End .notely-notes -->
 
         <!-- Begin .notely-action -->
         <div class="notely-action">
-            <a href class="notely-btn-round"
-               ng-show="notes.length < model.config.limit"
-               ng-click="addNote()">
+            <a href="" class="notely-btn-round"
+               ng-show="vm.notes.length < model.config.limit"
+               ng-click="vm.addNote()">
                 <i class="icon icon-add"></i>
             </a>
         </div><!-- End .notely-action -->
@@ -76,9 +88,9 @@
     </div>
 
     <!-- Overlay -->
-    <umb-overlay ng-if="overlay.show"
-                 model="overlay"
-                 view="overlay.view"
+    <umb-overlay ng-if="vm.overlay.show"
+                 model="vm.overlay"
+                 view="vm.overlay.view"
                  position="right">
     </umb-overlay>
 

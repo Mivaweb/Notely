@@ -11,7 +11,7 @@ angular.module('notely.services').factory('noteService', [
 
             // Format the description which adds the assignee if assignd to
             formatDescription: function (note) {
-                return note.description + (note.type.canAssign && note.assignedTo ? ' <strong>[Assigned to: ' + note.assignedTo.name + ']</strong>' : '');
+                return (!note.description ? '-' : note.description) + (note.type.canAssign && note.assignedTo ? ' <strong>[Assigned to: ' + note.assignedTo.name + ']</strong>' : '');
             },
 
             // Add note
