@@ -24,15 +24,16 @@
             <umb-box-header title="Notes"></umb-box-header>
             <umb-box-content>
                 <div >
-                    <umb-node-preview ng-repeat="note in vm.notes track by $index" style="max-width: 100%; margin-bottom: 20px;"
+                    <notely-note-preview ng-repeat="note in vm.notes track by $index"
                         name="note.title"
                         description="vm.renderDescription(note)"
-                        sortable="false"
-                        allow-edit="true"
-                        allow-remove="true"
+                        state="note.state.title"
+                        can-assign="note.type.canAssign"
+                        icon="note.type.icon"
                         on-edit="vm.editNote(note)"
-                        on-remove="vm.deleteNote(note.id)">
-                    </umb-node-preview>
+                        on-remove="vm.deleteNote(note.id)"
+                        on-open="vm.viewComments(note.id)">
+                    </notely-note-preview>
                 </div>
                 <!--<table class="notely-table notely-table-bordered" ng-if="vm.notes.length > 0">
                     <thead>

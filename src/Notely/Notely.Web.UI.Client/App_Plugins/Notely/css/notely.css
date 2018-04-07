@@ -69,6 +69,17 @@
     margin-bottom: 15px;
 }
 
+.notely-notes .umb-node-preview {
+    max-width: 100%;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.notely-notes .umb-node-preview:last-child {
+    padding-bottom: 5px;
+    margin-bottom: 0;
+}
+
 table.notely-table {
     width: 100%;
     margin-bottom: 20px;
@@ -142,6 +153,32 @@ table.notely-table {
         width: 15%;
         text-align: right;
     }
+
+.notely-note-preview__labels {
+    margin-top: 5px;
+}
+
+.notely-note-preview .label {
+    text-shadow: none;
+    padding: 4px 6px 3px;
+    font-size: 11px;
+}
+
+.notely-note-preview .label-open {
+    background-color: #D9D9D9;
+}
+
+.notely-note-preview .label-approved {
+    background-color: #8CD0EC;
+}
+
+.notely-note-preview .label-pending {
+    background-color: #F9AF82;
+}
+
+.notely-note-preview .label-done {
+    background-color: #8ECF7F;
+}
 
 .notely-bold {
     font-weight: bold;
