@@ -25,8 +25,9 @@
             scope: {
                 icon: "=?",
                 name: "=",
-                description: "=?",
+                assignTo: "=?",
                 state: "=?",
+                priority: "=?",
                 canAssign: "=?",
                 onOpen: "&?",
                 onRemove: "&?",

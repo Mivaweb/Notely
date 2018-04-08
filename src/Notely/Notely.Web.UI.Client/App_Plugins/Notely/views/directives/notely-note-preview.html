@@ -4,9 +4,15 @@
 
     <div class="umb-node-preview__content">
         <div class="umb-node-preview__name">{{ name }}</div>
-        <div class="umb-node-preview__description">{{ description }}</div>
+        <div class="umb-node-preview__description" ng-if="assignTo">
+            <span class="bold">Assigned To: </span>
+            {{ assignTo }}
+        </div>
         <div class="notely-note-preview__labels">
-            <span ng-show="canAssign" class="label" ng-class="'label-' + state | lowercase">{{state}}</span>
+            <span ng-if="canAssign" class="label" ng-class="'label-' + state | lowercase">{{ state }}</span>
+            <span ng-if="canAssign && priority == 1" class="label label-low">Low Priority</span>
+            <span ng-if="canAssign && priority == 2" class="label label-medium">Medium Priority</span>
+            <span ng-if="canAssign && priority == 3" class="label label-high">High Priority</span>
         </div>
     </div>
 

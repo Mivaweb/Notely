@@ -124,7 +124,7 @@
             // Render the note description field
             function renderDescription(note) {
                 //return noteService.formatDescription(note);
-                return note.type.canAssign && note.assignedTo ? 'Assigned to: ' + note.assignedTo.name : '-';
+                return note.type.canAssign && note.assignedTo ? note.assignedTo.name : '';
             };
 
             // Add a new note

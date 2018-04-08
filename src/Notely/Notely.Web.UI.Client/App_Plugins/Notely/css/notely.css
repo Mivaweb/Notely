@@ -52,6 +52,10 @@
     padding: 15px 0;
 }
 
+.notely-container .controls {
+    margin-left: 0 !important;
+}
+
 .notely-nav_expand {
     cursor: pointer;
 }
@@ -178,6 +182,18 @@ table.notely-table {
 
 .notely-note-preview .label-done {
     background-color: #8ECF7F;
+}
+
+.notely-note-preview .label-low {
+    background-color: #8CD0EC;
+}
+
+.notely-note-preview .label-medium {
+    background-color: #F9AF82;
+}
+
+.notely-note-preview .label-high {
+    background-color: #fb7474;
 }
 
 .notely-bold {
