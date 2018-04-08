@@ -242,49 +242,76 @@
 
         function ($scope, notelyResources, $routeParams, notesBuilder, noteTypesBuilder, noteStatesBuilder, usersBuilder) {
 
+            var vm = this;
+            vm.model = $scope.model;
+
             // Reset note window
-            $scope.model.note = notesBuilder.createEmpty();
-            $scope.model.note.contentProperty.contentId = $scope.model.property.contentId;
-            $scope.model.note.contentProperty.propertyDataId = $scope.model.property.propertyDataId;
-            $scope.model.note.contentProperty.propertyTypeAlias = $scope.model.property.propertyTypeAlias;
+            vm.model.note = notesBuilder.createEmpty();
+            vm.model.note.contentProperty.contentId = vm.model.property.contentId;
+            vm.model.note.contentProperty.propertyDataId = vm.model.property.propertyDataId;
+            vm.model.note.contentProperty.propertyTypeAlias = vm.model.property.propertyTypeAlias;
 
             // Init controller
-            $scope.init = function () {
+            function init() {
                 // Get note types
                 var noteTypesPromise = notelyResources.getNoteTypes();
                 noteTypesPromise.then(function (data) {
-                    $scope.noteTypes = noteTypesBuilder.convert(data);
-                    $scope.model.note.type = $scope.noteTypes[0];
+                    vm.noteTypes = noteTypesBuilder.convert(data);
+                    vm.model.note.type = vm.noteTypes[0];
                 });
 
                 // Get note states
                 var noteStatesPromise = notelyResources.getNoteStates();
                 noteStatesPromise.then(function (data) {
-                    $scope.noteStates = noteStatesBuilder.convert(data);
-                    $scope.model.note.state = $scope.noteStates[0];
+                    vm.noteStates = noteStatesBuilder.convert(data);
+                    vm.model.note.state = vm.noteStates[0];
                 });
 
                 // Get active users to display in select
                 var usersPromise = notelyResources.getUsers();
                 usersPromise.then(function (data) {
-                    $scope.users = usersBuilder.convert(data);
+                    vm.users = usersBuilder.convert(data);
                 });
             };
 
             // Note type changed
-            $scope.noteTypeChanged = function () {
-                if (!$scope.model.note.type.canAssign)
-                    $scope.resetAssigndTo();
+            function noteTypeChanged() {
+                if (!vm.model.note.type.canAssign)
+                    vm.resetAssigndTo();
 
                 // Reset state
-                $scope.model.note.state = $scope.noteStates[0];
+                vm.model.note.state = vm.noteStates[0];
             };
 
             // Reset select
-            $scope.resetAssigndTo = function () {
-                $scope.model.note.assignedTo = null;
+            function resetAssignedTo() {
+                vm.model.note.assignedTo = null;
             };
 
+            // Over usserPicker overlay dialog
+            function openUserDialog() {
+                var overlay = {
+                    view: 'userpicker',
+                    multiPicker: false,
+                    show: true,
+                    close: function (oldModel) {
+                        vm.overlay.show = false;
+                        vm.overlay = null;
+                    },
+                    submit: function (model) {
+                        // Get first selected user
+                        vm.model.note.assignedTo = usersBuilder.convert(model.selection[0]);
+                        vm.overlay.show = false;
+                        vm.overlay = null;
+                    }
+                };
+                vm.overlay = overlay;
+            }
+
+            vm.init = init;
+            vm.noteTypeChanged = noteTypeChanged;
+            vm.resetAssignedTo = resetAssignedTo;
+            vm.openUserDialog = openUserDialog;
         }
 
     ]);

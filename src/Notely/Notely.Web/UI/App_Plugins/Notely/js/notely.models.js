@@ -175,6 +175,7 @@ var User = function () {
     self.id = -1;
     self.name = '';
     self.avatarUrl = "";
+    self.avatars = [];
 };
 
 angular.module('notely.models').constant('User', User);

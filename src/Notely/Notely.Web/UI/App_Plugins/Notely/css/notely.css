@@ -231,6 +231,20 @@ table.notely-table {
     padding: 15px;
 }
 
+.notely-btn-user-delete {
+    display: block;
+    text-align: left;
+    padding: 0;
+}
+
+.notely-btn-user-delete:hover {
+    text-decoration: underline;
+}
+
+.notely-modal .umb-user-picker-list-item:hover {
+    background-color: #ffffff;
+}
+
 .notely-btn-round {
     display: inline-block;
     padding: 4px 6px;
