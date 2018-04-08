@@ -266,12 +266,6 @@
                     vm.noteStates = noteStatesBuilder.convert(data);
                     vm.model.note.state = vm.noteStates[0];
                 });
-
-                // Get active users to display in select
-                var usersPromise = notelyResources.getUsers();
-                usersPromise.then(function (data) {
-                    vm.users = usersBuilder.convert(data);
-                });
             };
 
             // Note type changed
