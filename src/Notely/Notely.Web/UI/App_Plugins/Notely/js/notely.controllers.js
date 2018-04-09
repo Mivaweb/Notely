@@ -328,8 +328,11 @@
 
         function ($scope, notelyResources, notesBuilder, noteTypesBuilder, noteStatesBuilder, usersBuilder, $routeParams) {
 
+            var vm = this;
+            vm.model = $scope.model;
+
             // Init controller
-            $scope.init = function () {
+            function init() {
 
                 // Note model is already in scope when calling the overlay
                 // So we don't need to call the api again to catch the note data
@@ -338,36 +341,54 @@
                 // Get note types
                 var noteTypesPromise = notelyResources.getNoteTypes();
                 noteTypesPromise.then(function (data) {
-                    $scope.noteTypes = noteTypesBuilder.convert(data);
+                    vm.noteTypes = noteTypesBuilder.convert(data);
                 });
 
                 // Get note states
                 var noteStatesPromise = notelyResources.getNoteStates();
                 noteStatesPromise.then(function (data) {
-                    $scope.noteStates = noteStatesBuilder.convert(data);
-                });
-
-                // Get active users to display in select
-                var usersPromise = notelyResources.getUsers();
-                usersPromise.then(function (data) {
-                    $scope.users = usersBuilder.convert(data);
+                    vm.noteStates = noteStatesBuilder.convert(data);
                 });
             };
 
             // Note type changed
-            $scope.noteTypeChanged = function () {
-                if (!$scope.model.note.type.canAssign)
-                    $scope.resetAssigndTo();
+            function noteTypeChanged() {
+                if (!vm.model.note.type.canAssign)
+                    vm.resetAssignedTo();
 
                 // Reset state
-                $scope.model.note.state = $scope.noteStates[0];
+                vm.model.note.state = vm.noteStates[0];
             };
 
             // Reset select
-            $scope.resetAssigndTo = function () {
-                $scope.model.note.assignedTo = null;
+            function resetAssignedTo() {
+                vm.model.note.assignedTo = null;
             };
 
+            // Over usserPicker overlay dialog
+            function openUserDialog() {
+                var overlay = {
+                    view: 'userpicker',
+                    multiPicker: false,
+                    show: true,
+                    close: function (oldModel) {
+                        vm.overlay.show = false;
+                        vm.overlay = null;
+                    },
+                    submit: function (model) {
+                        // Get first selected user
+                        vm.model.note.assignedTo = usersBuilder.convert(model.selection[0]);
+                        vm.overlay.show = false;
+                        vm.overlay = null;
+                    }
+                };
+                vm.overlay = overlay;
+            }
+
+            vm.init = init;
+            vm.noteTypeChanged = noteTypeChanged;
+            vm.resetAssignedTo = resetAssignedTo;
+            vm.openUserDialog = openUserDialog;
         }
 
     ]);
@@ -384,21 +405,32 @@
 
         function ($scope, notelyResources, notesBuilder) {
 
+            var vm = this;
+
             // Init model object
-            $scope.model = {};
+            vm.model = {};
 
             // Init controller
-            $scope.init = function (noteId) {
+            function init(noteId) {
                 // Get note by id
                 notelyResources.getNote(noteId).then(function (data) {
-                    $scope.model.note = notesBuilder.convert(data);
+                    vm.model.note = notesBuilder.convert(data);
                 });
             };
 
             // Delete note
-            $scope.deleteNote = function (noteId) {
+            function deleteNote(noteId) {
                 $scope.submit(noteId);
             };
+
+            // Close dialog
+            function close() {
+                $scope.close();
+            }
+
+            vm.init = init;
+            vm.deleteNote = deleteNote;
+            vm.close = close;
 
         }
 
@@ -419,39 +451,39 @@
 
         function ($scope, notelyResources, notesBuilder, noteCommentsBuilder, $filter, userService) {
 
-            // Init model object
-            $scope.model = {};
+            var vm = this;
 
-            $scope.selectComment = -1;
-        
-            $scope.currentUser = {
+            // Init model object
+            vm.model = {};
+            vm.selectComment = -1;       
+            vm.currentUser = {
                 id: -1,
                 name: ''
             };
 
             // Init controller
-            $scope.init = function (settings) {
-                $scope.selectComment = settings.comment;
+            function init(settings) {
+                vm.selectComment = settings.comment;
 
                 // Get note by id
                 notelyResources.getNote(settings.note).then(function (data) {
-                    $scope.model.note = notesBuilder.convert(data);
+                    vm.model.note = notesBuilder.convert(data);
 
                     // Get comments
                     notelyResources.getComments(settings.note).then(function (data) {
-                        $scope.model.note.comments = noteCommentsBuilder.convert(data);
+                        vm.model.note.comments = noteCommentsBuilder.convert(data);
                     });
                 });
 
                 // Get current logged in user
                 userService.getCurrentUser().then(function (user) {
-                    $scope.currentUser.id = user.id;
-                    $scope.currentUser.name = user.name;
+                    vm.currentUser.id = user.id;
+                    vm.currentUser.name = user.name;
                 });
             };
 
             // Render comment description
-            $scope.renderDescription = function (comment) {
+            function renderDescription(comment) {
                 if (comment.logType === 'Info')
                     return '<strong>' + comment.user.name + '</strong> ' + comment.logComment;
                 else
@@ -459,20 +491,20 @@
             };
 
             // Add comment
-            $scope.addComment = function () {
-                if ($scope.newcomment && $scope.newcomment.length > 0) {
+            function addComment() {
+                if (vm.newcomment && vm.newcomment.length > 0) {
                     var noteComment = noteCommentsBuilder.createEmpty();
                     noteComment.logType = 'Info';
-                    noteComment.logComment = $scope.newcomment;
-                    noteComment.noteId = $scope.model.note.id;
-                    noteComment.user = $scope.currentUser;
+                    noteComment.logComment = vm.newcomment;
+                    noteComment.noteId = vm.model.note.id;
+                    noteComment.user = vm.currentUser;
 
                     notelyResources.addComment(noteComment).then(function (data) {
-                        $scope.newcomment = '';
+                        vm.newcomment = '';
 
                         // Reload comments
                         notelyResources.getComments(noteComment.noteId).then(function (data) {
-                            $scope.model.note.comments = noteCommentsBuilder.convert(data);
+                            vm.model.note.comments = noteCommentsBuilder.convert(data);
                         });
                     });
                 } else {
@@ -481,14 +513,19 @@
             }
 
             // Delete comment
-            $scope.deleteComment = function (noteId, commentId) {
+            function deleteComment(noteId, commentId) {
                 notelyResources.deleteComment(commentId).then(function (data) {
                     // Reload comments
                     notelyResources.getComments(noteId).then(function (data) {
-                        $scope.model.note.comments = noteCommentsBuilder.convert(data);
+                        vm.model.note.comments = noteCommentsBuilder.convert(data);
                     });
                 });
             };
+
+            vm.init = init;
+            vm.renderDescription = renderDescription;
+            vm.addComment = addComment;
+            vm.deleteComment = deleteComment;
 
         }
 

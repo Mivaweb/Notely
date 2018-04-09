@@ -481,6 +481,7 @@ table.notely-table {
 .notely-comment_body {
     margin-left: 60px;
     padding-right: 5px;
+    position: relative;
 }
 
 .notely-comment_body > span {
@@ -502,9 +503,13 @@ table.notely-table {
     color: #ccc;
     position: absolute;
     right: 0;
-    top: 0;
+    top: 10px;
     opacity: 0;
     transition: opacity 100ms linear;
+}
+
+.notely-comments_item .notely-delete > i {
+    font-size: 16px;
 }
 
 .notely-comments_item:hover .notely-delete {

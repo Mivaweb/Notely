@@ -1,4 +1,4 @@
-﻿<div ng-controller="Notely.Notes.DeleteController" ng-init="init(dialogData)" class="umb-modalcolumn">
+﻿<div ng-controller="Notely.Notes.DeleteController as vm" ng-init="vm.init(dialogData)" class="umb-modalcolumn">
 
     <div class="umb-modalcolumn-header">
         <h1>Delete</h1>
@@ -7,12 +7,12 @@
     <div class="umb-modalcolumn-body">
         <div class="umb-dialog umb-pane">
             <div class="umb-dialog-body">
-                <p class="umb-abstract">Are you sure you want to delete note <strong>{{model.note.title}}</strong>?</p>
+                <p class="umb-abstract">Are you sure you want to delete note <strong>{{vm.model.note.title}}</strong>?</p>
 
                 <div class="umb-pane btn-toolbar umb-btn-toolbar">
                     <div class="control-group umb-control-group">
-                        <a href ng-click="close()" class="btn btn-link">Cancel</a>
-                        <a href ng-click="deleteNote(model.note.id)" class="btn btn-primary">OK</a>
+                        <a href="" ng-click="vm.close()" class="btn btn-link">Cancel</a>
+                        <a href="" ng-click="vm.deleteNote(vm.model.note.id)" class="btn btn-primary">OK</a>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,5 @@
-﻿<div ng-controller="Notely.Notes.CommentsController" ng-init="init(dialogData)" class="notely-dialog umb-modalcolumn">
+﻿<div ng-controller="Notely.Notes.CommentsController as vm" ng-init="vm.init(dialogData)" 
+     class="notely-dialog umb-modalcolumn content-type-editor-dialog edit-property-settings">
 
     <div class="umb-modalcolumn-header">
         <h1>Comments</h1>
@@ -8,21 +9,21 @@
         <div class="umb-dialog umb-pane">
             <div class="umb-dialog-body">
 
-                <p>Show the comments history for note <strong>{{model.note.title}}</strong>.</p>
+                <p>Show the comments history for note <strong>{{vm.model.note.title}}</strong>.</p>
 
-                <div class="notely-comments" ng-show="model.note.comments.length > 0">
-                    <div class="notely-comments_item" ng-repeat="comment in model.note.comments"
-                         ng-class="{'notely-selected': comment.id == selectComment}">
-                        <a href ng-click="deleteComment(model.note.id, comment.id)"
-                           class="notely-delete" ng-if="comment.logType === 'Info' && comment.user.id == currentUser.id">
-                            <i class="icon icon-delete"></i>
-                        </a>
+                <div class="notely-comments" ng-show="vm.model.note.comments.length > 0">
+                    <div class="notely-comments_item notely-clear-select" ng-repeat="comment in vm.model.note.comments"
+                         ng-class="{'notely-selected': comment.id == vm.selectComment}">
                         <div class="notely-comment_img">
                             <img ng-src="{{comment.user.avatarUrl}}">
                         </div>
                         <div class="notely-comment_body">
+                            <a href="" ng-click="vm.deleteComment(vm.model.note.id, comment.id)"
+                               class="notely-delete" ng-if="comment.logType === 'Info' && comment.user.id == vm.currentUser.id">
+                                <i class="icon icon-trash"></i>
+                            </a>
                             <span>{{comment.datestamp}}</span>
-                            <p ng-bind-html-unsafe="renderDescription(comment)"></p>
+                            <p ng-bind-html-unsafe="vm.renderDescription(comment)"></p>
                         </div>
                     </div>
                 </div>
@@ -30,11 +31,11 @@
             </div>
             <div class="umb-dialog-footer btn-toolbar umb-btn-toolbar">
                 <input type="text" class="umb-editor" placeholder="Add comment"
-                       ng-model="newcomment" ng-keypress="($event.which === 13) ? addComment() : 0" />
+                       ng-model="vm.newcomment" ng-keypress="($event.which === 13) ? vm.addComment() : 0" />
                 <a class="btn btn-link" ng-click="close()">
                     Close
                 </a>
-                <button class="btn btn-primary" ng-click="addComment()">
+                <button class="btn btn-primary" ng-click="vm.addComment()">
                     Save
                 </button>
             </div>
