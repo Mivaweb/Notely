@@ -166,34 +166,49 @@ table.notely-table {
     text-shadow: none;
     padding: 4px 6px 3px;
     font-size: 11px;
+    border: 1px solid transparent;
 }
 
 .notely-note-preview .label-open {
-    background-color: #D9D9D9;
+    background-color: #f9f9f9;
+    border-color: #505050;
+    color: #505050;
 }
 
 .notely-note-preview .label-approved {
-    background-color: #8CD0EC;
+    background-color: #ebfeff;
+    border-color: #00b2f0;
+    color: #00b2f0;
 }
 
 .notely-note-preview .label-pending {
-    background-color: #F9AF82;
+    background-color: #FFFAEB;
+    border-color: #F0AC00;
+    color: #F0AC00;
 }
 
 .notely-note-preview .label-done {
-    background-color: #8ECF7F;
+    background-color: #EBFFF6;
+    border-color: #35C786;
+    color: #35C786;
 }
 
 .notely-note-preview .label-low {
-    background-color: #8CD0EC;
+    background-color: #ebfeff;
+    border-color: #00b2f0;
+    color: #00b2f0;
 }
 
 .notely-note-preview .label-medium {
-    background-color: #F9AF82;
+    background-color: #FFFAEB;
+    border-color: #F0AC00;
+    color: #F0AC00;
 }
 
 .notely-note-preview .label-high {
-    background-color: #fb7474;
+    background-color: #FFECEB;
+    border-color: #FE3E39;
+    color: #FE3E39;
 }
 
 .notely-bold {
@@ -497,13 +512,21 @@ table.notely-table {
 
 .notely-dialog .umb-dialog-footer {
     height: 90px;
+    background: #ffffff;
+    padding-left: 0;
+    padding-right: 0;
+    border-color: #d8d7d9;
+}
+
+.notely-dialog .umb-dialog-footer a.btn-link:hover {
+    text-decoration: underline;
 }
 
 .notely-comments_item .notely-delete {
     color: #ccc;
     position: absolute;
     right: 0;
-    top: 10px;
+    top: 0;
     opacity: 0;
     transition: opacity 100ms linear;
 }
