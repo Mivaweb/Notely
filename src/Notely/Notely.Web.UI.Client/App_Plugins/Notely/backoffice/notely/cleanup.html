@@ -1,7 +1,7 @@
-﻿<form ng-controller="Notely.Backoffice.CleanupController" ng-init="init()" val-form-manager>
+﻿<form ng-controller="Notely.Backoffice.CleanupController as vm" ng-init="vm.init()" val-form-manager>
     <umb-panel>
 
-        <umb-header tabs="visibleTabs">
+        <umb-header tabs="vm.visibleTabs">
             <div class="span7">
                 <div class="umb-headline-editor-wrapper">
                     <h1>Cleanup</h1>
@@ -13,7 +13,7 @@
         <umb-tab-view>
             <umb-tab id="tab1">
 
-                <div class="umb-pane" ng-show="loaded">
+                <div class="umb-pane" ng-show="vm.loaded">
 
                     <div class="row-fluid">
                         <div class="span6">
@@ -28,7 +28,7 @@
 
                             <br /><br />
 
-                            <button type="button" class="btn btn-danger" ng-click="cleanup()">Cleanup notes</button>
+                            <button type="button" class="btn btn-danger" ng-click="vm.cleanup()">Cleanup notes</button>
 
                         </div>
                     </div>

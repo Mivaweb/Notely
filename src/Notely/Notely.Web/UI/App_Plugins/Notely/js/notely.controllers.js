@@ -835,59 +835,59 @@
 
         function ($scope, notelyResources, noteTypesBuilder, noteStatesBuilder, notificationsService, dialogService) {
 
-            $scope.loaded = false;
-            $scope.visibleTabs = [];
-            $scope.noteTypes = [];
-            $scope.noteStates = [];
+            var vm = this;
+            vm.loaded = false;
+            vm.visibleTabs = [];
+            vm.noteTypes = [];
+            vm.noteStates = [];
 
             // Init function
-            $scope.init = function () {
+            function init() {
 
                 // Setup tabs
-                $scope.visibleTabs.push({
+                vm.visibleTabs.push({
                     id: 1,
                     label: 'Notely Settings'
                 });
 
-                $scope.load();
-
-                $scope.loaded = true;
+                vm.load();
+                vm.loaded = true;
 
             };
 
             // Load data
-            $scope.load = function () {
+            function load() {
                 var noteTypePromise = notelyResources.getNoteTypes();
                 noteTypePromise.then(function (data) {
-                    $scope.noteTypes = noteTypesBuilder.convert(data);
+                    vm.noteTypes = noteTypesBuilder.convert(data);
                 });
 
                 var noteStatePromise = notelyResources.getNoteStates();
                 noteStatePromise.then(function (data) {
-                    $scope.noteStates = noteStatesBuilder.convert(data);
+                    vm.noteStates = noteStatesBuilder.convert(data);
                 });
             };
 
             // Add note type
-            $scope.addType = function () {
+            function addType() {
 
-                $scope.overlay = {
+                vm.overlay = {
                     view: "/App_Plugins/Notely/backoffice/notely/dialogs/notely.types.add.html",
                     title: "Add type",
                     show: true,
                     hideSubmitButton: false,
                     close: function (oldModel) {
-                        $scope.overlay.show = false;
-                        $scope.overlay = null;
+                        vm.overlay.show = false;
+                        vm.overlay = null;
                     },
                     submit: function (model) {
                         // Add note
                         notelyResources.addNoteType(model.type).then(function () {
-                            $scope.load();
+                            vm.load();
                         });
 
-                        $scope.overlay.show = false;
-                        $scope.overlay = null;
+                        vm.overlay.show = false;
+                        vm.overlay = null;
 
                         // Show notification
                         notificationsService.success("Type added", "Type is successfully added.");
@@ -897,25 +897,25 @@
             };
 
             // Edit note type
-            $scope.editType = function (noteType) {
+            function editType(noteType) {
 
-                $scope.overlay = {
+                vm.overlay = {
                     view: "/App_Plugins/Notely/backoffice/notely/dialogs/notely.types.edit.html",
                     title: "Edit type",
                     type: angular.copy(noteType),
                     show: true,
                     hideSubmitButton: false,
                     close: function (oldModel) {
-                        $scope.overlay.show = false;
-                        $scope.overlay = null;
+                        vm.overlay.show = false;
+                        vm.overlay = null;
                     },
                     submit: function (model) {
                         notelyResources.updateNoteType(model.type).then(function () {
-                            $scope.load();
+                            vm.load();
                         });
 
-                        $scope.overlay.show = false;
-                        $scope.overlay = null;
+                        vm.overlay.show = false;
+                        vm.overlay = null;
 
                         // Show notification
                         notificationsService.success("Type saved", "Type is successfully saved.");
@@ -925,13 +925,13 @@
             };
 
             // Delete note type
-            $scope.deleteType = function (noteTypeId) {
+            function deleteType(noteTypeId) {
                 dialogService.open({
                     template: '/App_Plugins/Notely/backoffice/notely/dialogs/notely.types.delete.html',
                     dialogData: noteTypeId,
                     callback: function (data) {
                         notelyResources.deleteNoteType(data).then(function () {
-                            $scope.load();
+                            vm.load();
 
                             // Show notification
                             notificationsService.success("Type removed", "Type is successfully deleted.");
@@ -939,6 +939,12 @@
                     }
                 });
             };
+
+            vm.init = init;
+            vm.load = load;
+            vm.addType = addType;
+            vm.editType = editType;
+            vm.deleteType = deleteType;
 
         }
 
@@ -957,30 +963,34 @@
 
         function ($scope, notelyResources, notificationsService) {
 
-            $scope.loaded = false;
+            var vm = this;
+            vm.loaded = false;
 
-            $scope.visibleTabs = [];
+            vm.visibleTabs = [];
 
             // Init function
-            $scope.init = function () {
+            function init() {
 
                 // Setup tabs
-                $scope.visibleTabs.push({
+                vm.visibleTabs.push({
                     id: 1,
                     label: 'Cleanup Notes'
                 });
 
-                $scope.loaded = true;
+                vm.loaded = true;
 
             };
 
             // Cleanup notes
-            $scope.cleanup = function () {
+            function cleanup() {
                 var cleanupPromise = notelyResources.cleanupNotes();
                 cleanupPromise.then(function (data) {
                     notificationsService.success("Cleanup done", data + " notes were removed.");
                 });
             };
+
+            vm.init = init;
+            vm.cleanup = cleanup;
 
         }
 
@@ -1112,24 +1122,29 @@
 
         function ($scope, dialogService, noteTypesBuilder) {
 
-            $scope.model.type = {};
+            var vm = this;
+            vm.model = $scope.model;
+            vm.model.type = {};
 
             // Init
-            $scope.init = function () {
+            function init() {
 
-                $scope.model.type = noteTypesBuilder.createEmpty();
-                $scope.model.type.icon = "icon-info";
+                vm.model.type = noteTypesBuilder.createEmpty();
+                vm.model.type.icon = "icon-info";
 
             };
 
             // Open icon picker dialog
-            $scope.openIconPicker = function () {
+            function openIconPicker() {
                 dialogService.iconPicker({
                     callback: function (data) {
-                        $scope.model.type.icon = data;
+                        vm.model.type.icon = data;
                     }
                 });
             };
+
+            vm.init = init;
+            vm.openIconPicker = openIconPicker;
 
         }
 
@@ -1148,19 +1163,25 @@
 
         function ($scope, dialogService, noteTypesBuilder) {
 
+            var vm = this;
+            vm.model = $scope.model;
+
             // Init
-            $scope.init = function () {
+            function init() {
 
             };
 
             // Open icon picker dialog
-            $scope.openIconPicker = function () {
+            function openIconPicker() {
                 dialogService.iconPicker({
                     callback: function (data) {
-                        $scope.model.type.icon = data;
+                        vm.model.type.icon = data;
                     }
                 });
             };
+
+            vm.init = init;
+            vm.openIconPicker = openIconPicker;
 
         }
 
@@ -1178,21 +1199,32 @@
 
         function ($scope, notelyResources, noteTypesBuilder) {
 
+            var vm = this;
+
             // Init model object
-            $scope.model = {};
+            vm.model = {};
 
             // Init controller
-            $scope.init = function (noteTypeId) {
+            function init(noteTypeId) {
                 // Get note by id
                 notelyResources.getNoteType(noteTypeId).then(function (data) {
-                    $scope.model.type = noteTypesBuilder.convert(data);
+                    vm.model.type = noteTypesBuilder.convert(data);
                 });
             };
 
             // Delete note
-            $scope.deleteNoteType = function (noteTypeId) {
+            function deleteNoteType(noteTypeId) {
                 $scope.submit(noteTypeId);
             };
+
+            // Close
+            function close() {
+                $scope.close();
+            }
+
+            vm.init = init;
+            vm.deleteNoteType = deleteNoteType;
+            vm.close = close;
 
         }
 

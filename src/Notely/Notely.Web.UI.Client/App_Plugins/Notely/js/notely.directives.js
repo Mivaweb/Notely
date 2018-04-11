@@ -28,7 +28,11 @@
                 assignTo: "=?",
                 state: "=?",
                 priority: "=?",
+                isNote: "=?",
                 canAssign: "=?",
+                allowOpen: "=?",
+                allowEdit: "=?",
+                allowRemove: "=?",
                 onOpen: "&?",
                 onRemove: "&?",
                 onEdit: "&?"

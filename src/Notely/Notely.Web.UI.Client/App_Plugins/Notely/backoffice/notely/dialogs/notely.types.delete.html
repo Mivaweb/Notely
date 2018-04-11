@@ -1,4 +1,4 @@
-﻿<div ng-controller="Notely.Types.DeleteController" ng-init="init(dialogData)" class="umb-modalcolumn">
+﻿<div ng-controller="Notely.Types.DeleteController as vm" ng-init="vm.init(dialogData)" class="umb-modalcolumn">
 
     <div class="umb-modalcolumn-header">
         <h1>Delete</h1>
@@ -9,12 +9,12 @@
             <div class="umb-dialog-body">
 
                 <p>This action will also remove all the notes of this type!</p>
-                <p class="umb-abstract">Are you sure you want to delete type <strong>{{model.type.title}}</strong>?</p>
+                <p class="umb-abstract">Are you sure you want to delete type <strong>{{vm.model.type.title}}</strong>?</p>
 
                 <div class="umb-pane btn-toolbar umb-btn-toolbar">
                     <div class="control-group umb-control-group">
-                        <a href ng-click="close()" class="btn btn-link">Cancel</a>
-                        <a href ng-click="deleteNoteType(model.type.id)" class="btn btn-primary">OK</a>
+                        <a href ng-click="vm.close()" class="btn btn-link">Cancel</a>
+                        <a href ng-click="vm.deleteNoteType(vm.model.type.id)" class="btn btn-primary">OK</a>
                     </div>
                 </div>
             </div>

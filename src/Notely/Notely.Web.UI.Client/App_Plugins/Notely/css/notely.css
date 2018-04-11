@@ -1,6 +1,6 @@
-﻿[class*=notely-] a:not(.notely-link) {
+﻿/*[class*=notely-] a:not(.notely-link) {
     text-decoration: none;
-}
+}*/
 
 [class*=notely-] {
     list-style: none outside none;
@@ -73,13 +73,13 @@
     margin-bottom: 15px;
 }
 
-.notely-notes .umb-node-preview {
+.notely-note-preview {
     max-width: 100%;
     padding-bottom: 15px;
     margin-bottom: 15px;
 }
 
-.notely-notes .umb-node-preview:last-child {
+.notely-note-preview:last-child {
     padding-bottom: 5px;
     margin-bottom: 0;
 }
@@ -549,6 +549,10 @@ table.notely-table {
 
 .notely-color-danger {
     color: #9d261d;
+}
+
+.form-horizontal .controls__no-margin {
+    margin-left: 0;
 }
 
 @media (max-width: 767px) {
