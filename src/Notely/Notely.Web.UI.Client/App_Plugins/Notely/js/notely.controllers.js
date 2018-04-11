@@ -64,7 +64,6 @@
 
             // Init function
             function init() {
-                console.log($scope.model)
                 // Check if there is a data type selected
                 if ($scope.model.config.dataType != null) {
 
