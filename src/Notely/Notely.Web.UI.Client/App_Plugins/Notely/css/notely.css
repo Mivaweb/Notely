@@ -2,11 +2,11 @@
     text-decoration: none;
 }*/
 
-[class*=notely-] {
+/*[class*=notely-] {
     list-style: none outside none;
     margin: 0;
     padding: 0;
-}
+}*/
 
 .row > [class^=span] > .umb-editor {
     max-width: 86%;
@@ -30,6 +30,8 @@
 
 .notely-nav {
     margin-bottom: 15px;
+    list-style: none outside none;
+    margin-left: 0;
 }
 
     .notely-nav > li {
@@ -426,43 +428,8 @@ table.notely-table {
         font-size: 35px;
     }
 
-.notely-shortcuts {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 20px;
-    margin-left: -10px;
-    margin-right: -10px;
-}
-
-.notely-shortcut-wrap {
-    display: block;
-    padding: 10px;
-    flex: 0 0 auto;
-    flex-basis: 20%;
-    max-width: 20%;
-}
-
-.notely-shortcut {
-    display: flex;
-    height: 100%;
-    padding: 15px 10px;
-    text-align: center;
-    background: #f8f8f8;
-    border: 2px solid transparent;
-    border-radius: 3px;
-    box-sizing: border-box;
-    flex-wrap: wrap;
-    flex-direction: column;
-    transition: border 100ms linear;
-}
-
-    .notely-shortcut:hover,
-    .notely-shortcut:focus {
-        border-color: #2e8aea;
-    }
-
-.notely-shortcut_title {
-    font-weight: 700;
+.notely-shortcuts .umb-healthcheck-group:hover {
+    text-decoration: none;
 }
 
 .notely-comments {

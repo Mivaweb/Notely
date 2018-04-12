@@ -19,7 +19,7 @@
                         <ng-form name="propertyForm">
 
                             <div class="control-group umb-control-group">
-                                <umb-box>
+                                <umb-box class="notely-notes">
                                     <umb-box-header title="Note Types"></umb-box-header>
                                     <umb-box-content>
                                         <div>
@@ -45,45 +45,6 @@
                                 </div><!-- End .controls -->
                             </div>
                             
-
-                            <!--<div class="control-group umb-control-group notely-control-group">
-                                <label class="control-label">
-                                    Types
-                                    <small>You can activate/deactive types</small>
-                                </label>
-                                <div class="controls">
-                                    <div class="umb-property-editor">
-
-                                        <table class="notely-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Icon</th>
-                                                    <th>Type</th>
-                                                    <th>Can Assign?</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr ng-repeat="type in noteTypes track by $index">
-                                                    <td><i class="icon" ng-class="type.icon"></i></td>
-                                                    <td>{{type.title}}</td>
-                                                    <td>
-                                                        <i ng-if="type.canAssign" class="icon icon-check"></i>
-                                                        <i ng-if="!type.canAssign" class="icon icon-delete"></i>
-                                                    </td>
-                                                    <td align="right">
-                                                        <a href class="btn btn-default notely-btn-round" ng-click="editType(type)"><i class="icon icon-edit"></i></a>
-                                                        <a href class="btn btn-default notely-btn-round" ng-click="deleteType(type.id)"><i class="icon icon-trash"></i></a>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-
-                                        <button type="button" class="btn btn-success notely-btn-round" ng-click="addType()"><i class="icon icon-add"></i></button>
-
-                                    </div>
-                                </div>
-                            </div>-->
                         </ng-form>
                     </div>
 
@@ -91,7 +52,7 @@
                         <ng-form name="propertyForm">
 
                             <div class="control-group umb-control-group">
-                                <umb-box>
+                                <umb-box class="notely-notes">
                                     <umb-box-header title="Note States"></umb-box-header>
                                     <umb-box-content>
                                         <div>
@@ -105,37 +66,6 @@
                                 </umb-box>
                             </div>
 
-                            <!--<div class="control-group umb-control-group notely-control-group">
-                                <label class="control-label">
-                                    States
-                                    <small>
-                                        You can view the different states of a note when it has the option
-                                        to be assigned to someone.
-                                    </small>
-                                </label>
-                                <div class="controls">
-                                    <div class="umb-property-editor">
-
-                                        <table class="notely-table">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>Title</th>
-                                                    <th>Color</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr ng-repeat="state in vm.noteStates track by $index">
-                                                    <td>{{state.id}}</td>
-                                                    <td>{{state.title}}</td>
-                                                    <td><span class="label" ng-class="'label-' + state.title | lowercase">{{state.title}}</span></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-
-                                    </div>
-                                </div>
-                            </div>-->
                         </ng-form>
                     </div>
 
