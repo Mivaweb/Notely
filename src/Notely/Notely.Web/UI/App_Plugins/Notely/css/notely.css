@@ -58,6 +58,10 @@
     margin-left: 0 !important;
 }
 
+.notely-backoffice .notely-controls {
+    margin-left: 0 !important;
+}
+
 .notely-nav_expand {
     cursor: pointer;
 }
@@ -89,6 +93,10 @@
 table.notely-table {
     width: 100%;
     margin-bottom: 20px;
+}
+
+table.notely-table thead {
+    background-color: #ffffff;
 }
 
     table.notely-table > thead th {
@@ -278,8 +286,8 @@ table.notely-table {
 
     .notely-btn-round:hover,
     .notely-btn-round:focus {
-        background: #2e8aea;
-        border-color: #2e8aea;
+        background: #35c786;
+        border-color: #35c786;
     }
 
     .notely-btn-round .icon {
@@ -407,6 +415,11 @@ table.notely-table {
         vertical-align: middle;
     }
 
+.notely-reload:hover,
+.notely-reload:focus {
+    text-decoration: none;
+}
+
 .notely-controls-icon {
     display: -ms-flexbox;
     display: flex;
@@ -500,6 +513,10 @@ table.notely-table {
 
 .notely-comments_item .notely-delete > i {
     font-size: 16px;
+}
+
+.notely-comments_item .notely-delete:hover {
+    text-decoration: none;
 }
 
 .notely-comments_item:hover .notely-delete {

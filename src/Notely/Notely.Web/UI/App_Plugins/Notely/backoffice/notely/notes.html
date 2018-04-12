@@ -1,17 +1,18 @@
-﻿<form ng-controller="Notely.Backoffice.NotesController" ng-init="init()" val-form-manager class="notely-backoffice">
-    <umb-panel>
+﻿<form ng-controller="Notely.Backoffice.NotesController as vm" ng-init="vm.init()" val-form-manager class="notely-backoffice">
 
-        <umb-header tabs="visibleTabs">
+    <umb-panel ng-if="vm.loaded">
+
+        <umb-header tabs="vm.visibleTabs">
             <div class="span7">
                 <div class="umb-headline-editor-wrapper">
-                    <h1>{{treeNode == 0 ? 'All notes' : 'My tasks'}}</h1>
+                    <h1>{{vm.treeNode == 0 ? 'All notes' : 'My tasks'}}</h1>
                 </div>
             </div>
             <div class="span5"></div>
         </umb-header>
 
         <umb-tab-view>
-            <umb-tab id="tab1" ng-show="loaded">
+            <umb-tab id="tab1">
 
                 <div class="umb-pane">
 
@@ -21,25 +22,25 @@
                         <div class="row">
                             <div class="span3">
                                 <select name="notelyType" class="umb-editor umb-dropdown"
-                                        ng-show="noteTypes"
-                                        ng-model="options.type"
-                                        ng-change="changedType()"
-                                        ng-options="c.title for c in noteTypes track by c.id">
+                                        ng-show="vm.noteTypes"
+                                        ng-model="vm.options.type"
+                                        ng-change="vm.changedType()"
+                                        ng-options="c.title for c in vm.noteTypes track by c.id">
                                     <option value="">Select type</option>
                                 </select>
                             </div>
                             <div class="span3">
                                 <select name="notelyState" class="umb-editor umb-dropdown"
-                                        ng-show="noteStates"
-                                        ng-model="options.state"
-                                        ng-disabled="options.type.id > 0 && !options.type.canAssign"
-                                        ng-options="c.title for c in noteStates track by c.id">
+                                        ng-show="vm.noteStates"
+                                        ng-model="vm.options.state"
+                                        ng-disabled="vm.options.type.id > 0 && !vm.options.type.canAssign"
+                                        ng-options="c.title for c in vm.noteStates track by c.id">
                                     <option value="">Select state</option>
                                 </select>
                             </div>
                             <div class="span3">
                                 <select name="notelyPriority" class="umb-editor umb-dropdown"
-                                        ng-model="options.priority">
+                                        ng-model="vm.options.priority">
                                     <option value="">Select priority</option>
                                     <option value="1">Low</option>
                                     <option value="2">Medium</option>
@@ -48,7 +49,7 @@
                             </div>
                             <div class="span3">
                                 <div class="umb-editor umb-boolean">
-                                    <input type="checkbox" value="" id="notelyHide" ng-model="options.hiding" />
+                                    <input type="checkbox" value="" id="notelyHide" ng-model="vm.options.hiding" />
                                     <label for="notelyHide">Hide properties without notes</label>
                                 </div>
                             </div>
@@ -56,25 +57,31 @@
 
                         <div class="row">
                             <div class="span6">
-                                <button type="button" class="btn btn-success" ng-click="reset()">Reset</button>
-                                <a href class="notely-reload" ng-click="reload()"><i class="icon icon-refresh"></i><span>Reload</span></a>
+                                <button type="button" class="btn btn-success" ng-click="vm.reset()">Reset</button>
+                                <a href="" class="notely-reload" ng-click="vm.reload()" prevent-default><i class="icon icon-refresh"></i><span>Reload</span></a>
                             </div>
                         </div>
 
                     </div><!-- End .notely-backoffice-options -->
 
-                    <a href class="notely-link" ng-if="!expanded && backOfficeDetails.length > 0" ng-click="toggleContentNodes()">Expand all content nodes</a>
-                    <a href class="notely-link" ng-if="expanded && backOfficeDetails.length > 0" ng-click="toggleContentNodes()">Collapse all content nodes</a>
+                    <a href="" class="notely-link" ng-if="!vm.expanded && vm.backOfficeDetails.length > 0"
+                       ng-click="vm.toggleContentNodes()" prevent-default>
+                        Expand all content nodes
+                    </a>
+                    <a href="" class="notely-link" ng-if="vm.expanded && vm.backOfficeDetails.length > 0"
+                       ng-click="vm.toggleContentNodes()" prevent-default>
+                        Collapse all content nodes
+                    </a>
 
-                    <div ng-if="backOfficeDetails.length == 0" class="notely-backoffice-default">
+                    <div ng-if="vm.backOfficeDetails.length == 0" class="notely-backoffice-default">
                         No notes are added to any of the content properties.
                     </div>
 
                     <!-- Begin .notely-backoffice-list -->
-                    <div class="notely-backoffice-list" ng-show="backOfficeDetails.length > 0">
+                    <div class="notely-backoffice-list" ng-show="vm.backOfficeDetails.length > 0">
 
                         <!-- Begin .notely-backoffice-item -->
-                        <div ng-repeat="content in backOfficeDetails | orderByContentId track by $index"
+                        <div ng-repeat="content in vm.backOfficeDetails | orderByContentId track by $index"
                              class="notely-backoffice-item"
                              ng-class="{'notely-collapsed': !content.showDetails}"
                              ng-show="content.properties.length > 0">
@@ -82,7 +89,7 @@
                             <h4>
                                 <i class="icon"
                                    ng-class="{'icon-navigation-right': !content.showDetails, 'icon-navigation-down': content.showDetails}"
-                                   ng-click="expandContent($index)"></i>
+                                   ng-click="vm.expandContent($index)"></i>
                                 {{content.contentName}}
                             </h4>
 
@@ -94,79 +101,66 @@
                                 </div>
 
                                 <div ng-repeat="property in content.properties" class="umb-property"
-                                     ng-hide="filteredNotes.length == 0 && options.hiding">
+                                     ng-hide="(property.notes.length == 0 || property.filtered.length == 0) && vm.options.hiding">
+
                                     <ng-form name="propertyForm">
                                         <div class="control-group umb-control-group notely-control-group">
                                             <label class="control-label">
-                                                {{property.name}} ({{filteredNotes.length}})
+                                                {{property.name}} ({{property.notes.length > 0 ? property.filtered.length : 0}})
                                                 <small>Property alias: '<strong>{{property.alias}}</strong>'</small>
                                             </label>
                                             <div class="controls">
                                                 <div class="umb-property-editor">
 
-                                                    <table class="notely-table notely-table-bordered"
-                                                           ng-if="property.notes.length > 0">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="notely-table-width-notetype"></th>
-                                                                <th class="notely-table-width-notetitle">Title</th>
-                                                                <th class="notely-table-width-notedesc">Description</th>
-                                                                <th class="notely-table-width-notestate">State</th>
-                                                                <th class="notely-table-width-noteactions"></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr ng-repeat="note in $parent.filteredNotes = (property.notes | filterType: options.type | filterState: options.state | filterPriority: options.priority)">
-                                                                <td class="notely-table-width-notetype">
-                                                                    <i title="{{note.type.title}}" class="icon" ng-class="note.type.icon"></i>
-                                                                    <i ng-if="note.priority == 2" title="Medium priority" class="icon icon-flag notely-color-warning"></i>
-                                                                    <i ng-if="note.priority == 3" title="High priority" class="icon icon-flag notely-color-danger"></i>
-                                                                </td>
-                                                                <td class="notely-table-width-notetitle">
-                                                                    <a href ng-click="editNote(note)">{{note.title}}</a>
-                                                                </td>
-                                                                <td class="notely-table-width-notedesc"
-                                                                    ng-bind-html-unsafe="renderDescription(note)"></td>
-                                                                <td class="notely-table-width-notestate">
-                                                                    <span ng-show="note.type.canAssign" class="label"
-                                                                          ng-class="'label-' + note.state.title | lowercase">{{note.state.title}}</span>
-                                                                </td>
-                                                                <td class="notely-table-width-noteactions">
-                                                                    <a href class="btn btn-default notely-btn-round"
-                                                                       ng-click="editNote(note)"><i class="icon icon-edit"></i></a>
-                                                                    <a href class="btn btn-default notely-btn-round"
-                                                                       ng-click="viewComments(note.id)"><i class="icon icon-chat"></i></a>
-                                                                    <a href class="btn btn-default notely-btn-round"
-                                                                       ng-click="deleteNote(note.id)"><i class="icon icon-trash"></i></a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr class="notely-default-row" ng-if="filteredNotes.length == 0">
-                                                                <td colspan="5">No notes to display for this property based on the filtering.</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+                                                    <!-- Begin .notely-notes -->
+                                                    <umb-box class="notely-notes" ng-if="property.notes.length > 0">
+                                                        <umb-box-header title="Notes"></umb-box-header>
+                                                        <umb-box-content>
+                                                            <div>
+                                                                <notely-note-preview ng-repeat="note in property.filtered = (property.notes | filterType: vm.options.type | filterState: vm.options.state | filterPriority: vm.options.priority)"
+                                                                                     name="note.title"
+                                                                                     assign-to="vm.renderDescription(note)"
+                                                                                     state="note.state.title"
+                                                                                     can-assign="note.type.canAssign"
+                                                                                     priority="note.priority"
+                                                                                     icon="note.type.icon"
+                                                                                     allow-open="true"
+                                                                                     allow-edit="true"
+                                                                                     allow-remove="true"
+                                                                                     is-note="true"
+                                                                                     on-edit="vm.editNote(note)"
+                                                                                     on-remove="vm.deleteNote(note.id)"
+                                                                                     on-open="vm.viewComments(note.id)">
+                                                                </notely-note-preview>
 
-                                                    <div ng-if="treeNode == 0 && property.notes.length == 0" class="notely-backoffice-default">
+                                                                <div ng-if="property.filtered.length == 0">
+                                                                    No notes to display for this property based on your filtering.
+                                                                </div>
+                                                            </div>
+                                                        </umb-box-content>
+                                                    </umb-box><!-- End .notely-notes -->
+
+                                                    <div ng-if="vm.treeNode == 0 && property.notes.length == 0" class="notely-backoffice-default">
                                                         No notes are added to the property <strong>{{property.name}}</strong>. Click the add button to add your first note.
                                                     </div>
 
-                                                    <div ng-if="treeNode == 1 && property.notes.length == 0" class="notely-backoffice-default">
+                                                    <div ng-if="vm.treeNode == 1 && property.notes.length == 0" class="notely-backoffice-default">
                                                         You have no assigned tasks to the property <strong>{{property.name}}</strong>.
                                                     </div>
 
-                                                    <!-- Begin .notely-action -->
-                                                    <div ng-if="treeNode == 0" class="notely-action">
-                                                        <a href class="notely-btn-round"
-                                                           ng-show="property.notes.length < property.limit"
-                                                           ng-click="addNote(content.contentId, property)">
-                                                            <i class="icon icon-add"></i>
+                                                    <!-- Begin .controls -->
+                                                    <div class="controls controls-row notely-controls" ng-if="vm.treeNode == 0">
+                                                        <a href="" class="umb-node-preview-add" style="max-width: 100%"
+                                                           ng-click="vm.addNote(content.contentId, property)" ng-show="property.notes.length < property.limit" prevent-default>
+                                                            <localize key="general_add" class="ng-isolate-scope ng-scope">Add</localize>
                                                         </a>
-                                                    </div><!-- End .notely-action -->
+                                                    </div><!-- End .controls -->
 
                                                 </div>
                                             </div>
                                         </div>
                                     </ng-form>
+
                                 </div>
 
                             </div>
@@ -182,10 +176,13 @@
 
     </umb-panel>
 
+    <umb-load-indicator ng-if="!vm.loaded">
+    </umb-load-indicator>
+
     <!-- Overlay -->
-    <umb-overlay ng-if="overlay.show"
-                 model="overlay"
-                 view="overlay.view"
+    <umb-overlay ng-if="vm.overlay.show"
+                 model="vm.overlay"
+                 view="vm.overlay.view"
                  position="right">
     </umb-overlay>
 </form>

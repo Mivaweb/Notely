@@ -1,7 +1,8 @@
-﻿<form ng-controller="Notely.Backoffice.CommentsController" ng-init="init()" val-form-manager class="notely-backoffice">
-    <umb-panel>
+﻿<form ng-controller="Notely.Backoffice.CommentsController as vm" ng-init="vm.init()" val-form-manager class="notely-backoffice">
 
-        <umb-header tabs="visibleTabs">
+    <umb-panel ng-if="vm.loaded">
+
+        <umb-header tabs="vm.visibleTabs">
             <div class="span7">
                 <div class="umb-headline-editor-wrapper">
                     <h1>Comments</h1>
@@ -11,7 +12,7 @@
         </umb-header>
 
         <umb-tab-view>
-            <umb-tab id="tab1" ng-show="loaded">
+            <umb-tab id="tab1">
 
                 <div class="umb-pane">
 
@@ -21,7 +22,7 @@
                         <div class="row">
                             <div class="span3">
                                 <select name="notelyLogType" class="umb-editor umb-dropdown"
-                                        ng-model="options.type">
+                                        ng-model="vm.options.type">
                                     <option value="">Select type</option>
                                     <option value="New">New</option>
                                     <option value="Save">Save</option>
@@ -32,20 +33,20 @@
 
                         <div class="row">
                             <div class="span6">
-                                <button type="button" class="btn btn-success" ng-click="reset()">Reset</button>
-                                <a href class="notely-reload" ng-click="reload()"><i class="icon icon-refresh"></i><span>Reload</span></a>
+                                <button type="button" class="btn btn-success" ng-click="vm.reset()">Reset</button>
+                                <a href="" class="notely-reload" ng-click="vm.reload()" prevent-default><i class="icon icon-refresh"></i><span>Reload</span></a>
                             </div>
                         </div>
 
                     </div><!-- End .notely-backoffice-options -->
 
-                    <div ng-if="filteredComments.length == 0" class="notely-backoffice-default">
+                    <div ng-if="vm.filteredComments.length == 0" class="notely-backoffice-default">
                         No comments to display.
                     </div>
 
                     <!-- Begin .notely-backoffice-list -->
-                    <div class="notely-backoffice-list" ng-show="filteredComments.length > 0">
-                        
+                    <div class="notely-backoffice-list" ng-show="vm.filteredComments.length > 0">
+
                         <table class="notely-table notely-table-bordered">
                             <thead>
                                 <tr>
@@ -58,7 +59,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="comment in $parent.filteredComments = (comments | pagination: pagination)">
+                                <tr ng-repeat="comment in vm.filteredComments = (vm.comments | pagination: pagination)">
                                     <td>
                                         <i title="{{comment.logType}}" ng-if="comment.logType == 'New'" class="icon icon-wand"></i>
                                         <i title="{{comment.logType}}" ng-if="comment.logType == 'Save'" class="icon icon-save"></i>
@@ -70,21 +71,21 @@
                                     <td>
                                         {{comment.user.name}}
                                     </td>
-                                    <td ng-bind-html-unsafe="renderDescription(comment)"></td>
+                                    <td ng-bind-html-unsafe="vm.renderDescription(comment)"></td>
                                     <td>
                                         {{comment.datestamp}}
                                     </td>
                                     <td>
-                                        <a href class="btn btn-default notely-btn-round"
-                                           ng-click="viewComments(comment.noteId, comment.id)"><i class="icon icon-chat"></i></a>
+                                        <a href="" class="btn btn-default notely-btn-round"
+                                           ng-click="vm.viewComments(comment.noteId, comment.id)" prevent-default><i class="icon icon-chat"></i></a>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        
+
                         <!-- Begin umb-pagination -->
-                        <umb-pagination page-number="pagination.current"
-                                        total-pages="pagination.total"
+                        <umb-pagination page-number="vm.pagination.current"
+                                        total-pages="vm.pagination.total"
                                         on-next="next"
                                         on-prev="prev"
                                         on-go-to-page="goto">
@@ -98,4 +99,8 @@
         </umb-tab-view>
 
     </umb-panel>
+
+    <umb-load-indicator ng-if="!vm.loaded">
+    </umb-load-indicator>
+
 </form>

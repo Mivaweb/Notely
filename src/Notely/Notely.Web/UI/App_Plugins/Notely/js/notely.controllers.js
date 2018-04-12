@@ -582,63 +582,63 @@
         function ($scope, notelyResources, backOfficeNodesBuilder, notesBuilder, noteTypesBuilder, noteStatesBuilder,
             contentPropertyBuilder, userService, $routeParams, dialogService, notificationsService, noteService) {
 
-            $scope.loaded = false;
-            $scope.expanded = false;
-            $scope.treeNode = 0; // 0 = all notes / 1 = my tasks
-            $scope.options = {
+            var vm = this;
+            vm.loaded = false;
+            vm.expanded = false;
+            vm.treeNode = 0; // 0 = all notes / 1 = my tasks
+            vm.options = {
                 type: {},
                 state: {},
                 priority: "",
                 hiding: false
             };
-            $scope.noteTypes = [];
-            $scope.noteStates = [];
-            $scope.backOfficeDetails = [];
-            $scope.visibleTabs = [];
-            $scope.filteredNotes = [];
+            vm.noteTypes = [];
+            vm.noteStates = [];
+            vm.backOfficeDetails = [];
+            vm.visibleTabs = [];
 
             // Init function
-            $scope.init = function () {
+            function init() {
 
                 // Get current tree node
-                $scope.treeNode = $routeParams.id;
+                vm.treeNode = $routeParams.id;
 
                 // Setup tabs
-                $scope.visibleTabs.push({
+                vm.visibleTabs.push({
                     id: 1,
                     label: 'Notes Listing'
                 });
 
                 // Get all the options
-                $scope.loadOptions();
+                vm.loadOptions();
 
                 // Get all the notes
-                $scope.load();
+                vm.load();
 
             };
 
             // Load the filter options
-            $scope.loadOptions = function () {
+            function loadOptions() {
 
                 // Get note types
                 var noteTypesPromise = notelyResources.getNoteTypes();
                 noteTypesPromise.then(function (data) {
-                    $scope.noteTypes = noteTypesBuilder.convert(data);
+                    vm.noteTypes = noteTypesBuilder.convert(data);
                 });
 
                 // Get note states
                 var noteStatesPromise = notelyResources.getNoteStates();
                 noteStatesPromise.then(function (data) {
-                    $scope.noteStates = noteStatesBuilder.convert(data);
+                    vm.noteStates = noteStatesBuilder.convert(data);
                 });
 
             };
 
             // Load the notes from the API
-            $scope.load = function () {
+            function load() {
 
                 // Reset
-                $scope.backOfficeDetails = [];
+                vm.backOfficeDetails = [];
 
                 // Check id of the route parameters:
                 // Case 1: My tasks => so we need to get the current logged in user and get his tasks
@@ -646,7 +646,7 @@
                 var _userServicePromise = userService.getCurrentUser();
                 var _user = -1;
 
-                if ($scope.treeNode == 1)
+                if (vm.treeNode == 1)
                 {
                     _userServicePromise.then(function (user) {
                         _user = user.id;
@@ -656,14 +656,11 @@
                 } else {
                     loadDetails(_user);
                 }
-
-                $scope.loaded = true;
-
             };
 
             // Reset
-            $scope.reset = function () {
-                $scope.options = {
+            function reset() {
+                vm.options = {
                     type: {},
                     state: {},
                     hiding: false
@@ -671,42 +668,43 @@
             };
 
             // Reload
-            $scope.reload = function () {
-                $scope.loaded = false;
+            function reload() {
+                vm.loaded = false;
 
-                $scope.loadOptions();
-                $scope.load();
-                $scope.reset();
-                $scope.expanded = false;
+                vm.loadOptions();
+                vm.load();
+                vm.reset();
+                vm.expanded = false;
             };
 
             // Expand the content node details
-            $scope.expandContent = function (index) {
-                $scope.backOfficeDetails[index].showDetails = !$scope.backOfficeDetails[index].showDetails;
+            function expandContent(index) {
+                vm.backOfficeDetails[index].showDetails = !vm.backOfficeDetails[index].showDetails;
 
                 checkToggleState();
             };
 
             // Toggle content nodes
-            $scope.toggleContentNodes = function () {
-                $scope.expanded = !$scope.expanded;
+            function toggleContentNodes() {
+                vm.expanded = !vm.expanded;
 
-                angular.forEach($scope.backOfficeDetails, function (content) { content.showDetails = $scope.expanded; });
+                angular.forEach(vm.backOfficeDetails, function (content) { content.showDetails = vm.expanded; });
             }
 
             // Render the note description field
-            $scope.renderDescription = function (note) {
-                return noteService.formatDescription(note);
+            function renderDescription(note) {
+                //return noteService.formatDescription(note);
+                return note.type.canAssign && note.assignedTo ? note.assignedTo.name : '';
             };
 
             // Changed filter option type
-            $scope.changedType = function () {
-                if ($scope.options.type.id > 0 && !$scope.options.type.canAssign)
-                    $scope.options.state = {};
+            function changedType() {
+                if (vm.options.type.id > 0 && !vm.options.type.canAssign)
+                    vm.options.state = {};
             };
 
             // Add a new note
-            $scope.addNote = function (contentId, property) {
+            function addNote(contentId, property) {
 
                 // Extra check to see if notes limit is not reached
                 if (property.notes.length < property.limit) {
@@ -721,59 +719,59 @@
                     var _overlay = noteService.getAddOverlay();
                     _overlay.property = _cp;
                     _overlay.close = function (oldModel) {
-                        $scope.overlay.show = false;
-                        $scope.overlay = null;
+                        vm.overlay.show = false;
+                        vm.overlay = null;
                     };
                     _overlay.submit = function (model) {
                         notelyResources.addNote(model.note).then(function () {
-                            $scope.load();
-                            $scope.expanded = false;
+                            vm.load();
+                            vm.expanded = false;
                         });
 
-                        $scope.overlay.show = false;
-                        $scope.overlay = null;
+                        vm.overlay.show = false;
+                        vm.overlay = null;
 
                         // Show notification
                         notificationsService.success("Note added", "Note is successfully added.");
                     };
 
-                    $scope.overlay = _overlay;
+                    vm.overlay = _overlay;
 
                 }
 
             };
 
             // Edit note
-            $scope.editNote = function (note) {
+            function editNote(note) {
                 var _overlay = noteService.getEditOverlay();
                 _overlay.note = angular.copy(note);
                 _overlay.close = function (oldModel) {
-                    $scope.overlay.show = false;
-                    $scope.overlay = null;
+                    vm.overlay.show = false;
+                    vm.overlay = null;
                 };
                 _overlay.submit = function (model) {
                     notelyResources.updateNote(model.note).then(function () {
-                        $scope.load();
-                        $scope.expanded = false;
+                        vm.load();
+                        vm.expanded = false;
                     });
 
-                    $scope.overlay.show = false;
-                    $scope.overlay = null;
+                    vm.overlay.show = false;
+                    vm.overlay = null;
 
                     // Show notification
                     notificationsService.success("Note saved", "Note is successfully saved.");
                 };
 
-                $scope.overlay = _overlay;
+                vm.overlay = _overlay;
             };
 
             // Delete a note
-            $scope.deleteNote = function (noteId) {
+            function deleteNote(noteId) {
                 var _dialog = noteService.getDeleteDialog();
                 _dialog.dialogData = noteId;
                 _dialog.callback = function (data) {
                     notelyResources.deleteNote(data).then(function () {
-                        $scope.load();
+                        vm.load();
 
                         // Show notification
                         notificationsService.success("Note removed", "Note is successfully deleted.");
@@ -783,7 +781,7 @@
             };
 
             // View comments from a note
-            $scope.viewComments = function (noteId) {
+            function viewComments(noteId) {
                 var _data = {
                     note: noteId
                 };
@@ -793,6 +791,20 @@
                 dialogService.open(_dialog);
             };
 
+            vm.init = init;
+            vm.loadOptions = loadOptions;
+            vm.load = load;
+            vm.reset = reset;
+            vm.reload = reload;
+            vm.expandContent = expandContent;
+            vm.toggleContentNodes = toggleContentNodes;
+            vm.renderDescription = renderDescription;
+            vm.changedType = changedType;
+            vm.addNote = addNote;
+            vm.editNote = editNote;
+            vm.deleteNote = deleteNote;
+            vm.viewComments = viewComments;
+
             function loadDetails(_user) {
                 notelyResources.getUniqueContentNodes(_user).then(function (data) {
 
@@ -800,7 +812,9 @@
 
                         var contentPromise = notelyResources.getContentNodeDetails(content, _user);
                         contentPromise.then(function (details) {
-                            $scope.backOfficeDetails.push(backOfficeNodesBuilder.convert(details));
+                            vm.backOfficeDetails.push(backOfficeNodesBuilder.convert(details));
+
+                            vm.loaded = true;
                         });
 
                     });
@@ -809,10 +823,10 @@
             }
 
             function checkToggleState() {
-                var result = $scope.backOfficeDetails.filter(function (detail) { return detail.showDetails == !$scope.expanded; });
+                var result = vm.backOfficeDetails.filter(function (detail) { return detail.showDetails == !vm.expanded; });
             
-                if(result.length == $scope.backOfficeDetails.length)
-                    $scope.expanded = !$scope.expanded;
+                if(result.length == vm.backOfficeDetails.length)
+                    vm.expanded = !vm.expanded;
             }
 
         }
@@ -1012,75 +1026,75 @@
 
         function ($scope, notelyResources, noteCommentsBuilder, $filter, noteService, dialogService) {
 
-            $scope.loaded = false;
+            var vm = this;
+            vm.loaded = false;
 
-            $scope.visibleTabs = [];
-            $scope.comments = [];
-            $scope.filteredComments = [];
+            vm.visibleTabs = [];
+            vm.comments = [];
+            vm.filteredComments = [];
 
-            $scope.options = {
+            vm.options = {
                 type: ""
             };
 
-            $scope.pagination = {
+            vm.pagination = {
                 current: 0,
                 limit: 100,
                 total: 1
             };
 
             // Init function
-            $scope.init = function () {
+            function init() {
 
                 // Setup tabs
-                $scope.visibleTabs.push({
+                vm.visibleTabs.push({
                     id: 1,
                     label: 'Comments Listing'
                 });
 
                 // Load comments
-                $scope.load();
+                vm.load();
             };
 
             // Load
-            $scope.load = function () {
+            function load() {
                 // Get all comments
-                notelyResources.getAllComments($scope.options.type).then(function (data) {
-                    $scope.comments = noteCommentsBuilder.convert(data);
+                notelyResources.getAllComments(vm.options.type).then(function (data) {
+                    vm.comments = noteCommentsBuilder.convert(data);
+                    vm.filteredComments = vm.comments;
+                    vm.pagination.total = Math.ceil(vm.comments.length / vm.pagination.limit);
+                    vm.pagination.current = 1;
 
-                    $scope.pagination.total = Math.ceil($scope.comments.length / $scope.pagination.limit);
-                    $scope.pagination.current = 1;
-
-                    $scope.loaded = true;
+                    vm.loaded = true;
                 });
             };
 
             // Watch logType changes and then reload the table
-            $scope.$watch('options.type', function (term) {
-                $scope.loaded = false;
-                $scope.pagination.current = 0;
-                $scope.load();
+            $scope.$watch('vm.options.type', function (term) {
+                vm.pagination.current = 0;
+                vm.load();
             });
 
             // Render comment description
-            $scope.renderDescription = function (comment) {
+            function renderDescription(comment) {
                 return $filter('setbold')(comment.logComment);
             };
 
             // Reset
-            $scope.reset = function () {
-                $scope.options.type = "";
+            function reset() {
+                vm.options.type = "";
             };
         
             // Reload
-            $scope.reload = function () {
-                $scope.loaded = false;
+            function reload() {
+                vm.loaded = false;
 
-                $scope.reset();
-                $scope.load();
+                vm.reset();
+                vm.load();
             };
 
             // View comments from a note
-            $scope.viewComments = function (noteId, commentId) {
+            function viewComments(noteId, commentId) {
                 var _data = {
                     note: noteId,
                     comment: commentId
@@ -1092,19 +1106,29 @@
             };
 
             // Pagination: previous
-            $scope.prev = function (page) {
-                $scope.pagination.current = page;
+            function prev(page) {
+                vm.pagination.current = page;
             };
 
             // Pagination: next
-            $scope.next = function (page) {
-                $scope.pagination.current = page;
+            function next(page) {
+                vm.pagination.current = page;
             };
 
             // Pagination: goto page
-            $scope.goto = function (page) {
-                $scope.pagination.current = page;
+            function goto(page) {
+                vm.pagination.current = page;
             };
+
+            vm.init = init;
+            vm.load = load;
+            vm.renderDescription = renderDescription;
+            vm.reset = reset;
+            vm.reload = reload;
+            vm.viewComments = viewComments;
+            vm.prev = prev;
+            vm.next = next;
+            vm.goto = goto;
         }
 
     ]);
