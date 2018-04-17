@@ -59,7 +59,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="comment in vm.filteredComments = (vm.comments | pagination: pagination)">
+                                <tr ng-repeat="comment in vm.filteredComments = (vm.comments | pagination: vm.pagination)">
                                     <td>
                                         <i title="{{comment.logType}}" ng-if="comment.logType == 'New'" class="icon icon-wand"></i>
                                         <i title="{{comment.logType}}" ng-if="comment.logType == 'Save'" class="icon icon-save"></i>
