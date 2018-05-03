@@ -52,7 +52,8 @@ namespace Notely.Web.Extensions
                 Title = noteVm.Title,
                 Type = noteVm.Type.Id,
                 ContentId = noteVm.ContentProperty.ContentId,
-                PropertyTypeId = _property != null ? _property.PropertyType.Id : -1
+                PropertyTypeId = _property != null ? _property.PropertyType.Id : -1,
+                Priority = noteVm.Priority
             };
 
             // Only if it has a assignee and the note type can be assigned to
@@ -102,7 +103,7 @@ namespace Notely.Web.Extensions
 
             var result = new NoteViewModel()
             {
-                AssignedTo = note.AssignedTo.HasValue ? 
+                AssignedTo = note.AssignedTo.HasValue ?
                     userVm.Convert(
                         UmbracoContext.Current.Application.Services.UserService.GetUserById(note.AssignedTo.Value)
                     ) : null,
@@ -112,7 +113,8 @@ namespace Notely.Web.Extensions
                 State = noteStateVm.Convert(note.NoteState),
                 Title = note.Title,
                 Type = noteTypeVm.Convert(note.NoteType),
-                ContentProperty = contentProperty
+                ContentProperty = contentProperty,
+                Priority = note.Priority
             };
 
             return result;

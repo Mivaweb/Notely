@@ -1,0 +1,28 @@
+﻿<div class="umb-node-preview notely-note-preview">
+
+    <i ng-if="icon" class="umb-node-preview__icon {{ icon }}"></i>
+
+    <div class="umb-node-preview__content">
+        <div class="umb-node-preview__name">{{ name }}</div>
+        <div class="umb-node-preview__description" ng-if="assignTo && isNote">
+            <span class="bold">Assigned To: </span>
+            {{ assignTo }}
+        </div>
+        <div class="umb-node-preview__description" ng-if="canAssign && !isNote">
+            This type of note can be assigned to an user.
+        </div>
+        <div class="notely-note-preview__labels">
+            <span ng-if="canAssign" class="label" ng-class="'label-' + state | lowercase">{{ state }}</span>
+            <span ng-if="canAssign && priority == 1" class="label label-low">Low Priority</span>
+            <span ng-if="canAssign && priority == 2" class="label label-medium">Medium Priority</span>
+            <span ng-if="canAssign && priority == 3" class="label label-high">High Priority</span>
+        </div>
+    </div>
+
+    <div class="umb-node-preview__actions">
+        <a class="umb-node-preview__action" ng-if="allowEdit" title="Edit" href="" ng-click="onEdit()"><localize key="general_edit">Edit</localize></a>
+        <a class="umb-node-preview__action" ng-if="allowOpen" title="Open" href="" ng-click="onOpen()">History</a>
+        <a class="umb-node-preview__action umb-node-preview__action--red" ng-if="allowRemove" title="Remove" href="" ng-click="onRemove()"><localize key="general_remove">Remove</localize></a>
+    </div>
+
+</div>

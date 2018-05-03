@@ -1,7 +1,7 @@
-﻿<form ng-controller="Notely.Backoffice.SettingsController" ng-init="init()" val-form-manager>
+﻿<form ng-controller="Notely.Backoffice.SettingsController as vm" ng-init="vm.init()" val-form-manager>
     <umb-panel>
 
-        <umb-header tabs="visibleTabs">
+        <umb-header tabs="vm.visibleTabs">
             <div class="span7">
                 <div class="umb-headline-editor-wrapper">
                     <h1>Settings</h1>
@@ -13,84 +13,59 @@
         <umb-tab-view>
             <umb-tab id="tab1">
 
-                <div class="umb-pane" ng-show="loaded">
+                <div class="umb-pane" ng-show="vm.loaded">
 
                     <div class="umb-property">
                         <ng-form name="propertyForm">
-                            <div class="control-group umb-control-group notely-control-group">
-                                <label class="control-label">
-                                    Types
-                                    <small>You can activate/deactive types</small>
-                                </label>
-                                <div class="controls">
-                                    <div class="umb-property-editor">
 
-                                        <table class="notely-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Icon</th>
-                                                    <th>Type</th>
-                                                    <th>Can Assign?</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr ng-repeat="type in noteTypes track by $index">
-                                                    <td><i class="icon" ng-class="type.icon"></i></td>
-                                                    <td>{{type.title}}</td>
-                                                    <td>
-                                                        <i ng-if="type.canAssign" class="icon icon-check"></i>
-                                                        <i ng-if="!type.canAssign" class="icon icon-delete"></i>
-                                                    </td>
-                                                    <td align="right">
-                                                        <a href class="btn btn-default notely-btn-round" ng-click="editType(type)"><i class="icon icon-edit"></i></a>
-                                                        <a href class="btn btn-default notely-btn-round" ng-click="deleteType(type.id)"><i class="icon icon-trash"></i></a>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                            <div class="control-group umb-control-group">
+                                <umb-box class="notely-notes">
+                                    <umb-box-header title="Note Types"></umb-box-header>
+                                    <umb-box-content>
+                                        <div>
+                                            <notely-note-preview ng-repeat="type in vm.noteTypes track by $index"
+                                                                 name="type.title"
+                                                                 can-assign="type.canAssign"
+                                                                 icon="type.icon"
+                                                                 allow-edit="true"
+                                                                 allow-remove="true"
+                                                                 on-edit="vm.editType(type)"
+                                                                 on-remove="vm.deleteType(type.id)">
+                                            </notely-note-preview>
+                                        </div>
+                                    </umb-box-content>
+                                </umb-box>
 
-                                        <button type="button" class="btn btn-success notely-btn-round" ng-click="addType()"><i class="icon icon-add"></i></button>
-
-                                    </div>
-                                </div>
+                                <!-- Begin .controls -->
+                                <div class="controls controls-row controls__no-margin">
+                                    <a href="" class="umb-node-preview-add" style="max-width: 100%"
+                                       ng-click="vm.addType()" prevent-default>
+                                        <localize key="general_add" class="ng-isolate-scope ng-scope">Add</localize>
+                                    </a>
+                                </div><!-- End .controls -->
                             </div>
+                            
                         </ng-form>
                     </div>
 
                     <div class="umb-property">
                         <ng-form name="propertyForm">
-                            <div class="control-group umb-control-group notely-control-group">
-                                <label class="control-label">
-                                    States
-                                    <small>
-                                        You can view the different states of a note when it has the option
-                                        to be assigned to someone.
-                                    </small>
-                                </label>
-                                <div class="controls">
-                                    <div class="umb-property-editor">
 
-                                        <table class="notely-table">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>Title</th>
-                                                    <th>Color</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr ng-repeat="state in noteStates track by $index">
-                                                    <td>{{state.id}}</td>
-                                                    <td>{{state.title}}</td>
-                                                    <td><span class="label" ng-class="'label-' + state.title | lowercase">{{state.title}}</span></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-
-                                    </div>
-                                </div>
+                            <div class="control-group umb-control-group">
+                                <umb-box class="notely-notes">
+                                    <umb-box-header title="Note States"></umb-box-header>
+                                    <umb-box-content>
+                                        <div>
+                                            <notely-note-preview ng-repeat="state in vm.noteStates track by $index"
+                                                                 name="state.title"
+                                                                 state="state.title"
+                                                                 can-assign="true">
+                                            </notely-note-preview>
+                                        </div>
+                                    </umb-box-content>
+                                </umb-box>
                             </div>
+
                         </ng-form>
                     </div>
 
@@ -102,9 +77,9 @@
     </umb-panel>
 
     <!-- Overlay -->
-    <umb-overlay ng-if="overlay.show"
-                 model="overlay"
-                 view="overlay.view"
+    <umb-overlay ng-if="vm.overlay.show"
+                 model="vm.overlay"
+                 view="vm.overlay.view"
                  position="right">
     </umb-overlay>
 

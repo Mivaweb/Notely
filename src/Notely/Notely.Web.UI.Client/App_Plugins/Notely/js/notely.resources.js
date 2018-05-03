@@ -166,6 +166,38 @@ angular.module('notely.resources').factory('notelyResources',
                     $http.delete("backoffice/notely/notelyapi/deletenotetype", { params: { id: id } }),
                     "Unable to delete the note type!"
                 );
+            },
+
+            // Get all comments
+            getAllComments: function (logType) {
+                return umbRequestHelper.resourcePromise(
+                    $http.get("backoffice/notely/notelyapi/getallnotecomments", { params: { logType: logType } }),
+                    "Unable to get all the comments!"
+                );
+            },
+
+            // Get comments of note
+            getComments: function (noteId) {
+                return umbRequestHelper.resourcePromise(
+                    $http.get("backoffice/notely/notelyapi/getnotecomments", { params: { noteId: noteId } }),
+                    "Unable to get the comments of the note!"
+                );
+            },
+
+            // Add comment to note
+            addComment: function (noteComment) {
+                return umbRequestHelper.resourcePromise(
+                    $http.post("backoffice/notely/notelyapi/addnotecomment", noteComment),
+                    "Unable to add the comment to the note!"
+                );
+            },
+
+            // Delete comment from note
+            deleteComment: function (commentId) {
+                return umbRequestHelper.resourcePromise(
+                    $http.delete("backoffice/notely/notelyapi/deletenotecomment", { params: { commentId: commentId } }),
+                    "Unable to delete the note comment!"
+                );
             }
         };
     }

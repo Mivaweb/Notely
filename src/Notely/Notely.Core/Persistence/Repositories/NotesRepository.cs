@@ -43,6 +43,28 @@ namespace Notely.Core.Persistence.Repositories
         }
 
         /// <summary>
+        /// Add or update a <see cref="Note"/> object
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="noteId"></param>
+        public void AddOrUpdate(Note entity, out int noteId)
+        {
+            noteId = -1;
+
+            if (entity.Id > 0)
+            {
+                // Update entity
+                _dbContext.Database.Update(entity);
+                noteId = entity.Id;
+            }
+            else
+            {
+                // Add entity
+                noteId = Convert.ToInt32(_dbContext.Database.Insert(entity));
+            }
+        }
+
+        /// <summary>
         /// Delete <see cref="Note"/> object
         /// </summary>
         /// <param name="entity"></param>
@@ -86,7 +108,7 @@ namespace Notely.Core.Persistence.Repositories
         /// <returns></returns>
         public Note Get(int id)
         {
-            return _dbContext.Database.Fetch<Note, NoteType, NoteState>("SELECT nc.*, ncs.*, nct.* FROM notelyNotes AS nc LEFT JOIN notelyNoteStates AS ncs ON ncs.id = nc.state JOIN notelyNoteTypes AS nct ON nct.id = nc.type WHERE nc.id = @p1", new { p1 = id })[0];
+            return _dbContext.Database.Fetch<Note, NoteState, NoteType>("SELECT nc.*, ncs.*, nct.* FROM notelyNotes AS nc LEFT JOIN notelyNoteStates AS ncs ON ncs.id = nc.state JOIN notelyNoteTypes AS nct ON nct.id = nc.type WHERE nc.id = @p1", new { p1 = id })[0];
         }
 
         /// <summary>
@@ -97,6 +119,16 @@ namespace Notely.Core.Persistence.Repositories
         public IEnumerable<Note> GetAll(params int[] ids)
         {
             return _dbContext.Database.Fetch<Note, NoteState, NoteType>("SELECT nc.*, ncs.*, nct.* FROM notelyNotes AS nc LEFT JOIN notelyNoteStates AS ncs ON ncs.id = nc.state JOIN notelyNoteTypes AS nct ON nct.id = nc.type ORDER BY nc.contentId, nc.propertyTypeId, nc.type, nc.createDate");
+        }
+
+        /// <summary>
+        /// Get a list of <see cref="Note"/> objects of a content
+        /// </summary>
+        /// <param name="contentId"></param>
+        /// <returns></returns>
+        public IEnumerable<Note> GetAllByContent(int contentId)
+        {
+            return _dbContext.Database.Fetch<Note, NoteState, NoteType>("SELECT nc.*, ncs.*, nct.* FROM notelyNotes AS nc LEFT JOIN notelyNoteStates AS ncs ON ncs.id = nc.state JOIN notelyNoteTypes AS nct ON nct.id = nc.type WHERE nc.contentId = @p1 ORDER BY nc.type, nc.createDate", new { p1 = contentId });
         }
 
         /// <summary>

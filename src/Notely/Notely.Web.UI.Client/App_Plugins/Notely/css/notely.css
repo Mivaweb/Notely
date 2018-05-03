@@ -1,12 +1,12 @@
-﻿[class*=notely-] a:not(.notely-link) {
+﻿/*[class*=notely-] a:not(.notely-link) {
     text-decoration: none;
-}
+}*/
 
-[class*=notely-] {
+/*[class*=notely-] {
     list-style: none outside none;
     margin: 0;
     padding: 0;
-}
+}*/
 
 .row > [class^=span] > .umb-editor {
     max-width: 86%;
@@ -30,6 +30,8 @@
 
 .notely-nav {
     margin-bottom: 15px;
+    list-style: none outside none;
+    margin-left: 0;
 }
 
     .notely-nav > li {
@@ -52,6 +54,14 @@
     padding: 15px 0;
 }
 
+.notely-container .controls {
+    margin-left: 0 !important;
+}
+
+.notely-backoffice .notely-controls {
+    margin-left: 0 !important;
+}
+
 .notely-nav_expand {
     cursor: pointer;
 }
@@ -69,9 +79,24 @@
     margin-bottom: 15px;
 }
 
+.notely-note-preview {
+    max-width: 100%;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.notely-note-preview:last-child {
+    padding-bottom: 5px;
+    margin-bottom: 0;
+}
+
 table.notely-table {
     width: 100%;
     margin-bottom: 20px;
+}
+
+table.notely-table thead {
+    background-color: #ffffff;
 }
 
     table.notely-table > thead th {
@@ -143,6 +168,59 @@ table.notely-table {
         text-align: right;
     }
 
+.notely-note-preview__labels {
+    margin-top: 5px;
+}
+
+.notely-note-preview .label {
+    text-shadow: none;
+    padding: 4px 6px 3px;
+    font-size: 11px;
+    border: 1px solid transparent;
+}
+
+.notely-note-preview .label-open {
+    background-color: #f9f9f9;
+    border-color: #505050;
+    color: #505050;
+}
+
+.notely-note-preview .label-approved {
+    background-color: #ebfeff;
+    border-color: #00b2f0;
+    color: #00b2f0;
+}
+
+.notely-note-preview .label-pending {
+    background-color: #FFFAEB;
+    border-color: #F0AC00;
+    color: #F0AC00;
+}
+
+.notely-note-preview .label-done {
+    background-color: #EBFFF6;
+    border-color: #35C786;
+    color: #35C786;
+}
+
+.notely-note-preview .label-low {
+    background-color: #ebfeff;
+    border-color: #00b2f0;
+    color: #00b2f0;
+}
+
+.notely-note-preview .label-medium {
+    background-color: #FFFAEB;
+    border-color: #F0AC00;
+    color: #F0AC00;
+}
+
+.notely-note-preview .label-high {
+    background-color: #FFECEB;
+    border-color: #FE3E39;
+    color: #FE3E39;
+}
+
 .notely-bold {
     font-weight: bold;
 }
@@ -178,6 +256,20 @@ table.notely-table {
     padding: 15px;
 }
 
+.notely-btn-user-delete {
+    display: block;
+    text-align: left;
+    padding: 0;
+}
+
+.notely-btn-user-delete:hover {
+    text-decoration: underline;
+}
+
+.notely-modal .umb-user-picker-list-item:hover {
+    background-color: #ffffff;
+}
+
 .notely-btn-round {
     display: inline-block;
     padding: 4px 6px;
@@ -194,16 +286,16 @@ table.notely-table {
 
     .notely-btn-round:hover,
     .notely-btn-round:focus {
-        background: #2e8aea;
-        border-color: #2e8aea;
+        background: #35c786;
+        border-color: #35c786;
     }
 
-.notely-btn-round .icon {
-    display: block;
-    font-size: 16px !important;
-    color: #5f5f5f;
-    transition: color 100ms linear;
-}
+    .notely-btn-round .icon {
+        display: block;
+        font-size: 16px !important;
+        color: #5f5f5f;
+        transition: color 100ms linear;
+    }
 
     .notely-btn-round:hover .icon,
     .notely-btn-round:focus .icon {
@@ -212,6 +304,39 @@ table.notely-table {
 
 .notely-backoffice-list {
     margin-top: 20px;
+}
+
+.notely-backoffice-list .pagination {
+    text-align: center;
+}
+
+.notely-backoffice-list .pagination ul {
+    box-shadow: none;
+}
+
+.notely-backoffice-list .pagination > ul > li > a {
+    border: 0;
+    color: #d9d9d9;
+}
+
+.notely-backoffice-list .pagination ul > .active > a {
+    color: #000;
+    background-color: #fff;
+}
+
+.notely-backoffice-list .pagination ul > li > a:hover, 
+.notely-backoffice-list .pagination ul > li > a:focus {
+    background-color: #fff;
+    color: #000;
+}
+
+.notely-backoffice-list .pagination ul > .disabled > span, 
+.notely-backoffice-list .pagination ul > .disabled > a, 
+.notely-backoffice-list .pagination ul > .disabled > a:hover, 
+.notely-backoffice-list .pagination ul > .disabled > a:focus {
+    color: #d9d9d9;
+    cursor: default;
+    background-color: transparent;
 }
 
 .notely-backoffice-item {
@@ -241,10 +366,10 @@ table.notely-table {
     text-decoration: underline;
 }
 
-.notely-link:hover,
-.notely-link:focus {
-    text-decoration: none;
-}
+    .notely-link:hover,
+    .notely-link:focus {
+        text-decoration: none;
+    }
 
 .notely-backoffice-item.notely-collapsed {
     border-color: #eeeeee;
@@ -290,6 +415,11 @@ table.notely-table {
         vertical-align: middle;
     }
 
+.notely-reload:hover,
+.notely-reload:focus {
+    text-decoration: none;
+}
+
 .notely-controls-icon {
     display: -ms-flexbox;
     display: flex;
@@ -311,43 +441,102 @@ table.notely-table {
         font-size: 35px;
     }
 
-.notely-shortcuts {
-    display: flex;
-    flex-wrap: wrap;
+.notely-shortcuts .umb-healthcheck-group:hover {
+    text-decoration: none;
+}
+
+.notely-comments {
     margin-top: 20px;
-    margin-left: -10px;
-    margin-right: -10px;
 }
 
-.notely-shortcut-wrap {
+.notely-comments_item {
     display: block;
-    padding: 10px;
-    flex: 0 0 auto;
-    flex-basis: 20%;
-    max-width: 20%;
+    clear: both;
+    border-bottom: 1px dashed #e0e0e0;
+    padding: 10px 0;
+    position: relative;
 }
 
-.notely-shortcut {
-    display: flex;
-    height: 100%;
-    padding: 15px 10px;
-    text-align: center;
-    background: #f8f8f8;
-    border: 2px solid transparent;
-    border-radius: 3px;
-    box-sizing: border-box;
-    flex-wrap: wrap;
-    flex-direction: column;
-    transition: border 100ms linear;
+.notely-comment_img {
+    width: 40px;
+    height: 40px;
+    float: left;
+    margin-right: 15px;
+    margin-top: 5px;
+    margin-left: 5px;
 }
 
-    .notely-shortcut:hover,
-    .notely-shortcut:focus {
-        border-color: #2e8aea;
-    }
+.notely-comment_img > img {
+    border-radius: 30px;
+    box-shadow: 2px 2px 5px -2px #999;
+    width: 40px;
+    height: 40px;
+}
 
-.notely-shortcut_title {
-    font-weight: 700;
+.notely-comment_body {
+    margin-left: 60px;
+    padding-right: 5px;
+    position: relative;
+}
+
+.notely-comment_body > span {
+    font-size: 12px;
+    font-style: italic;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.notely-dialog .umb-dialog-body {
+    bottom: 120px;
+}
+
+.notely-dialog .umb-dialog-footer {
+    height: 90px;
+    background: #ffffff;
+    padding-left: 0;
+    padding-right: 0;
+    border-color: #d8d7d9;
+}
+
+.notely-dialog .umb-dialog-footer a.btn-link:hover {
+    text-decoration: underline;
+}
+
+.notely-comments_item .notely-delete {
+    color: #ccc;
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    transition: opacity 100ms linear;
+}
+
+.notely-comments_item .notely-delete > i {
+    font-size: 16px;
+}
+
+.notely-comments_item .notely-delete:hover {
+    text-decoration: none;
+}
+
+.notely-comments_item:hover .notely-delete {
+    opacity: 0.9;
+}
+
+.notely-comments_item.notely-selected {
+    background-color: #f9f9f9;
+}
+
+.notely-color-warning {
+    color: #F9AF82;
+}
+
+.notely-color-danger {
+    color: #9d261d;
+}
+
+.form-horizontal .controls__no-margin {
+    margin-left: 0;
 }
 
 @media (max-width: 767px) {

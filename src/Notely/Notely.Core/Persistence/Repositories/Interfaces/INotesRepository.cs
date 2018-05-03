@@ -24,6 +24,13 @@ namespace Notely.Core.Persistence.Repositories.Interfaces
         void DeleteByContent(int contentId);
 
         /// <summary>
+        /// Get all notes by content id
+        /// </summary>
+        /// <param name="contentId"></param>
+        /// <returns></returns>
+        IEnumerable<Note> GetAllByContent(int contentId);
+
+        /// <summary>
         /// Get all notes by content id and property type id
         /// </summary>
         /// <param name="contentId"></param>
@@ -60,5 +67,12 @@ namespace Notely.Core.Persistence.Repositories.Interfaces
         /// <param name="noteTypeId"></param>
         /// <returns></returns>
         IEnumerable<Note> GetAllByType(int noteTypeId);
+
+        /// <summary>
+        /// Add or update note and return the id of the note
+        /// </summary>
+        /// <param name="note"></param>
+        /// <param name="noteId"></param>
+        void AddOrUpdate(Note note, out int noteId);
     }
 }

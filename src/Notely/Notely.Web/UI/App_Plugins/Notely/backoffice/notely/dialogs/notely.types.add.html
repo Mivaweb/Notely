@@ -1,36 +1,39 @@
-﻿<div ng-controller="Notely.Types.AddController" ng-init="init()" class="notely-modal">
-
-    <p>
-        Add a new type to Notely.
-    </p>
-
-    <h5>Properties</h5>
+﻿<div ng-controller="Notely.Types.AddController as vm" ng-init="vm.init()" 
+     class="notely-modal content-type-editor-dialog edit-property-settings">
 
     <div class="umb-control-group">
-        <label class="control-label">
-            Title
-        </label>
-        <div class="controls controls-row">
-            <input name="notelyTitle" type="text" value="" ng-model="model.type.title" placeholder="Title" class="umb-editor" />
+        Add a new note type to Notely.
+    </div>
+
+    <div class="umb-control-group">
+        <div class="control-group">
+            <textarea name="notelyTitle"
+                      ng-model="vm.model.type.title" rows="2" class="editor-label"
+                      placeholder="Enter a title..." umb-auto-resize required></textarea>
+            <div class="umb-validation-label" val-msg-for="notelyTitle" val-toggle-msg="required">
+                Required title
+            </div>
         </div>
     </div>
+
     <div class="umb-control-group">
         <label class="control-label">
             Icon
         </label>
         <div class="controls controls-row">
-            <div class="notely-controls-icon" ng-click="openIconPicker()">
-                <i class="icon" ng-class="model.type.icon"></i>
+            <div class="notely-controls-icon" ng-click="vm.openIconPicker()">
+                <i class="icon" ng-class="vm.model.type.icon"></i>
             </div>
         </div>
     </div>
+
     <div class="umb-control-group">
         <label class="control-label">
             Can be assigned to?
         </label>
         <div class="controls controls-row">
             <div class="umb-editor umb-boolean">
-                <input type="checkbox" value="" ng-model="model.type.canAssign" />
+                <input type="checkbox" value="" ng-model="vm.model.type.canAssign" />
             </div>
         </div>
     </div>

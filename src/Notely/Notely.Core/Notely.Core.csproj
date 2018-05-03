@@ -252,13 +252,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enum\NoteCommentType.cs" />
+    <Compile Include="Enum\NotePriority.cs" />
     <Compile Include="Events\NotelyEvents.cs" />
+    <Compile Include="INotelyBootManager.cs" />
     <Compile Include="Install\PackageActions.cs" />
+    <Compile Include="Migrations\MigrateV20.cs" />
     <Compile Include="Models\Note.cs" />
+    <Compile Include="Models\NoteComment.cs" />
     <Compile Include="Models\NoteState.cs" />
     <Compile Include="Models\NoteType.cs" />
     <Compile Include="Models\DataType.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="NotelyBootManager.cs" />
+    <Compile Include="Persistence\Repositories\Interfaces\INoteCommentsRepository.cs" />
+    <Compile Include="Persistence\Repositories\NoteCommentRepository.cs" />
     <Compile Include="Persistence\Repositories\NotesRepository.cs" />
     <Compile Include="Persistence\Repositories\NoteStatesRepository.cs" />
     <Compile Include="Persistence\Repositories\NoteTypesRepository.cs" />
@@ -266,6 +274,15 @@
     <Compile Include="Persistence\Repositories\Interfaces\INoteStatesRepository.cs" />
     <Compile Include="Persistence\Repositories\Interfaces\INoteTypesRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\INoteCommentService.cs" />
+    <Compile Include="Services\INoteService.cs" />
+    <Compile Include="Services\INoteStateService.cs" />
+    <Compile Include="Services\INoteTypeService.cs" />
+    <Compile Include="Services\NoteCommentService.cs" />
+    <Compile Include="Services\NoteService.cs" />
+    <Compile Include="Services\NoteStateService.cs" />
+    <Compile Include="Services\NoteTypeService.cs" />
+    <Compile Include="Services\ServiceContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

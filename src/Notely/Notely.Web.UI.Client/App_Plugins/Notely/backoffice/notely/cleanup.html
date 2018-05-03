@@ -1,7 +1,7 @@
-﻿<form ng-controller="Notely.Backoffice.CleanupController" ng-init="init()" val-form-manager>
+﻿<form ng-controller="Notely.Backoffice.CleanupController as vm" ng-init="vm.init()" val-form-manager>
     <umb-panel>
 
-        <umb-header tabs="visibleTabs">
+        <umb-header tabs="vm.visibleTabs">
             <div class="span7">
                 <div class="umb-headline-editor-wrapper">
                     <h1>Cleanup</h1>
@@ -13,22 +13,22 @@
         <umb-tab-view>
             <umb-tab id="tab1">
 
-                <div class="umb-pane" ng-show="loaded">
+                <div class="umb-pane" ng-show="vm.loaded">
 
                     <div class="row-fluid">
                         <div class="span6">
 
-                            <h3>Cleanup notes</h3>
+                            <h3 class="bold">Cleanup notes</h3>
 
-                            <p>
+                            <div class="umb-healthcheck-help-text">
                                 All notes that are not linked to an existing content node and an existing property will be removed from the database. <br /><br />
                                 <strong>*This can happen when you remove a property from a document type.</strong><br />
                                 <strong>*If you remove a content node the notes will automatically be removed.</strong>
-                            </p>
+                            </div>
 
-                            <br /><br />
+                            <br />
 
-                            <button type="button" class="btn btn-danger" ng-click="cleanup()">Cleanup notes</button>
+                            <button type="button" class="umb-era-button -green" ng-click="vm.cleanup()">Cleanup notes</button>
 
                         </div>
                     </div>

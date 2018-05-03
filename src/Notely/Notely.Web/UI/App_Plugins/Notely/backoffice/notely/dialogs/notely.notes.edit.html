@@ -1,70 +1,116 @@
-﻿<div ng-controller="Notely.Notes.EditController" ng-init="init()" class="notely-modal">
+﻿<div ng-controller="Notely.Notes.EditController as vm" ng-init="vm.init()" class="notely-modal content-type-editor-dialog edit-property-settings">
    
-    <p>
-        Edit note of property <strong>{{model.note.contentProperty.propertyTypeAlias}}</strong>.
-    </p>
-
-    <h5>Properties</h5>
+    <div class="umb-control-group">
+        Edit note of property <strong>{{vm.model.note.contentProperty.propertyTypeAlias}}</strong>.
+    </div>
 
     <div class="umb-control-group">
-        <label class="control-label">
-            Type
-        </label>
-        <div class="controls controls-row">
-            <select name="notelyType" class="umb-editor umb-dropdown" 
-                    ng-change="noteTypeChanged()" 
-                    ng-show="noteTypes"
-                    ng-model="model.note.type"
-                    ng-options="c.title for c in noteTypes track by c.id"></select>
-        </div>
-    </div>
-    <div class="umb-control-group">
-        <label class="control-label">
-            Title
-        </label>
-        <div class="controls controls-row">
-            <input name="notelyTitle" type="text" value="" 
-                   ng-disabled="model.note.state == true" ng-model="model.note.title" 
-                   placeholder="Name" class="umb-editor" />
-        </div>
-    </div>
-    <div class="umb-control-group">
-        <label class="control-label">
-            Description
-        </label>
-        <div class="controls controls-row">
-            <textarea name="notelyDescription" 
-                      ng-disabled="model.note.state == true" 
-                      ng-model="model.note.description" rows="6" 
-                      class="umb-editor" placeholder="Enter short description"></textarea>
-        </div>
-    </div>
-    <div class="umb-control-group" ng-show="model.note.type.canAssign">
-        <label class="control-label">
-            Assign to user
-        </label>
-        <div class="controls controls-row">
-            <select name="notelyUser"
-                    class="umb-editor umb-dropdown"
-                    ng-hide="!users || (model.note.assignedTo && model.note.assignedTo.id >= 0)"
-                    ng-model="model.note.assignedTo"
-                    ng-options="i.name for i in users | orderBy:'name' track by i.id" "></select>
-            <div class="notely-clear-select" ng-show="model.note.assignedTo && model.note.assignedTo.id >= 0">
-                <span>{{model.note.assignedTo.name}}</span>
-                <i class="icon icon-delete" ng-click="resetAssigndTo()"></i>
+        <div class="control-group">
+            <textarea name="notelyTitle"
+                      ng-model="vm.model.note.title" rows="2" class="editor-label"
+                      placeholder="Enter a name..." umb-auto-resize required></textarea>
+            <div class="umb-validation-label" val-msg-for="notelyTitle" val-toggle-msg="required">
+                Required name
             </div>
         </div>
     </div>
-    <div class="umb-control-group" ng-show="model.note.type.canAssign">
+
+    <div class="umb-control-group controls-group">
+        <textarea name="notelyDescription"
+                  ng-model="vm.model.note.description" rows="3" class="editor-description"
+                  placeholder="Enter short description" umb-auto-resize></textarea>
+    </div>
+
+    <div class="umb-control-group">
         <label class="control-label">
             Type
         </label>
         <div class="controls controls-row">
-            <select name="notelyState" class="umb-editor umb-dropdown" 
-                    ng-model="model.note.state"
-                    ng-show="noteStates"
-                    ng-options="c.title for c in noteStates track by c.id"></select>
+            <select name="notelyType" class="umb-editor umb-dropdown"
+                    ng-change="vm.noteTypeChanged()"
+                    ng-show="vm.noteTypes"
+                    ng-model="vm.model.note.type"
+                    ng-options="c.title for c in vm.noteTypes track by c.id"></select>
         </div>
     </div>
+
+    <div class="umb-control-group" ng-show="vm.model.note.type.canAssign">
+        <a href="" class="umb-node-preview-add" style="max-width: 100%"
+           ng-click="vm.openUserDialog()" ng-hide="vm.model.note.assignedTo && vm.model.note.assignedTo.id >= 0" prevent-default>
+            Assign to user
+        </a>
+        <div class="umb-user-picker-list-item notely-clear-select" ng-show="vm.model.note.assignedTo && vm.model.note.assignedTo.id >= 0">
+            <div class="umb-user-picker-list-item__avatar">
+                <umb-avatar size="s"
+                            color="secondary"
+                            name="{{vm.model.note.assignedTo.name}}"
+                            img-src="{{vm.model.note.assignedTo.avatars[0]}}"
+                            img-srcset="{{vm.model.note.assignedTo.avatars[1]}} 2x, {{vm.model.note.assignedTo.avatars[2]}} 3x">
+                </umb-avatar>
+            </div>
+            <div class="umb-user-picker-list-item__content">
+                <div class="umb-user-picker-list-item__name">{{ vm.model.note.assignedTo.name }}</div>
+                <div class="umb-user-picker-list-item__group">
+                    <a href="" class="btn btn-link notely-btn-user-delete" ng-click="vm.resetAssignedTo()">
+                        <i class="icon icon-delete"></i>
+                        Remove user
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="umb-control-group" ng-show="vm.model.note.type.canAssign">
+        <label class="control-label">
+            State
+        </label>
+        <div class="controls controls-row">
+            <select name="notelyState" class="umb-editor umb-dropdown"
+                    ng-model="vm.model.note.state"
+                    ng-show="vm.noteStates"
+                    ng-options="c.title for c in vm.noteStates track by c.id"></select>
+        </div>
+    </div>
+
+    <div class="umb-control-group" ng-show="vm.model.note.type.canAssign">
+        <label class="control-label">
+            Priority
+        </label>
+        <div class="controls controls-row">
+            <ul class="unstyled">
+                <li>
+                    <label class="radio">
+                        <input type="radio" name="notelyPriority"
+                               value="1"
+                               ng-model="vm.model.note.priority" />
+                        Low Priority
+                    </label>
+                </li>
+                <li>
+                    <label class="radio">
+                        <input type="radio" name="notelyPriority"
+                               value="2"
+                               ng-model="vm.model.note.priority" />
+                        Medium Priority
+                    </label>
+                </li>
+                <li>
+                    <label class="radio">
+                        <input type="radio" name="notelyPriority"
+                               value="3"
+                               ng-model="vm.model.note.priority" />
+                        High Priority
+                    </label>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <umb-overlay ng-if="vm.overlay.show"
+                 model="vm.overlay"
+                 view="vm.overlay.view"
+                 position="right">
+    </umb-overlay>
 
 </div>

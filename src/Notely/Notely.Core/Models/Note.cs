@@ -42,6 +42,9 @@ namespace Notely.Core.Models
         [NullSetting(NullSetting = NullSettings.Null)]
         public int? State { get; set; }
 
+        [Column("priority")]
+        public int Priority { get; set; }
+
         [Column("createDate")]
         public DateTime CreateDate { get; set; }
 

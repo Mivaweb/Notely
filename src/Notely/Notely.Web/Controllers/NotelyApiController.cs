@@ -9,12 +9,12 @@ using Umbraco.Web.Mvc;
 using Umbraco.Web.WebApi;
 using Umbraco.Core.PropertyEditors;
 using Umbraco.Core.Models;
+using Umbraco.Web.Editors;
 
 using Notely.Core.Models;
 using Notely.Web.Models;
 using Notely.Web.Extensions;
-using Notely.Core.Persistence.Repositories;
-using Umbraco.Web.Editors;
+using Notely.Core.Enum;
 
 namespace Notely.Web.Controllers
 {
@@ -75,7 +75,8 @@ namespace Notely.Web.Controllers
             return Services.UserService.GetAll(0, 50, out totalUsers)
                 .Where(u => u.IsApproved)
                 .OrderBy(u => u.Name)
-                .Select(u => new User() {
+                .Select(u => new User()
+                {
                     Name = u.Name,
                     Id = u.Id
                 });
@@ -89,11 +90,9 @@ namespace Notely.Web.Controllers
         [HttpGet]
         public NoteViewModel GetNote(int id)
         {
-            using (var repo = new NotesRepository())
-            {
-                var noteVm = new NoteViewModel();
-                return noteVm.Convert(repo.Get(id));
-            }
+            var noteVm = new NoteViewModel();
+
+            return noteVm.Convert(NotelyContext.Current.Services.NoteService.GetById(id));
         }
 
         /// <summary>
@@ -117,18 +116,14 @@ namespace Notely.Web.Controllers
 
             if (_propertyVM.ContentId > 0 && _propertyVM.PropertyDataId > 0)
             {
-                using (var repo = new NotesRepository())
-                {
-                    var _content = Services.ContentService.GetById(_propertyVM.ContentId);
-                    var _property = _content.Properties.FirstOrDefault(
-                            p => p.Id == _propertyVM.PropertyDataId || p.Alias.Equals(_propertyVM.PropertyTypeAlias)
-                        );
+                var _content = Services.ContentService.GetById(_propertyVM.ContentId);
+                var _property = _content.Properties.FirstOrDefault(
+                        p => p.Id == _propertyVM.PropertyDataId || p.Alias.Equals(_propertyVM.PropertyTypeAlias)
+                    );
 
-                    return repo.GetAllByContentProp(
-                            _propertyVM.ContentId, _property != null ? _property.PropertyType.Id : -1)
-                            .Select(c => noteVm.Convert(c)
-                        );
-                }
+                return NotelyContext.Current.Services.NoteService.GetAll(
+                    _propertyVM.ContentId,
+                    _property != null ? _property.PropertyType.Id : -1).Select(c => noteVm.Convert(c));
             }
             else
             {
@@ -145,10 +140,7 @@ namespace Notely.Web.Controllers
         {
             var noteVm = new NoteViewModel();
 
-            using (var repo = new NotesRepository())
-            {
-                return repo.GetAll().Select(c => noteVm.Convert(c));
-            }
+            return NotelyContext.Current.Services.NoteService.GetAll().Select(c => noteVm.Convert(c));
         }
 
         /// <summary>
@@ -161,10 +153,7 @@ namespace Notely.Web.Controllers
         {
             var noteVm = new NoteViewModel();
 
-            using (var repo = new NotesRepository())
-            {
-                return repo.GetAllByAssignee(userId).Select(c => noteVm.Convert(c));
-            }
+            return NotelyContext.Current.Services.NoteService.GetAllByAssignee(userId).Select(c => noteVm.Convert(c));
         }
 
         /// <summary>
@@ -179,7 +168,19 @@ namespace Notely.Web.Controllers
             NoteViewModel noteDto = JsonConvert.DeserializeObject<NoteViewModel>(noteVm.ToString());
             noteDto.CreateDate = DateTime.Now;
 
-            DoAddOrUpdate(note.Convert(noteDto));
+            note = note.Convert(noteDto);
+
+            if (!(note.ContentId > 0)) throw new ArgumentException("Content node not found");
+            if (!(note.PropertyTypeId > 0)) throw new ArgumentException("PropertyType not found");
+
+            int noteId = NotelyContext.Current.Services.NoteService.Save(note);
+
+            // Add log comment
+            NotelyContext.Current.Services.NoteCommentService.Add(noteId,
+                GetCurrentUserId(),
+                NoteCommentType.New,
+                "Note %1%" + noteDto.Title + "%2% was created");
+                
         }
 
         /// <summary>
@@ -193,7 +194,51 @@ namespace Notely.Web.Controllers
 
             NoteViewModel noteDto = JsonConvert.DeserializeObject<NoteViewModel>(noteVm.ToString());
 
-            DoAddOrUpdate(note.Convert(noteDto));
+            NoteViewModel _oldNote = GetNote(noteDto.Id);
+
+            note = note.Convert(noteDto);
+
+            if (!(note.ContentId > 0)) throw new ArgumentException("Content node not found");
+            if (!(note.PropertyTypeId > 0)) throw new ArgumentException("PropertyType not found");
+
+            int noteId = NotelyContext.Current.Services.NoteService.Save(note);
+
+            // Add log comment
+            NotelyContext.Current.Services.NoteCommentService.Add(
+                noteId,
+                GetCurrentUserId(),
+                NoteCommentType.Save,
+                "Note %1%" + noteDto.Title + "%2% was saved");
+
+            // Check if type is changed
+            if (_oldNote.Type.Id != noteDto.Type.Id)
+            {
+                NotelyContext.Current.Services.NoteCommentService.Add(
+                    noteId,
+                    GetCurrentUserId(),
+                    NoteCommentType.Save,
+                    "Note %1%" + noteDto.Title + "%2% type changed from %1%" + _oldNote.Type.Title + "%2% to %1%" + noteDto.Type.Title + "%2%");
+            }
+
+            // Check if state is changed
+            if (_oldNote.State.Id > 0 && noteDto.State.Id > 0 && (_oldNote.State.Id != noteDto.State.Id))
+            {
+                NotelyContext.Current.Services.NoteCommentService.Add(
+                    noteId,
+                    GetCurrentUserId(),
+                    NoteCommentType.Save,
+                    "Note %1%" + noteDto.Title + "%2% state changed from %1%" + _oldNote.State.Title + "%2% to %1%" + noteDto.State.Title + "%2%");
+            }
+
+            // Check if priority is changed
+            if(_oldNote.Priority != noteDto.Priority)
+            {
+                NotelyContext.Current.Services.NoteCommentService.Add(
+                    noteId,
+                    GetCurrentUserId(),
+                    NoteCommentType.Save,
+                    "Note %1%" + noteDto.Title + "%2% priority changed from %1%" + (NotePriority)_oldNote.Priority + "%2% to %1%" + (NotePriority)noteDto.Priority + "%2%");
+            }
         }
 
         /// <summary>
@@ -203,10 +248,11 @@ namespace Notely.Web.Controllers
         [HttpDelete]
         public void DeleteNote(int id)
         {
-            using (var repo = new NotesRepository())
-            {
-                repo.Delete(id);
-            }
+            // Delete comments
+            NotelyContext.Current.Services.NoteCommentService.DeleteByNoteId(id);
+
+            //Delete note
+            NotelyContext.Current.Services.NoteService.Delete(id);
         }
 
         /// <summary>
@@ -218,36 +264,33 @@ namespace Notely.Web.Controllers
         {
             int result = 0;
 
-            using (var repo = new NotesRepository())
+            var notes = NotelyContext.Current.Services.NoteService.GetAll();
+
+            foreach(var note in notes)
             {
-                var notes = repo.GetAll();
-                foreach(var note in notes)
+                bool delete = false;
+
+                // Check if the content exists
+                var _content = Services.ContentService.GetById(note.ContentId);
+
+                if (_content != null)
                 {
-                    bool delete = false;
+                    // Check if property exists
+                    var _property = _content.Properties.FirstOrDefault(
+                        p => p.PropertyType.Id == note.PropertyTypeId
+                    );
 
-                    // Check if the content exists
-                    var _content = Services.ContentService.GetById(note.ContentId);
+                    if (_property == null) delete = true;
+                }
+                else
+                {
+                    delete = true;
+                }
 
-                    if(_content != null)
-                    {
-                        // Check if property exists
-                        var _property = _content.Properties.FirstOrDefault(
-                            p => p.PropertyType.Id == note.PropertyTypeId
-                        );
-
-                        if (_property == null) delete = true;
-                    }
-                    else
-                    {
-                        delete = true;
-                    }
-
-                    if(delete)
-                    {
-                        repo.Delete(note);
-                        result++;
-                    }
-
+                if (delete)
+                {
+                    DeleteNote(note.Id);
+                    result++;
                 }
             }
 
@@ -263,10 +306,7 @@ namespace Notely.Web.Controllers
         {
             var _noteType = new NoteTypeViewModel();
 
-            using (var repo = new NoteTypesRepository())
-            {
-                return repo.GetAll().Select(c => _noteType.Convert(c));
-            }
+            return NotelyContext.Current.Services.NoteTypeService.GetAll().Select(c => _noteType.Convert(c));
         }
 
         /// <summary>
@@ -278,12 +318,60 @@ namespace Notely.Web.Controllers
         {
             var _noteState = new NoteStateViewModel();
 
-            using (var repo = new NoteStatesRepository())
-            {
-                return repo.GetAll().Select(c => _noteState.Convert(c));
-            }
+            return NotelyContext.Current.Services.NoteStateService.GetAll().Select(c => _noteState.Convert(c));
         }
-        
+
+        /// <summary>
+        /// Get a list of <see cref="NoteCommentViewModel"/> objects
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IEnumerable<NoteCommentViewModel> GetAllNoteComments(string logType)
+        {
+            var commentVm = new NoteCommentViewModel();
+
+            if (string.IsNullOrEmpty(logType))
+                return NotelyContext.Current.Services.NoteCommentService.GetAll().Select(c => commentVm.Convert(c));
+            else
+                return NotelyContext.Current.Services.NoteCommentService.GetAll(logType).Select(c => commentVm.Convert(c));
+        }
+
+        /// <summary>
+        /// Get a list of <see cref="NoteCommentViewModel"/> objects
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IEnumerable<NoteCommentViewModel> GetNoteComments(int noteId)
+        {
+            var commentVm = new NoteCommentViewModel();
+
+            return NotelyContext.Current.Services.NoteCommentService.GetByNoteId(noteId).Select(c => commentVm.Convert(c));
+        }
+
+        /// <summary>
+        /// Add comment to note
+        /// </summary>
+        /// <param name="noteCommentVm"></param>
+        [HttpPost]
+        public void AddNoteComment(object noteCommentVm)
+        {
+            var noteComment = new NoteComment();
+
+            NoteCommentViewModel noteCommentDto = JsonConvert.DeserializeObject<NoteCommentViewModel>(noteCommentVm.ToString());
+
+            NotelyContext.Current.Services.NoteCommentService.Save(noteComment.Convert(noteCommentDto));
+        }
+
+        /// <summary>
+        /// Delete comment from note
+        /// </summary>
+        /// <param name="commentId"></param>
+        [HttpDelete]
+        public void DeleteNoteComment(int commentId)
+        {
+            NotelyContext.Current.Services.NoteCommentService.Delete(commentId);
+        }
+
         /// <summary>
         /// Get a list of unique content id's that has notes
         /// </summary>
@@ -292,11 +380,7 @@ namespace Notely.Web.Controllers
         [HttpGet]
         public IEnumerable<int> GetUniqueContentNodes(int userId)
         {
-            using(var repo = new NotesRepository())
-            {
-                var result = repo.GetUniqueContentNodes(userId);
-                return result;
-            }
+            return NotelyContext.Current.Services.NoteService.GetUniqueContentNodes(userId);
         }
 
         /// <summary>
@@ -310,40 +394,37 @@ namespace Notely.Web.Controllers
             var _result = new BackOfficeNode();
             var _note = new NoteViewModel();
 
-            using (var repo = new NotesRepository())
+            // Step 1: Get the content node details
+            var _content = Services.ContentService.GetById(contentId);
+
+            if (_content == null)
+                throw new ArgumentNullException("contentId");
+
+            _result.ContentId = contentId;
+            _result.ContentName = _content.Name;
+
+            foreach (var prop in _content.Properties.Where(p => p.PropertyType.PropertyEditorAlias == "Notely"))
             {
-                // Step 1: Get the content node details
-                var _content = Services.ContentService.GetById(contentId);
+                var dataTypeDef = Services.DataTypeService.GetDataTypeDefinitionById(
+                    prop.PropertyType.DataTypeDefinitionId);
+                var limitValue = int.Parse(GetPreValues(dataTypeDef)["limit"].ToString());
 
-                if (_content == null)
-                    throw new ArgumentNullException("contentId");
-
-                _result.ContentId = contentId;
-                _result.ContentName = _content.Name;
-                
-                foreach(var prop in _content.Properties.Where(p => p.PropertyType.PropertyEditorAlias == "Notely"))
+                // Step 2: Add properties and notes
+                _result.Properties.Add(new BackOfficeProperty()
                 {
-                    var dataTypeDef = Services.DataTypeService.GetDataTypeDefinitionById(
-                        prop.PropertyType.DataTypeDefinitionId);
-                    var limitValue = int.Parse(GetPreValues(dataTypeDef)["limit"].ToString());
 
-                    // Step 2: Add properties and notes
-                    _result.Properties.Add(new BackOfficeProperty() {
+                    Alias = prop.Alias,
+                    Id = prop.PropertyType.Id,
+                    Name = prop.PropertyType.Name,
+                    Limit = limitValue,
+                    Notes = userId >= 0 ? NotelyContext.Current.Services.NoteService.GetAll(
+                        _content.Id, prop.PropertyType.Id, userId)
+                        .Select(c => _note.Convert(c)).ToList() :
+                        NotelyContext.Current.Services.NoteService.GetAll(
+                        _content.Id, prop.PropertyType.Id)
+                        .Select(c => _note.Convert(c)).ToList()
 
-                        Alias = prop.Alias,
-                        Id = prop.PropertyType.Id,
-                        Name = prop.PropertyType.Name,
-                        Limit = limitValue,
-                        Notes = userId >= 0 ? repo.GetAllByContentProp(
-                            _content.Id, prop.PropertyType.Id, userId)
-                            .Select(c => _note.Convert(c)).ToList() :
-                            repo.GetAllByContentProp(
-                            _content.Id, prop.PropertyType.Id)
-                            .Select(c => _note.Convert(c)).ToList()
-
-                    });
-                }
-
+                });
             }
 
             return _result;
@@ -357,11 +438,8 @@ namespace Notely.Web.Controllers
         [HttpGet]
         public NoteTypeViewModel GetNoteType(int id)
         {
-            using (var repo = new NoteTypesRepository())
-            {
-                var noteTypeVm = new NoteTypeViewModel();
-                return noteTypeVm.Convert(repo.Get(id));
-            }
+            var noteTypeVm = new NoteTypeViewModel();
+            return noteTypeVm.Convert(NotelyContext.Current.Services.NoteTypeService.GetById(id));
         }
 
         /// <summary>
@@ -375,7 +453,7 @@ namespace Notely.Web.Controllers
 
             var noteTypeDto = JsonConvert.DeserializeObject<NoteTypeViewModel>(noteType.ToString());
 
-            DoAddOrUpdate(_noteType.Convert(noteTypeDto));
+            NotelyContext.Current.Services.NoteTypeService.Save(_noteType.Convert(noteTypeDto));
         }
 
         /// <summary>
@@ -389,7 +467,7 @@ namespace Notely.Web.Controllers
 
             var noteTypeDto = JsonConvert.DeserializeObject<NoteTypeViewModel>(noteType.ToString());
 
-            DoAddOrUpdate(_noteType.Convert(noteTypeDto));
+            NotelyContext.Current.Services.NoteTypeService.Save(_noteType.Convert(noteTypeDto));
         }
 
         /// <summary>
@@ -401,10 +479,7 @@ namespace Notely.Web.Controllers
         {
             DeleteNotesByType(id);
 
-            using (var repo = new NoteTypesRepository())
-            {
-                repo.Delete(id);
-            }
+            NotelyContext.Current.Services.NoteTypeService.Delete(id);
         }
 
         #region Private methods
@@ -431,45 +506,29 @@ namespace Notely.Web.Controllers
         }
 
         /// <summary>
-        /// Add or update a note
-        /// </summary>
-        /// <param name="note">A <see cref="Note"/> object</param>
-        private void DoAddOrUpdate(Note note)
-        {
-            using (var repo = new NotesRepository())
-            {
-                if (!(note.ContentId > 0)) throw new ArgumentException("Content node not found");
-                if (!(note.PropertyTypeId > 0)) throw new ArgumentException("PropertyType not found");
-
-                repo.AddOrUpdate(note);
-            }
-        }
-
-        /// <summary>
-        /// Add or update a note type
-        /// </summary>
-        /// <param name="noteType">A <see cref="NoteType"/> object</param>
-        private void DoAddOrUpdate(NoteType noteType)
-        {
-            using (var repo = new NoteTypesRepository())
-            {
-                repo.AddOrUpdate(noteType);
-            }
-        }
-
-        /// <summary>
         /// Delete all notes based on a note type
         /// </summary>
         /// <param name="noteTypeId"></param>
         private void DeleteNotesByType(int noteTypeId)
         {
-            using (var repo = new NotesRepository())
+            foreach (var note in NotelyContext.Current.Services.NoteService.GetAllByType(noteTypeId))
             {
-                foreach(var note in repo.GetAllByType(noteTypeId))
-                {
-                    repo.Delete(note);
-                }
+                // Delete comments
+                NotelyContext.Current.Services.NoteCommentService.DeleteByNoteId(note.Id);
+
+                // Delete note
+                NotelyContext.Current.Services.NoteService.Delete(note);
             }
+        }
+
+        /// <summary>
+        /// Get current userid
+        /// </summary>
+        /// <returns></returns>
+        private int GetCurrentUserId()
+        {
+            var userService = Services.UserService;
+            return userService.GetByUsername(UmbracoContext.Security.CurrentUser.Username).Id;
         }
 
         #endregion

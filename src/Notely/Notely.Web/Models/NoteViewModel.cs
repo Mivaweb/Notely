@@ -32,6 +32,9 @@ namespace Notely.Web.Models
         [JsonProperty("contentProperty")]
         public ContentPropertyViewModel ContentProperty { get; set; }
 
+        [JsonProperty("priority")]
+        public int Priority { get; set; }
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -44,6 +47,7 @@ namespace Notely.Web.Models
             State = null;
             CreateDate = DateTime.Now;
             ContentProperty = null;
+            Priority = (int)Notely.Core.Enum.NotePriority.Low;
         }
     }
 }

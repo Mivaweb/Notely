@@ -11,7 +11,7 @@ angular.module('notely.services').factory('noteService', [
 
             // Format the description which adds the assignee if assignd to
             formatDescription: function (note) {
-                return note.description + (note.type.canAssign && note.assignedTo ? ' <strong>[Assigned to: ' + note.assignedTo.name + ']</strong>' : '');
+                return (!note.description ? '-' : note.description) + (note.type.canAssign && note.assignedTo ? ' <strong>[Assigned to: ' + note.assignedTo.name + ']</strong>' : '');
             },
 
             // Add note
@@ -40,6 +40,13 @@ angular.module('notely.services').factory('noteService', [
             getDeleteDialog: function () {
                 return {
                     template: '/App_Plugins/Notely/backoffice/notely/dialogs/notely.notes.delete.html'
+                };
+            },
+
+            // View comments
+            getViewCommentsDialog: function () {
+                return {
+                    template: '/App_Plugins/Notely/backoffice/notely/dialogs/notely.notes.comments.html'
                 };
             }
 
