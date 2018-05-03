@@ -29,7 +29,7 @@ One thing I would like to mention is, don't wrap Notely around all your properti
 
 #### v1.0.
 
-First release of Notely.
+- First release of Notely.
 
 ## Contributors
 
