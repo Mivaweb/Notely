@@ -13,6 +13,10 @@ One thing I would like to mention is, don't wrap Notely around all your properti
 
 ### History Version
 
+#### v3.0.
+
+- Create Content App for the new Umbraco v8
+
 #### v2.0.
 
 - Fix some minor issues
